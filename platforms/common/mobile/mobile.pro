@@ -3,6 +3,8 @@ QT += svg xml qml quick
 
 QML_ROOT_PATH = ../../../src/mobile/qml
 
+INCLUDEPATH += ../../../src
+
 DEFINES += BT_MOBILE
 
 GIT_VERSION = $$system(git rev-parse HEAD)

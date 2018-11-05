@@ -6,7 +6,7 @@ isEmpty(BIBLETIME_PATH):BIBLETIME_PATH = ../../../../bibletime
 # Useless warnings
 gcc:QMAKE_CXXFLAGS_DEBUG += -Wno-switch -Wno-unused-parameter -Wno-unused-variable -Wno-reorder -Wno-missing-field-initializers
 
-INCLUDEPATH += ../../../src
+INCLUDEPATH += ../../../../bibletime/src
 
 SOURCES += \
     $${BIBLETIME_PATH}/src/backend/bookshelfmodel/btbookshelffiltermodel.cpp \
