@@ -65,6 +65,7 @@ class BtStyle : public QObject {
 
     Q_PROPERTY(QString appVersion            READ getAppVersion        NOTIFY versionChanged);
     Q_PROPERTY(QString gitVersion            READ getGitVersion        NOTIFY versionChanged);
+    Q_PROPERTY(QString gitBibleTimeVersion   READ getBibleTimeGitVersion NOTIFY versionChanged);
     Q_PROPERTY(QString qtVersion             READ getQtVersion         NOTIFY versionChanged);
     Q_PROPERTY(QString swordVersion          READ getSwordVersion      NOTIFY versionChanged);
 
@@ -182,6 +183,7 @@ public:
 
     static QString getAppVersion();
     QString getGitVersion() const;
+    QString getBibleTimeGitVersion() const;
     QString getQtVersion() const;
     QString getSwordVersion() const;
 

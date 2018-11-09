@@ -3,6 +3,10 @@ DEFINES += BT_VERSION=\\\"$${BT_VERSION}\\\"
 
 isEmpty(BIBLETIME_PATH):BIBLETIME_PATH = ../../../../bibletime
 
+
+BTGIT_VERSION = $$system(git -C  \""$$BIBLETIME_PATH"\" rev-parse HEAD)
+DEFINES += BT_GIT_VERSION=\\\"$$BTGIT_VERSION\\\"
+`
 # Useless warnings
 gcc:QMAKE_CXXFLAGS_DEBUG += -Wno-switch -Wno-unused-parameter -Wno-unused-variable -Wno-reorder -Wno-missing-field-initializers
 

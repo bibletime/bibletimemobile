@@ -509,6 +509,14 @@ QString BtStyle::getAppVersion() {
 }
 
 QString BtStyle::getGitVersion() const {
+#ifdef BTM_GIT_VERSION
+    return  BTM_GIT_VERSION;
+#else
+    return "";
+#endif
+}
+
+QString BtStyle::getBibleTimeGitVersion() const {
 #ifdef BT_GIT_VERSION
     return  BT_GIT_VERSION;
 #else

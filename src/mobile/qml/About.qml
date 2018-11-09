@@ -115,18 +115,29 @@ Rectangle {
 
                     var gplstr = qsTranslate("About", "Licensed Under the") + "<br><a href=\"http://www.gnu.org/licenses/gpl-2.0.html\">GNU General Public License Version 2</a><br><br>"
 
-                    var gitstr = "";
-                    var gitversion = btStyle.gitVersion;
-                    var len = gitversion.length;
-                    if (len != 0) {
-                        gitstr = "<a href=\"https://github.com/bibletime\">Git version</a><br>";
-                        gitstr += gitversion.substring(0, len/2-1);
-                        gitstr += "<br>";
-                        gitstr += gitversion.substring(len/2, len);
-                        gitstr += "<br><br>";
+                    var btmgitstr = "";
+                    var btmgitversion = btStyle.gitVersion;
+                    var len = btmgitversion.length;
+                    if (len !== 0) {
+                        btmgitstr = "<a href=\"https://github.com/bibletime/bibletimemobile\">BibleTime Mobile Git version</a><br>";
+                        btmgitstr += btmgitversion.substring(0, len/2-1);
+                        btmgitstr += "<br>";
+                        btmgitstr += btmgitversion.substring(len/2, len);
+                        btmgitstr += "<br><br>";
                     }
 
-                    return  btstr + appstr + qtstr + swordstr + gplstr + gitstr;
+                    var btgitstr = "";
+                    var btgitversion = btStyle.gitBibleTimeVersion;
+                    len = btgitversion.length;
+                    if (len !== 0) {
+                        btgitstr = "<a href=\"https://github.com/bibletime/bibletime\">BibleTime Git version</a><br>";
+                        btgitstr += btgitversion.substring(0, len/2-1);
+                        btgitstr += "<br>";
+                        btgitstr += btgitversion.substring(len/2, len);
+                        btgitstr += "<br><br>";
+                    }
+
+                    return  btstr + appstr + qtstr + swordstr + gplstr + btmgitstr + btgitstr;
                 }
             }
         }
