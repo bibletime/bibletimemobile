@@ -12,8 +12,9 @@
 
 import QtQml.Models 2.2
 import QtQuick 2.2
-import QtQuick.Controls 1.4
-import QtQuick.Controls.Styles 1.4
+import QtQuick.Controls 1.4 as Controls1
+import QtQuick.Controls.Styles 1.4 as ControlsStyle1
+import QtQuick.Controls 2.4
 import QtQuick.Layouts 1.2
 import BibleTime 1.0
 
@@ -36,7 +37,7 @@ Rectangle {
     signal openReference(string module, string reference);
 
     function doContextMenu(action) {
-        if (action == "toggleexpand") {
+        if (action === "toggleexpand") {
             toggleExpand(index);
             return;
         }
@@ -117,7 +118,7 @@ Rectangle {
         }
     }
 
-    TreeView {
+    Controls1.TreeView {
         id: treeView
 
         model: bookmarkInterface.bookmarkModel
@@ -217,11 +218,11 @@ Rectangle {
             }
         }
 
-        style: TreeViewStyle {
+        style: ControlsStyle1.TreeViewStyle {
             indentation: bookmarkManager.rowHeight
         }
 
-        TableViewColumn {
+        Controls1.TableViewColumn {
             role: "display"
             width: 200
             visible: true
@@ -233,23 +234,9 @@ Rectangle {
 
         anchors.horizontalCenter: parent.horizontalCenter
         anchors.bottom: parent.bottom
-        action: newFolderAction
-        style: BtButtonStyle {
-        }
-        onVisibleChanged: {
-            if (newFolderButton.visible)
-                height = titleText.height * 1.2
-            else
-                height = 0;
-
-        }
-    }
-
-    Action {
-        id: newFolderAction
-
+        anchors.bottomMargin: btStyle.pixelsPerMillimeterX * 3
         text: qsTr("New Folder")
-        onTriggered: {
+        onClicked: {
             bookmarkManager.newFolder();
         }
     }
