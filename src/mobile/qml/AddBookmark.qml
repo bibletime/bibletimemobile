@@ -12,8 +12,7 @@
 
 
 import QtQuick 2.2
-import QtQuick.Controls 1.2
-import QtQuick.Controls.Styles 1.2
+import QtQuick.Controls 2.4
 import QtQuick.Layouts 1.2
 import BibleTime 1.0
 
@@ -32,8 +31,9 @@ Rectangle {
     anchors.fill: parent
 
     Keys.onReleased: {
-        if ((event.key == Qt.Key_Back || event.key == Qt.Key_Escape) && addBookmark.visible == true) {
+        if ((event.key === Qt.Key_Back || event.key === Qt.Key_Escape) && addBookmark.visible === true) {
             addBookmark.visible = false;
+            keyReceiver.forceActiveFocus();
             event.accepted = true;
         }
     }
@@ -176,44 +176,20 @@ Rectangle {
         anchors.top: folderRect.bottom
         anchors.topMargin: btStyle.pixelsPerMillimeterX * 12
 
-        Action {
-            id: okAction
-
+        Button {
             text: qsTr("Ok")
-
-            onTriggered: {
+            font.pointSize: btStyle.uiFontPointSize
+            onClicked: {
                 addBookmark.visible = false;
                 addBookmark.addTheBookmark();
             }
         }
 
         Button {
-            id: okButton
-
-            height: titleText.height*1.2
-            width: addBookmark.width/3.5
-            action: okAction
-            style: BtButtonStyle {
-            }
-        }
-
-        Action {
-            id: cancelAction
-
             text: qsTr("Cancel")
-
-            onTriggered: {
+            font.pointSize: btStyle.uiFontPointSize
+            onClicked: {
                 addBookmark.visible = false;
-            }
-        }
-
-        Button {
-            id: cancelButton
-
-            height: titleText.height*1.2
-            width: addBookmark.width/3.5
-            action: cancelAction
-            style: BtButtonStyle {
             }
         }
     }

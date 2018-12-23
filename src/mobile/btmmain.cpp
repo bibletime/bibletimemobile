@@ -15,6 +15,7 @@
 #include <QQuickItem>
 #include <QQmlApplicationEngine>
 #include <QQmlDebuggingEnabler>
+#include <QQuickStyle>
 #include <QMessageLogContext>
 #include <QMetaType>
 #include <QStandardPaths>
@@ -187,6 +188,8 @@ int main(int argc, char *argv[]) {
     namespace DU = util::directory;
 
     BibleTimeApp app(argc, argv);
+
+    QQuickStyle::setStyle("Material");
 
     // Adjust start scrolling drag distance
     QStyleHints * sh = app.styleHints();

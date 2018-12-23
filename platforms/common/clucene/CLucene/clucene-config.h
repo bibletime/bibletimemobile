@@ -225,11 +225,6 @@
 /* Define to 1 if you have the <sys/stat.h> header file. */
 #define _CL_HAVE_SYS_STAT_H  1 
 
-/* Define to 1 if you have the <sys/timeb.h> header file. */
-#ifndef __SYMBIAN32__
-#define _CL_HAVE_SYS_TIMEB_H  1 
-#endif
-
 /* Define to 1 if you have the <tchar.h> header file. */
 #if defined _WIN32 && !defined __SYMBIAN32__
 #define _CL_HAVE_TCHAR_H

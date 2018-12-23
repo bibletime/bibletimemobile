@@ -14,6 +14,7 @@ import QtQuick.Controls 1.4
 import QtQuick 2.2
 import QtQml 2.2
 import QtQml.Models 2.2
+import QtQuick.Controls.Material 2.2
 import QtQuick.Window 2.1
 import BibleTime 1.0
 
@@ -62,6 +63,8 @@ Window {
             informationDialog.openAtStartup();
     }
 
+    Material.theme: Material.Dark
+
     Item {
         id: keyReceiver
 
@@ -94,14 +97,14 @@ Window {
             setFontDialog,
             copyVerses,
             bookmarkFoldersParent,
+            addFolder1,
             bookmarkFolders,
             bookmarkManager,
-            addBookmark,
-            addFolder
+            addBookmark
         ]
 
         Keys.onReleased: {
-            if (event.key == Qt.Key_Back || event.key == Qt.Key_Escape) {
+            if (event.key === Qt.Key_Back || event.key === Qt.Key_Escape) {
                 event.accepted = true;
                 quitQuestion.visible = true;
             }
@@ -135,15 +138,22 @@ Window {
     }
 
     AddFolder {
-        id: addFolder
+        id: addFolder1
 
-        z: 4
+        z: 6
         visible: false
         parentFolderName: bookmarkFoldersParent.currentFolderName
+        Keys.onReleased: {
+            if ((event.key === Qt.Key_Back || event.key === Qt.Key_Escape) && addFolder1.visible === true) {
+                addFolder1.visible = false;
+                keyReceiver.forceActiveFocus();
+                event.accepted = true;
+            }
+        }
         onShowFolders: {
             bookmarkFoldersParent.visible = true;
         }
-        onAddFolder: {
+        onFolderAdd: {
             bookmarkFoldersParent.addFolder(folderName);
         }
         onFolderWasAdded: {
@@ -157,12 +167,13 @@ Window {
         allowNewFolders: true
         z:5
         onNewFolder: {
-            addFolder.visible = true;
+            addFolder1.visible = true;
         }
 
         Keys.onReleased: {
-            if ((event.key == Qt.Key_Back || event.key == Qt.Key_Escape) && bookmarkFolders.visible == true) {
+            if ((event.key === Qt.Key_Back || event.key === Qt.Key_Escape) && bookmarkFolders.visible === true) {
                 bookmarkFolders.visible = false;
+                keyReceiver.forceActiveFocus();
                 event.accepted = true;
             }
         }
@@ -173,10 +184,11 @@ Window {
 
         visible: false
         allowNewFolders: false
-        z:2
+        z:7
         Keys.onReleased: {
             if ((event.key == Qt.Key_Back || event.key == Qt.Key_Escape) && bookmarkFoldersParent.visible == true) {
                 bookmarkFoldersParent.visible = false;
+                keyReceiver.forceActiveFocus();
                 event.accepted = true;
             }
         }

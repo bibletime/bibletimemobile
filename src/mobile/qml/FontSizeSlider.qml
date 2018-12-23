@@ -12,8 +12,7 @@
 
 import QtQuick 2.2
 import BibleTime 1.0
-import QtQuick.Controls 1.2
-import QtQuick.Controls.Styles 1.3
+import QtQuick.Controls 2.4
 
 Rectangle {
     id: fontPointSize
@@ -36,10 +35,9 @@ Rectangle {
     anchors.bottomMargin: btStyle.pixelsPerMillimeterX * 2
     anchors.rightMargin: btStyle.pixelsPerMillimeterX * 2
     height: {
-        var height = titleText.contentHeight + slider.height * 1.4 + buttons.height;
+        var height = titleText.contentHeight + slider.height + buttons.height;
         height = height + titleText.anchors.topMargin;
         height = height + buttons.anchors.bottomMargin + buttons.anchors.topMargin;
-        height = height + btStyle.pixelsPerMillimeterX*3
         return height;
     }
     width: {
@@ -76,33 +74,16 @@ Rectangle {
 
     Slider {
         id: slider
-
         anchors.top: titleText.bottom
         anchors.horizontalCenter: parent.horizontalCenter
         width: parent.width - 60
         anchors.topMargin: 20
-        minimumValue: fontPointSize.min
-        maximumValue: fontPointSize.max
-        style: SliderStyle {
-                groove: Rectangle {
-                    implicitWidth: 200
-                    implicitHeight: 8
-                    color: btStyle.textColor
-                    radius: 8
-                }
-                handle: Rectangle {
-                    anchors.centerIn: parent
-                    color: btStyle.textBackgroundColor
-                    border.color: btStyle.textColor
-                    border.width: 3
-                    implicitWidth: btStyle.pixelsPerMillimeterY * 7
-                    implicitHeight: btStyle.pixelsPerMillimeterY * 7
-                    radius: btStyle.pixelsPerMillimeterY * 3.5
-                }
-            }
-        onValueChanged: {
+        from: fontPointSize.min
+        to: fontPointSize.max
+        onMoved: {
             if (fontPointSize.ready)
-                 accepted(slider.value);
+                accepted(slider.value);
+
         }
     }
 
@@ -116,38 +97,22 @@ Rectangle {
         anchors.bottomMargin: 20
         anchors.topMargin: 30
 
-        Action {
-            id: okAction
+        Button {
+
             text: qsTr("Ok")
-            onTriggered: {
+            font.pointSize: btStyle.uiFontPointSize
+            onClicked: {
                 fontPointSize.visible = false;
             }
         }
 
         Button {
-            id: okButton
-            height: titleText.height*1.5
-            width: fontPointSize.width/3.5
-            action: okAction
-            style: BtButtonStyle {
-            }
-        }
 
-        Action {
-            id: cancelAction
             text: qsTr("Cancel")
-            onTriggered: {
+            font.pointSize: btStyle.uiFontPointSize
+            onClicked: {
                 accepted(previous);
                 fontPointSize.visible = false;
-            }
-        }
-
-        Button {
-            id: cancelButton
-            height: titleText.height*1.5
-            width: fontPointSize.width/3.5
-            action: cancelAction
-            style: BtButtonStyle {
             }
         }
     }

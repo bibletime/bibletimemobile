@@ -12,8 +12,9 @@
 
 import QtQml.Models 2.2
 import QtQuick 2.2
-import QtQuick.Controls 1.4
-import QtQuick.Controls.Styles 1.4
+import QtQuick.Controls 1.4 as Controls1
+import QtQuick.Controls.Styles 1.4 as ControlsStyle1
+import QtQuick.Controls 2.4
 import QtQuick.Layouts 1.2
 import BibleTime 1.0
 
@@ -86,7 +87,7 @@ Rectangle {
         }
     }
 
-    TreeView {
+    Controls1.TreeView {
         id: treeView
 
         model: bookmarkInterface.folderModel
@@ -97,7 +98,7 @@ Rectangle {
         anchors.top: titleRect.bottom
         alternatingRowColors: false
         backgroundVisible: false
-        selectionMode: SelectionMode.SingleSelection
+        selectionMode: Controls1.SelectionMode.SingleSelection
 
         // See QTBUG-47243
         selection: ItemSelectionModel {
@@ -151,11 +152,11 @@ Rectangle {
             }
         }
 
-        style: TreeViewStyle {
+        style: ControlsStyle1.TreeViewStyle {
             indentation: bookmarkFolders.rowHeight
         }
 
-        TableViewColumn {
+        Controls1.TableViewColumn {
             role: "display"
             width: 200
             visible: true
@@ -165,19 +166,11 @@ Rectangle {
     Button {
         id: newFolderButton
 
-        height: titleText.height*1.2
         anchors.horizontalCenter: parent.horizontalCenter
         anchors.bottom: parent.bottom
-        action: newFolderAction
-        style: BtButtonStyle {
-        }
-    }
-
-    Action {
-        id: newFolderAction
-
+        anchors.bottomMargin: btStyle.pixelsPerMillimeterX * 3
         text: qsTr("New Folder")
-        onTriggered: {
+        onClicked: {
             bookmarkFolders.newFolder();
         }
     }

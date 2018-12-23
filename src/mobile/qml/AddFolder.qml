@@ -11,8 +11,7 @@
 **********/
 
 import QtQuick 2.2
-import QtQuick.Controls 1.2
-import QtQuick.Controls.Styles 1.2
+import QtQuick.Controls 2.4
 import QtQuick.Layouts 1.2
 import BibleTime 1.0
 
@@ -22,17 +21,14 @@ Rectangle {
     property string parentFolderName: ""
 
     signal showFolders()
-    signal addFolder(string folderName)
+    signal folderAdd(string folderName)
     signal folderWasAdded()
 
     color: btStyle.textBackgroundColor
     anchors.fill: parent
 
-    Keys.onReleased: {
-        if ((event.key == Qt.Key_Back || event.key == Qt.Key_Escape) && addFolder.visible == true) {
-            addFolder.visible = false;
-            event.accepted = true;
-        }
+    onVisibleChanged: {
+        keyReceiver.forceActiveFocus();
     }
 
     BtStyle {
@@ -80,7 +76,7 @@ Rectangle {
     Rectangle {
         id: folderRect
 
-        height: folderLabel.contentHeight * 1.5
+        height: folderLabel.contentHeight * 2.2
         anchors.bottom: parentFolderLabel.top
         anchors.bottomMargin: btStyle.pixelsPerMillimeterX * 10
         anchors.left: parent.left
@@ -88,30 +84,24 @@ Rectangle {
         anchors.right: parent.right
         anchors.rightMargin: btStyle.pixelsPerMillimeterX * 5
         color: btStyle.textBackgroundColor
-        border.color: "gray"
-        border.width: 1
+        border.color: btStyle.textColor
+        border.width: 2
 
-        TextField {
-            id: textEdit
-
-            text: ""
-            height: parent.height
-            anchors.top: parent.top
-            anchors.left: parent.left
-            anchors.right: parent.right
-            inputMethodHints: Qt.ImhNoPredictiveText
-            verticalAlignment: Text.AlignVCenter
-            font.pointSize: btStyle.uiFontPointSize
+        FocusScope {
             focus: true
 
-            style: TextFieldStyle {
-                textColor: btStyle.textColor
-                background: Rectangle {
-                    radius: 2
-                    border.color: btStyle.textColor
-                    border.width: 2
-                    color: btStyle.textBackgroundColor
-                }
+            TextField {
+                id: textEdit
+
+                text: ""
+                anchors.top: parent.top
+                anchors.left: parent.left
+                anchors.leftMargin: btStyle.pixelsPerMillimeterX * 2
+                anchors.right: parent.right
+                inputMethodHints: Qt.ImhNoPredictiveText
+                verticalAlignment: Text.AlignVCenter
+                font.pointSize: btStyle.uiFontPointSize
+                focus: true
             }
         }
     }
@@ -171,43 +161,21 @@ Rectangle {
         anchors.top: parentFolderRect.bottom
         anchors.topMargin: btStyle.pixelsPerMillimeterX * 12
 
-        Action {
-            id: okAction
+        Button {
             text: qsTr("Ok")
-            onTriggered: {
+            font.pointSize: btStyle.uiFontPointSize
+            onClicked: {
                 addFolder.visible = false;
-                addFolder.addFolder(textEdit.text);
+                addFolder.folderAdd(textEdit.text);
                 addFolder.folderWasAdded();
             }
         }
 
         Button {
-            id: okButton
-
-            height: titleText.height*1.2
-            width: addFolder.width/3.5
-            action: okAction
-            style: BtButtonStyle {
-            }
-        }
-
-        Action {
-            id: cancelAction
-
             text: qsTr("Cancel")
-
-            onTriggered: {
+            font.pointSize: btStyle.uiFontPointSize
+            onClicked: {
                 addFolder.visible = false;
-            }
-        }
-
-        Button {
-            id: cancelButton
-
-            height: titleText.height*1.2
-            width: addFolder.width/3.5
-            action: cancelAction
-            style: BtButtonStyle {
             }
         }
     }
