@@ -76,7 +76,7 @@ Rectangle {
     Rectangle {
         id: folderRect
 
-        height: folderLabel.contentHeight * 2.2
+        height: folderLabel.contentHeight * 2.8
         anchors.bottom: parentFolderLabel.top
         anchors.bottomMargin: btStyle.pixelsPerMillimeterX * 10
         anchors.left: parent.left
@@ -87,22 +87,19 @@ Rectangle {
         border.color: btStyle.textColor
         border.width: 2
 
-        FocusScope {
+        TextField {
+            id: textEdit
+
+            text: ""
+            anchors.top: parent.top
+            anchors.topMargin: btStyle.pixelsPerMillimeterX * 2
+            anchors.left: parent.left
+            anchors.leftMargin: btStyle.pixelsPerMillimeterX * 2
+            anchors.right: parent.right
+            inputMethodHints: Qt.ImhNoPredictiveText
+            verticalAlignment: Text.AlignVCenter
+            font.pointSize: btStyle.uiFontPointSize
             focus: true
-
-            TextField {
-                id: textEdit
-
-                text: ""
-                anchors.top: parent.top
-                anchors.left: parent.left
-                anchors.leftMargin: btStyle.pixelsPerMillimeterX * 2
-                anchors.right: parent.right
-                inputMethodHints: Qt.ImhNoPredictiveText
-                verticalAlignment: Text.AlignVCenter
-                font.pointSize: btStyle.uiFontPointSize
-                focus: true
-            }
         }
     }
 

@@ -140,7 +140,7 @@ Rectangle {
         anchors.left: parent.left
         anchors.right: parent.right
         anchors.verticalCenter: parent.verticalCenter
-        height: buttons.height
+        height: buttons.height* 1.5
         anchors.leftMargin:btStyle.pixelsPerMillimeterX * 8
         anchors.rightMargin:btStyle.pixelsPerMillimeterX * 5
         anchors.topMargin: 10
