@@ -129,7 +129,6 @@ Rectangle {
         anchors.top: bookmarkManagerTitleBar.bottom
         alternatingRowColors: false
         backgroundVisible: false
-        selectionMode: SelectionMode.SingleSelection
 
         // See QTBUG-47243
         selection: ItemSelectionModel {
@@ -229,7 +228,7 @@ Rectangle {
         }
     }
 
-    Button {
+    BtButton {
         id: newFolderButton
 
         anchors.horizontalCenter: parent.horizontalCenter

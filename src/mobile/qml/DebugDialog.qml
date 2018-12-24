@@ -11,8 +11,7 @@
 **********/
 
 import QtQuick 2.2
-import QtQuick.Controls 1.2
-import QtQuick.Controls.Styles 1.2
+import QtQuick.Controls 2.4
 import BibleTime 1.0
 
 Rectangle {
@@ -185,7 +184,7 @@ Rectangle {
                 width: debugDialog.width
                 height:btStyle.pixelsPerMillimeterX * 5
 
-                Button {
+                BtButton {
                     anchors.left: parent.left
                     anchors.leftMargin: btStyle.pixelsPerMillimeterX * 2
                     anchors.verticalCenter: parent.verticalCenter

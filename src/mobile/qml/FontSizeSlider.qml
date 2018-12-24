@@ -97,19 +97,17 @@ Rectangle {
         anchors.bottomMargin: 20
         anchors.topMargin: 30
 
-        Button {
+        BtButton {
 
             text: qsTr("Ok")
-            font.pointSize: btStyle.uiFontPointSize
             onClicked: {
                 fontPointSize.visible = false;
             }
         }
 
-        Button {
+        BtButton {
 
             text: qsTr("Cancel")
-            font.pointSize: btStyle.uiFontPointSize
             onClicked: {
                 accepted(previous);
                 fontPointSize.visible = false;

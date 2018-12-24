@@ -176,18 +176,16 @@ Rectangle {
         anchors.top: folderRect.bottom
         anchors.topMargin: btStyle.pixelsPerMillimeterX * 12
 
-        Button {
+        BtButton {
             text: qsTr("Ok")
-            font.pointSize: btStyle.uiFontPointSize
             onClicked: {
                 addBookmark.visible = false;
                 addBookmark.addTheBookmark();
             }
         }
 
-        Button {
+        BtButton {
             text: qsTr("Cancel")
-            font.pointSize: btStyle.uiFontPointSize
             onClicked: {
                 addBookmark.visible = false;
             }

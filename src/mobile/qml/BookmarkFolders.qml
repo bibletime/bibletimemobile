@@ -163,14 +163,13 @@ Rectangle {
         }
     }
 
-    Button {
+    BtButton {
         id: newFolderButton
 
         anchors.horizontalCenter: parent.horizontalCenter
         anchors.bottom: parent.bottom
         anchors.bottomMargin: btStyle.pixelsPerMillimeterX * 3
         text: qsTr("New Folder")
-        font.pointSize: btStyle.uiFontPointSize
         onClicked: {
             bookmarkFolders.newFolder();
         }

@@ -11,7 +11,7 @@
 **********/
 
 import QtQuick 2.2
-import QtQuick.Controls 1.2
+import QtQuick.Controls 2.4
 import BibleTime 1.0
 
 Rectangle {
@@ -112,41 +112,23 @@ Rectangle {
         anchors.horizontalCenter: parent.horizontalCenter
         anchors.topMargin: btStyle.pixelsPerMillimeterX * 5
 
-        Action {
-            id: yesAction
+        BtButton {
+            id: yesButton
             text: qsTranslate("Question","Yes")
-            onTriggered: {
+            onClicked: {
                 question.visible = false;
                 answer = true;
                 finished();
             }
         }
 
-        Button {
-            id: yesButton
-            width: btStyle.pixelsPerMillimeterY * 25
-            height: dummyTextForHeight.height*1.7
-            action: yesAction
-            style: BtButtonStyle {
-            }
-        }
-
-        Action {
-            id: noAction
+        BtButton {
+            id: noButton
             text: qsTranslate("Question","No")
-            onTriggered: {
+            onClicked: {
                 question.visible = false;
                 answer = false;
                 finished();
-            }
-        }
-
-        Button {
-            id: noButton
-            width: btStyle.pixelsPerMillimeterY * 25
-            height: dummyTextForHeight.height*1.7
-            action: noAction
-            style: BtButtonStyle {
             }
         }
     }

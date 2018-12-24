@@ -11,16 +11,15 @@
 **********/
 
 import QtQuick 2.2
-import QtQuick.Controls 1.2
-import QtQuick.Controls.Styles 1.2
+import QtQuick.Controls 2.4
 import BibleTime 1.0
 
 Rectangle {
     id: installProgress
 
-    property alias minimumValue: progressBar.minimumValue
+    property alias minimumValue: progressBar.from
     property alias value: progressBar.value
-    property alias maximumValue: progressBar.maximumValue
+    property alias maximumValue: progressBar.to
     property alias text: label.text
 
     color: btStyle.textBackgroundColor
@@ -50,35 +49,16 @@ Rectangle {
         anchors.centerIn: parent
         width: parent.width - 100
         height: parent.height /10
-        style: ProgressBarStyle {
-            background: Rectangle {
-                radius: 2
-                color: "lightgray"
-                border.color: "gray"
-                border.width: 1
-                implicitWidth: 200
-                implicitHeight: 24
-            }
-        }
     }
 
-    Action {
-        id: cancelAction
+
+    BtButton {
         text: qsTranslate("Progress", "Cancel")
-        onTriggered: {
-            cancel();
-        }
-    }
-
-    Button {
-        id: cancelButton
-        height: btStyle.pixelsPerMillimeterY * 7
-        width: btStyle.pixelsPerMillimeterY * 25
         anchors.top: progressBar.bottom
-        anchors.topMargin: parent.height / 8
+        anchors.topMargin: parent.height / 10
         anchors.horizontalCenter: parent.horizontalCenter
-        action: cancelAction
-        style: BtButtonStyle {
+        onClicked: {
+            cancel();
         }
     }
 }

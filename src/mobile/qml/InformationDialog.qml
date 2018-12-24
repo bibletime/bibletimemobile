@@ -11,8 +11,7 @@
 **********/
 
 import QtQuick 2.4
-import QtQuick.Controls 1.4
-import QtQuick.Controls.Styles 1.4
+import QtQuick.Controls 2.4
 import QtQuick.Dialogs 1.2
 
 Rectangle {
@@ -24,7 +23,7 @@ Rectangle {
     color: btStyle.textBackgroundColor
 
     Keys.onReleased: {
-        if ((event.key == Qt.Key_Back || event.key == Qt.Key_Escape)  && informationDialog.visible == true) {
+        if ((event.key === Qt.Key_Back || event.key === Qt.Key_Escape)  && informationDialog.visible === true) {
             event.accepted = true;
             informationDialog.visible = false;
         }
@@ -42,36 +41,19 @@ Rectangle {
         textMargin: btStyle.pixelsPerMillimeterX
         text: informationDialog.text
         textFormat: TextEdit.RichText
-        style: TextAreaStyle {
-            textColor: btStyle.textColor
-            backgroundColor: btStyle.textBackgroundColor
-        }
+        wrapMode: TextArea.WordWrap
     }
 
-    Action {
-        id: closeAction
-        text: qsTr("Close")
-        onTriggered: {
-            informationDialog.visible = false;
-        }
-    }
-
-    Button {
+    BtButton {
         id: closeButton
 
         anchors.horizontalCenter: parent.horizontalCenter
         anchors.bottom: parent.bottom
         anchors.bottomMargin: btStyle.pixelsPerMillimeterX * 2
         anchors.topMargin: btStyle.pixelsPerMillimeterX * 2
-        height: {
-            var pixel = btStyle.pixelsPerMillimeterY * 5;
-            var uiFont = btStyle.uiFontPointSize * 3;
-            var mix = pixel * 0.8 + uiFont * 0.35;
-            return Math.max(pixel, mix);
-        }
-        width: parent.width/3
-        action: closeAction
-        style: BtButtonStyle {
+        text: qsTr("Close")
+        onClicked: {
+            informationDialog.visible = false;
         }
     }
 }

@@ -11,8 +11,7 @@
 **********/
 
 import QtQuick 2.2
-import QtQuick.Controls 2.2
-import QtQuick.Controls 1.2
+import QtQuick.Controls 2.4
 import BibleTime 1.0
 
 Rectangle {
@@ -225,10 +224,11 @@ Rectangle {
         spacing: (parent.width - refreshButton.width - installRemoveButton.width) / 3
         anchors.leftMargin: (parent.width - refreshButton.width - installRemoveButton.width) / 3
 
-        Action {
-            id: refreshAction
+        BtButton {
+            id: refreshButton
+
             text: qsTranslate("InstallManagerChooser", "Refresh Sources")
-            onTriggered: {
+            onClicked: {
                 var source = installInterface.getSource(sourceView.currentIndex);
                 var category = installInterface.getCategory(categoryView.currentIndex);
                 var language = installInterface.getLanguage(languageView.currentIndex);
@@ -236,19 +236,10 @@ Rectangle {
             }
         }
 
-        Button {
-            id: refreshButton
-            width: installManager.width * 4.5 / 10;
-            height: dummyTextForHeight.height*1.8
-            action: refreshAction
-            style: BtButtonStyle {
-            }
-        }
-
-        Action {
-            id: installRemoveAction
+        BtButton {
+            id: installRemoveButton
             text: qsTranslate("InstallManagerChooser", "Install / Remove")
-            onTriggered: {
+            onClicked: {
                 var source = installInterface.getSource(sourceView.currentIndex);
                 var category = installInterface.getCategory(categoryView.currentIndex);
                 var language = installInterface.getLanguage(languageView.currentIndex);
@@ -257,15 +248,6 @@ Rectangle {
                 installInterface.setLanguageSetting(language);
                 installManagerChooser.visible = false;
                 installInterface.installRemove();
-            }
-        }
-
-        Button {
-            id: installRemoveButton
-            width: installManager.width * 4.5 / 10;
-            height: dummyTextForHeight.height*1.8
-            action: installRemoveAction
-            style: BtButtonStyle {
             }
         }
     }

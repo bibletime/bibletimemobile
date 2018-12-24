@@ -11,9 +11,7 @@
 **********/
 
 import QtQuick 2.2
-import QtQuick.Controls 2.2
-import QtQuick.Controls 1.2
-import QtQuick.Controls.Styles 1.2
+import QtQuick.Controls 2.4
 import BibleTime 1.0
 
 Rectangle {
@@ -98,66 +96,25 @@ Rectangle {
                 visible: false
             }
 
-            Action {
-                id: manageAction
+            BtButton{
+                id: manageButton
+
+                property Gradient buttonGradient : gradient1
+
                 text: {
                  if (installed)
                     return qsTranslate("Install Documents", "Remove");
                  else
                      return qsTranslate("Install Documents", "Install");
                 }
-                onTriggered: {
+                onClicked: {
                     listView.itemSelected(index);
-                    manageButton.checked = ! manageButton.checked;
-                    manageButton.chooseGradient();
                 }
-            }
-
-            Gradient {
-                id: gradient1
-                GradientStop { position: 0 ; color: manageButton.pressed ? "#ccc" : "#eee" }
-                GradientStop { position: 1 ; color: manageButton.pressed ? "#aaa" : "#ccc" }
-            }
-
-            Gradient {
-                id: gradient2
-                GradientStop { position: 0 ; color: manageButton.pressed ? "#daa" : "#fcc" }
-                GradientStop { position: 1 ; color: manageButton.pressed ? "#b88" : "#daa" }
-            }
-
-            Gradient {
-                id: gradient3
-                GradientStop { position: 0 ; color: manageButton.pressed ? "#ada" : "#cfc" }
-                GradientStop { position: 1 ; color: manageButton.pressed ? "#8b8" : "#ada" }
-            }
-
-            Button{
-                id: manageButton
-
-                property Gradient buttonGradient : gradient1
-
-                function chooseGradient() {
-                    if (manageButton.checked) {
-                        if (installed)
-                            buttonGradient = gradient2;
-                        else
-                            buttonGradient = gradient3;
-                    }
-                    else {
-                        buttonGradient = gradient1;
-                    }
-                }
-
-                action: manageAction
                 anchors.verticalCenter: parent.verticalCenter
                 anchors.left: parent.left
                 anchors.leftMargin: 10
-                width: dummyTextForHeight.width*1.5
-                height: dummyTextForHeight.height*1.5
 
                 checkable: true;
-                style: BtButtonStyle {
-                }
             }
 
             Text {

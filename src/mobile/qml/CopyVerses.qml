@@ -12,8 +12,7 @@
 
 import QtQuick 2.2
 import BibleTime 1.0
-import QtQuick.Controls 1.2
-import QtQuick.Controls.Styles 1.3
+import QtQuick.Controls 2.4
 
 Rectangle {
     id: copyVerses
@@ -65,7 +64,7 @@ Rectangle {
     border.color: btStyle.textColor
     border.width: 6
     color: btStyle.textBackgroundColor
-    height: copyVerses.rowHeight * 6;
+    height: copyVerses.rowHeight * 6.25;
     width: {
         var width = Math.min(parent.width, parent.height);
         width = width - 5 * anchors.rightMargin
@@ -83,9 +82,9 @@ Rectangle {
     }
 
     Keys.onReleased: {
-        if ((event.key == Qt.Key_Back || event.key == Qt.Key_Escape) && copyVerses.visible == true) {
+        if ((event.key === Qt.Key_Back || event.key === Qt.Key_Escape) && copyVerses.visible === true) {
             copyVerses.visible = false;
-             event.accepted = true;
+            event.accepted = true;
         }
     }
 
@@ -188,30 +187,19 @@ Rectangle {
         }
     }
 
-    Action {
-        id: copyAction
+    BtButton {
+        id: copyButton
 
+        anchors.top: grid.bottom
+        anchors.topMargin: btStyle.pixelsPerMillimeterX * 2
+        anchors.horizontalCenter: parent.horizontalCenter
         text: qsTranslate("Copy","Copy")
-
-        onTriggered: {
+        visible: ! copyVerses.showError
+        onClicked: {
             var ok = btWinIfc.copy(moduleName, reference1, reference2);
             if (ok)
                 copyVerses.visible = false;
         }
-    }
-
-    Button {
-        id: copyButton
-
-        action: copyAction
-        anchors.top: grid.bottom
-        anchors.topMargin: btStyle.pixelsPerMillimeterX * 2
-        anchors.horizontalCenter: parent.horizontalCenter
-        height: copyVerses.rowHeight
-        style: BtButtonStyle {
-        }
-        visible: ! copyVerses.showError
-        width: btStyle.pixelsPerMillimeterY * 25
     }
 
     Text {

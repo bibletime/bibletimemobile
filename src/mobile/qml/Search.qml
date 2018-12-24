@@ -11,22 +11,25 @@
 **********/
 
 import QtQuick 2.2
-import QtQuick.Controls 1.2
-import QtQuick.Controls.Styles 1.2
-import QtQuick.Controls.Private 1.0
+import QtQuick.Controls 2.4
+import QtQuick.Layouts 1.3
 import BibleTime 1.0
 
-FocusScope {
+Item {
     id: search
 
-    property int spacing: btStyle.pixelsPerMillimeterX * 1.5
+    property int spacing: btStyle.pixelsPerMillimeterX * 2.5
     property string searchText: ""
     property string findChoice: ""
     property string moduleList: ""
-    property alias moduleChoices: searchComboBox.model
+    property var modules
 
     signal searchRequest();
     signal searchFinished();
+
+    function initialize() {
+        searchComboBox.updateWidth(modules);
+    }
 
     function setupSearch() {
         Qt.inputMethod.hide(); // hide keyboard
@@ -106,41 +109,15 @@ FocusScope {
                         inputMethodHints: Qt.ImhNoAutoUppercase
                         focus: true
                         text: ""
-                        textColor: btStyle.textColor
-
-                        style: TextFieldStyle {
-                            textColor: btStyle.textColor
-                            background: Rectangle {
-                                radius: 6
-                                anchors.fill: parent
-                                border.color: btStyle.textColor
-                                border.width: 2
-                                color: btStyle.textBackgroundColor
-                            }
-                        }
-
                         onAccepted: {
                             search.setupSearch();
                         }
                 }
             }
 
-            Button {
+            BtButton {
                 id: searchButton
                 text: qsTranslate("Search", "Search")
-                height: textInput.height
-                style: ButtonStyle {
-                    label: Text {
-                        anchors.verticalCenter: parent.verticalCenter
-                        anchors.horizontalCenter: parent.horizontalCenter
-                        anchors.right: background.right
-                        verticalAlignment: Text.AlignVCenter
-                        horizontalAlignment: Text.AlignHCenter
-                        font.pointSize: btStyle.uiFontPointSize
-                        color: "black"
-                        text: control.text
-                    }
-                }
                 onClicked: {
                     search.setupSearch();
                 }
@@ -168,58 +145,33 @@ FocusScope {
             title: ""
 
             Column {
-                spacing: 30
-                ExclusiveGroup { id: group }
+                spacing: 10
+
                 RadioButton {
                     id: radioAll
 
                     text: qsTr("All Words")
-                    exclusiveGroup: group
-                    style: RadioButtonStyle {
-
-                        label: Label {
-                            wrapMode: Text.WrapAtWordBoundaryOrAnywhere
-                            font.pointSize: btStyle.uiFontPointSize
-                            text: control.text
-                            color: btStyle.textColor
-                        }
-                    }
+                    font.pointSize: btStyle.uiFontPointSize
                     checked: true
                 }
+
                 RadioButton {
                     id: radioAny
 
                     text: qsTr("Any Word")
-                    exclusiveGroup: group
-                    style: RadioButtonStyle {
-
-                        label: Label {
-                            wrapMode: Text.WrapAtWordBoundaryOrAnywhere
-                            font.pointSize: btStyle.uiFontPointSize
-                            text: control.text
-                            color: btStyle.textColor
-                        }
-                    }
+                    font.pointSize: btStyle.uiFontPointSize
                 }
+
                 RadioButton {
                     id: radioPhrase
 
                     text: qsTr("Regular Expression")
-                    exclusiveGroup: group
-                    style: RadioButtonStyle {
-
-                        label: Label {
-                            wrapMode: Text.WrapAtWordBoundaryOrAnywhere
-                            font.pointSize: btStyle.uiFontPointSize
-                            text: control.text
-                            color: btStyle.textColor
-                        }
-                    }
+                    font.pointSize: btStyle.uiFontPointSize
                 }
             }
         }
 
-        Row {
+        RowLayout {
             id: searchIn
 
             anchors.left: parent.left
@@ -230,32 +182,16 @@ FocusScope {
 
             Text {
                 id: searchInLabel
+
                 text: qsTranslate("Search", "Search in")
                 font.pointSize: btStyle.uiFontPointSize
                 color: btStyle.textColor
             }
 
-            ComboBox {
+            BtComboBox {
                 id: searchComboBox
-
-                width: search.width * 2 / 3
-
-
-                style: ComboBoxStyle {
-                    label: Text {
-                        anchors.verticalCenter: parent.verticalCenter
-                        anchors.right: background.right
-                        anchors.leftMargin: search.spacing
-                        font.pointSize: btStyle.uiFontPointSize
-                        color: "black"
-                        text: control.currentText
-                    }
-                }
-
             }
         }
-
-
 
         BtStyle {
             id: btStyle
@@ -263,7 +199,7 @@ FocusScope {
     }
 
     Keys.onReleased: {
-        if ((event.key == Qt.Key_Back || event.key == Qt.Key_Escape) && search.focus == true) {
+        if ((event.key === Qt.Key_Back || event.key === Qt.Key_Escape) && search.focus === true) {
             searchFinished();
             event.accepted = true;
         }

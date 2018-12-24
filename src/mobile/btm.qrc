@@ -18,9 +18,11 @@
         <file>qml/Back.qml</file>
         <file>qml/BookmarkFolders.qml</file>
         <file>qml/BookmarkManager.qml</file>
+        <file>qml/BtButton.qml</file>
         <file>qml/BtButtonStyle.qml</file>
         <file>qml/BookIcon.qml</file>
         <file>qml/ChooseReference.qml</file>
+        <file>qml/BtComboBox.qml</file>
         <file>qml/ContinueDialog.qml</file>
         <file>qml/CopyVerses.qml</file>
         <file>qml/DebugDialog.qml</file>

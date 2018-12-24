@@ -11,8 +11,7 @@
 **********/
 
 import QtQuick 2.2
-import QtQuick.Controls 1.2
-import QtQuick.Controls.Styles 1.2
+import QtQuick.Controls 2.4
 import BibleTime 1.0
 
 Rectangle {
@@ -107,24 +106,17 @@ Rectangle {
             anchors.top: message.bottom
             anchors.horizontalCenter: parent.horizontalCenter
             width: parent.width/2
+            focus: true
             font.pointSize: btStyle.uiFontPointSize
-            textColor: btStyle.textColor
-            style: TextFieldStyle {
-                textColor: btStyle.textColor
-                background: Rectangle {
-                    radius: 6
-                    anchors.fill: parent
-                    border.color: btStyle.textColor
-                    border.width: 1
-                    color: btStyle.textBackgroundColor
-                }
-            }
         }
 
-        Action {
-            id: unlockAction
+        BtButton {
+            id: unlockButton
+            anchors.top: input.bottom
+            anchors.horizontalCenter: parent.horizontalCenter
+            anchors.topMargin: btStyle.pixelsPerMillimeterY * 3
             text: QT_TR_NOOP("Unlock")
-            onTriggered: {
+            onClicked: {
                 unlockDlg.visible = false;
                 moduleInterface.unlock(selectedModule, input.text);
                 if (moduleInterface.isLocked(selectedModule)) {
@@ -134,18 +126,6 @@ Rectangle {
                 bibleCommentaryOnly = false;
                 moduleSelected();
                 moduleChooser.visible = false;
-            }
-        }
-
-        Button {
-            id: unlockButton
-            anchors.top: input.bottom
-            anchors.horizontalCenter: parent.horizontalCenter
-            anchors.topMargin: btStyle.pixelsPerMillimeterY * 3
-            height: btStyle.pixelsPerMillimeterY * 7
-            width: btStyle.pixelsPerMillimeterY * 25
-            action: unlockAction
-            style: BtButtonStyle {
             }
         }
     }

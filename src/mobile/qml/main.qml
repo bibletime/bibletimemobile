@@ -30,8 +30,9 @@ Window {
     }
     function startSearch() {
         var moduleNames = windowManager.getUniqueModuleNames();
-        searchModel.appendModuleChoices(moduleNames);
+        search.appendModuleChoices(moduleNames);
         search.searchText = "";
+        search.initialize();
         screenView.changeScreen(screenModel.search);
     }
     function viewReferencesScreen(moduleName, reference) {
@@ -57,7 +58,7 @@ Window {
         setFontDialog.textFontChanged.connect(windowManager.updateTextFont)
         setFontDialog.textFontChanged.connect(magView.updateTextFont)
         sessionInterface.loadDefaultSession();
-        if (installInterface.installedModulesCount() == 0)
+        if (installInterface.installedModulesCount() === 0)
             installManagerStartup.visible = true;
         else
             informationDialog.openAtStartup();
@@ -186,7 +187,7 @@ Window {
         allowNewFolders: false
         z:7
         Keys.onReleased: {
-            if ((event.key == Qt.Key_Back || event.key == Qt.Key_Escape) && bookmarkFoldersParent.visible == true) {
+            if ((event.key === Qt.Key_Back || event.key === Qt.Key_Escape) && bookmarkFoldersParent.visible === true) {
                 bookmarkFoldersParent.visible = false;
                 keyReceiver.forceActiveFocus();
                 event.accepted = true;
@@ -200,7 +201,7 @@ Window {
         visible: false
         z: 3
         Keys.onReleased: {
-            if ((event.key == Qt.Key_Back || event.key == Qt.Key_Escape) && bookmarkManager.visible == true) {
+            if ((event.key === Qt.Key_Back || event.key === Qt.Key_Escape) && bookmarkManager.visible === true) {
                 bookmarkManager.visible = false;
                 event.accepted = true;
             }
@@ -223,7 +224,7 @@ Window {
 
         function doAction(action) {
             bookmarkManagerMenus.visible = false;
-            if (action == "open") {
+            if (action === "open") {
                 windowMenus.theWindow.setModule(bookmarkManager.module);
                 windowMenus.theWindow.setKey(bookmarkManager.reference);
                 bookmarkManager.visible = false;
@@ -235,7 +236,7 @@ Window {
         model: bookmarkManager.contextMenuModel
         z:4
         Keys.onReleased: {
-            if ((event.key == Qt.Key_Back || event.key == Qt.Key_Escape)  && bookmarkManagerMenus.visible == true) {
+            if ((event.key === Qt.Key_Back || event.key === Qt.Key_Escape)  && bookmarkManagerMenus.visible === true) {
                 event.accepted = true;
                 bookmarkManagerMenus.visible = false;
             }
@@ -263,13 +264,13 @@ Window {
 
         function doAction(action) {
             colorThemeMenus.visible = false;
-            if (action == "dark") {
+            if (action === "dark") {
                 btStyle.setStyle(1)
             }
-            else if (action == "lightblue") {
+            else if (action === "lightblue") {
                 btStyle.setStyle(2)
             }
-            else if (action == "crimson") {
+            else if (action === "crimson") {
                 btStyle.setStyle(3)
             }
         }
@@ -277,7 +278,7 @@ Window {
         model: colorThemeModel
         z: 1
         Keys.onReleased: {
-            if ((event.key == Qt.Key_Back || event.key == Qt.Key_Escape)  && colorThemeMenus.visible == true) {
+            if ((event.key === Qt.Key_Back || event.key === Qt.Key_Escape)  && colorThemeMenus.visible === true) {
                 event.accepted = true;
                 colorThemeMenus.visible = false;
             }
@@ -357,7 +358,7 @@ Window {
         minimumValue: 0
         maximumValue: 100
         width:parent.width * 0.85
-        height: btStyle.pixelsPerMillimeterY * 30
+        height: btStyle.pixelsPerMillimeterY * 40
         anchors.centerIn: parent
         anchors.top: parent.top
         visible: false
@@ -557,23 +558,23 @@ Window {
 
         function doAction(action) {
             mainMenus.visible = false;
-            if (action == "newWindow") {
+            if (action === "newWindow") {
                 windowManager.newWindow();
             }
-            else if (action == "view window") {
+            else if (action === "view window") {
                 windowManager.createWindowMenus(viewWindowsModel);
                 viewWindowsMenus.visible = true;
             }
-            else if (action == "install") {
+            else if (action === "install") {
                 installModules();
             }
-            else if (action == "about") {
+            else if (action === "about") {
                 aboutDialog.visible = true;
             }
-            else if (action == "new features") {
+            else if (action === "new features") {
                 informationDialog.open();
             }
-            else if (action == "settings") {
+            else if (action === "settings") {
                 settingsMenus.visible = true;
             }
         }
@@ -583,7 +584,7 @@ Window {
         z: 5
 
         Keys.onReleased: {
-            if ((event.key == Qt.Key_Back || event.key == Qt.Key_Escape)  && mainMenus.visible == true) {
+            if ((event.key === Qt.Key_Back || event.key === Qt.Key_Escape)  && mainMenus.visible === true) {
                 event.accepted = true;
                 mainMenus.visible = false;
             }
@@ -600,7 +601,7 @@ Window {
         anchors.centerIn: parent
         z: 2
         Keys.onReleased: {
-            if ((event.key == Qt.Key_Back || event.key == Qt.Key_Escape)  && moduleChooser.visible == true) {
+            if ((event.key === Qt.Key_Back || event.key === Qt.Key_Escape)  && moduleChooser.visible === true) {
                 event.accepted = true;
                 moduleChooser.visible = false;
             }
@@ -760,6 +761,24 @@ Window {
         Search {
             id: search
 
+            function appendModuleChoices(choices) {
+                var modules = [];
+                var firstChoice = "";
+                for (var j=0; j<choices.length; ++j) {
+                    var choice = choices[j];
+                    if (j>0)
+                        firstChoice += ", ";
+                    firstChoice += choice;
+                }
+                modules.push(firstChoice);
+
+                for (var k=0; k<choices.length; ++k) {
+                    var choice2 = choices[k];
+                    modules.push(choice2);
+                }
+                search.modules = modules;
+            }
+
             function openSearchResults() {
                 searchResults.searchText = search.searchText;
                 searchResults.findChoice = search.findChoice;
@@ -770,7 +789,6 @@ Window {
 
             width: screenView.width
             height: screenView.height
-            moduleChoices: searchModel
             onSearchRequest: {
                 searchResults.moduleList = search.moduleList;
                 if ( ! searchResults.modulesAreIndexed()) {
@@ -809,7 +827,7 @@ Window {
             magView.initialize();
             if (currentIndex == screenModel.search) {
                 var moduleNames = windowManager.getUniqueModuleNames();
-                searchModel.appendModuleChoices(moduleNames);
+                search.appendModuleChoices(moduleNames);
             }
         }
 
@@ -822,30 +840,6 @@ Window {
         }
     }
 
-
-    ListModel {
-        id: searchModel
-
-        function appendModuleChoices(choices) {
-            searchModel.clear();
-            var firstChoice = "";
-            for (var j=0; j<choices.length; ++j) {
-                var choice = choices[j];
-                if (j>0)
-                    firstChoice += ", ";
-                firstChoice += choice;
-            }
-            searchModel.append({"text": firstChoice , "value": firstChoice})
-
-            for (var j=0; j<choices.length; ++j) {
-                var choice = choices[j];
-                searchModel.append({"text": choice , "value": choice})
-            }
-        }
-
-        ListElement { text: "ESV"; value: "ESV" }
-    }
-
     Menus {
         id: searchResultsMenu
 
@@ -853,10 +847,10 @@ Window {
             searchResultsMenu.visible = false;
             var module = searchResults.getModule();
             var reference = searchResults.getReference();
-            if (action == "newWindow") {
+            if (action === "newWindow") {
                 screenView.changeScreen(screenModel.main);
                 windowManager.newWindowWithReference(module, reference);
-            } else if (action == "viewReferences") {
+            } else if (action === "viewReferences") {
                 viewReferencesScreen(module, reference);
             }
         }
@@ -864,7 +858,7 @@ Window {
         model: searchResultsMenuModel
         z: 2
         Keys.onReleased: {
-            if ((event.key == Qt.Key_Back || event.key == Qt.Key_Escape)  && searchResultsMenu.visible == true) {
+            if ((event.key === Qt.Key_Back || event.key === Qt.Key_Escape)  && searchResultsMenu.visible === true) {
                 event.accepted = true;
                 searchResultsMenu.visible = false;
             }
@@ -901,32 +895,30 @@ Window {
 
         function doAction(action) {
             settingsMenus.visible = false;
-            if (action == "colortheme") {
+            if (action === "colortheme") {
                 colorThemeMenus.visible = true;
             }
-            else if (action == "textFontSize") {
+            else if (action === "textFontSize") {
                 setFontDialog.open();
             }
-            else if (action == "uiFontSize") {
+            else if (action === "uiFontSize") {
                 uiFontPointSize.visible = true;
             }
-            else if (action == "windowArrangement") {
+            else if (action === "windowArrangement") {
                 windowArrangementMenus.visible = true;
             }
-            else if (action == "defaultDoc") {
+            else if (action === "defaultDoc") {
                 defaultDoc.visible = true;
             }
         }
 
         model: settingsModel
         Keys.onReleased: {
-            if ((event.key == Qt.Key_Back || event.key == Qt.Key_Escape)  && settingsMenus.visible == true) {
+            if ((event.key === Qt.Key_Back || event.key === Qt.Key_Escape)  && settingsMenus.visible === true) {
                 event.accepted = true;
                 settingsMenus.visible = false;
             }
         }
-
-
         Component.onCompleted: menuSelected.connect(settingsMenus.doAction)
     }
 
@@ -949,7 +941,7 @@ Window {
         width: root.width
         visible: false
         Keys.onReleased: {
-            if ((event.key == Qt.Key_Back || event.key == Qt.Key_Escape)  && textEditor.visible == true) {
+            if ((event.key === Qt.Key_Back || event.key === Qt.Key_Escape)  && textEditor.visible === true) {
                 event.accepted = true;
                 textEditor.visible = false;
             }
@@ -1019,7 +1011,7 @@ Window {
         model: viewWindowsModel
         visible: false
         Keys.onReleased: {
-            if ((event.key == Qt.Key_Back || event.key == Qt.Key_Escape)  && viewWindowsMenus.visible == true) {
+            if ((event.key === Qt.Key_Back || event.key === Qt.Key_Escape)  && viewWindowsMenus.visible === true) {
                 event.accepted = true;
                 viewWindowsMenus.visible = false;
             }
@@ -1039,26 +1031,26 @@ Window {
 
         function doAction(action) {
             windowArrangementMenus.visible = false;
-            if (action == "single") {
+            if (action === "single") {
                 windowManager.setWindowArrangement(windowManager.single);
             }
-            else if (action == "tabbed") {
+            else if (action === "tabbed") {
                 windowManager.setWindowArrangement(windowManager.tabLayout);
             }
-            else if (action == "autoTile") {
+            else if (action === "autoTile") {
                 windowManager.setWindowArrangement(windowManager.autoTile);
             }
-            else if (action == "autoTileHor") {
+            else if (action === "autoTileHor") {
                 windowManager.setWindowArrangement(windowManager.autoTileHor);
             }
-            else if (action == "autoTileVer") {
+            else if (action === "autoTileVer") {
                 windowManager.setWindowArrangement(windowManager.autoTileVer);
             }
         }
 
         model: windowArrangementModel
         Keys.onReleased: {
-            if ((event.key == Qt.Key_Back || event.key == Qt.Key_Escape)  && windowArrangementMenus.visible == true) {
+            if ((event.key === Qt.Key_Back || event.key === Qt.Key_Escape)  && windowArrangementMenus.visible === true) {
                 event.accepted = true;
                 windowArrangementMenus.visible = false;
             }
@@ -1085,35 +1077,35 @@ Window {
 
         function doAction(action) {
             windowMenus.visible = false;
-            if (action == "addBookmark") {
+            if (action === "addBookmark") {
                 var moduleName = theWindow.getModule();
                 var reference = theWindow.getReference();
                 addBookmark.reference = reference
                 addBookmark.moduleName = moduleName
                 addBookmark.visible = true;
             }
-            else if (action == "bookmarks") {
+            else if (action === "bookmarks") {
                 bookmarkManager.visible = true;
             }
-            else if (action == "viewReferences") {
+            else if (action === "viewReferences") {
                 var moduleName = theWindow.getModule();
                 var reference = theWindow.getReference();
                 viewReferencesScreen(moduleName, reference)
             }
-            else if (action == "close window") {
+            else if (action === "close window") {
                 var index = windowManager.findIndexOfWindow(theWindow);
                 windowManager.closeWindow(index);
             }
-            else if (action == "copy") {
+            else if (action === "copy") {
                 copyVerses.open();
             }
-            else if (action == "addParallel") {
+            else if (action === "addParallel") {
                 theWindow.addParallelModule();
             }
-            else if (action == "removeParallel") {
+            else if (action === "removeParallel") {
                 theWindow.removeParallelModule();
             }
-            else if (action == "debugData") {
+            else if (action === "debugData") {
                 theWindow.debugData();
             }
         }
@@ -1121,7 +1113,7 @@ Window {
         model: windowMenusModel
         z:2
         Keys.onReleased: {
-            if ((event.key == Qt.Key_Back || event.key == Qt.Key_Escape)  && windowMenus.visible == true) {
+            if ((event.key === Qt.Key_Back || event.key === Qt.Key_Escape)  && windowMenus.visible === true) {
                 event.accepted = true;
                 windowMenus.visible = false;
             }
