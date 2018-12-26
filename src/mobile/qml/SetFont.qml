@@ -11,8 +11,7 @@
 **********/
 
 import QtQuick 2.2
-import QtQuick.Controls 1.2
-import QtQuick.Controls.Styles 1.2
+import QtQuick.Controls 2.4
 import QtQuick.Layouts 1.1
 import BibleTime 1.0
 
@@ -50,7 +49,7 @@ Rectangle {
     }
 
     Keys.onReleased: {
-        if ((event.key == Qt.Key_Back || event.key == Qt.Key_Escape) && setFont.visible == true) {
+        if ((event.key === Qt.Key_Back || event.key === Qt.Key_Escape) && setFont.visible === true) {
             moduleInterface.restoreSavedFonts();
             setFont.textFontChanged();
             setFont.visible = false;
@@ -123,16 +122,6 @@ Rectangle {
             }
             Layout.fillWidth: true
             currentIndex: 0
-            style: ComboBoxStyle {
-                label: Text {
-                    horizontalAlignment: Text.AlignHCenter
-                    font.pointSize: btStyle.uiFontPointSize
-                    color: "black"
-                    text: control.currentText
-                    elide: Text.ElideRight
-                }
-            }
-
             onActivated: {
                 updateUiFontNameAndSize(index);
             }
@@ -154,15 +143,6 @@ Rectangle {
             width: languageCombo.width
             height: languageCombo.height
             Layout.fillWidth: true
-            style: ComboBoxStyle {
-                label: Text {
-                    horizontalAlignment: Text.AlignHCenter
-                    font.pointSize: btStyle.uiFontPointSize
-                    color: "black"
-                    text: control.currentText
-                    elide: Text.ElideRight
-                }
-            }
             onActivated: {
                 var fontName = fontCombo.textAt(index);
                 setFont.setFontForLanguage(fontName);
@@ -187,25 +167,8 @@ Rectangle {
 
             width: languageCombo.width
             height: fontSize.height * 1.2
-            minimumValue: 10
-            maximumValue: 30
-            style: SliderStyle {
-                    groove: Rectangle {
-                        implicitWidth: 200
-                        implicitHeight: 8
-                        color: btStyle.textColor
-                        radius: 8
-                    }
-                    handle: Rectangle {
-                        anchors.centerIn: parent
-                        color: btStyle.textBackgroundColor
-                        border.color: btStyle.textColor
-                        border.width: 3
-                        implicitWidth: btStyle.pixelsPerMillimeterY * 7
-                        implicitHeight: btStyle.pixelsPerMillimeterY * 7
-                        radius: btStyle.pixelsPerMillimeterY * 3.5
-                    }
-                }
+            from: 10
+            to: 30
             onValueChanged: {
 
                 var fontName = fontCombo.currentText
@@ -225,39 +188,21 @@ Rectangle {
         anchors.bottom: parent.bottom
         anchors.bottomMargin: btStyle.pixelsPerMillimeterX * 4
 
-        Action {
-            id: okAction
+        BtButton {
+            id: okButton
             text: qsTr("Ok")
-            onTriggered: {
+            onClicked: {
                 setFont.visible = false;
             }
         }
 
-        Button {
-            id: okButton
-            height: fontCombo.height * 1.2
-            width: setFont.width/3.5
-            action: okAction
-            style: BtButtonStyle {
-            }
-        }
-
-        Action {
-            id: cancelAction
+        BtButton {
+            id: cancelButton
             text: qsTr("Cancel")
-            onTriggered: {
+            onClicked: {
                 setFont.visible = false;
                 moduleInterface.restoreSavedFonts();
                 setFont.textFontChanged();
-            }
-        }
-
-        Button {
-            id: cancelButton
-            height: fontCombo.height * 1.2
-            width: setFont.width/3.5
-            action: cancelAction
-            style: BtButtonStyle {
             }
         }
     }

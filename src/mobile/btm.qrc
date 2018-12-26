@@ -19,7 +19,6 @@
         <file>qml/BookmarkFolders.qml</file>
         <file>qml/BookmarkManager.qml</file>
         <file>qml/BtButton.qml</file>
-        <file>qml/BtButtonStyle.qml</file>
         <file>qml/BookIcon.qml</file>
         <file>qml/ChooseReference.qml</file>
         <file>qml/BtComboBox.qml</file>
@@ -58,7 +57,6 @@
         <file>qml/StartupBookshelfManager.qml</file>
         <file>qml/SetFont.qml</file>
         <file>qml/TitleColorBar.qml</file>
-        <file>qml/SimpleComboBox.qml</file>
         <file>qml/TextEditor.qml</file>
         <file>qml/TreeChooser.qml</file>
         <file>qml/VerseChooser.qml</file>

@@ -99,8 +99,6 @@ Rectangle {
             BtButton{
                 id: manageButton
 
-                property Gradient buttonGradient : gradient1
-
                 text: {
                  if (installed)
                     return qsTranslate("Install Documents", "Remove");

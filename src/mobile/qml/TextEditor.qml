@@ -11,8 +11,7 @@
 **********/
 
 import QtQuick 2.2
-import QtQuick.Controls 1.4
-import QtQuick.Controls.Styles 1.4
+import QtQuick.Controls 2.4
 import BibleTime 1.0
 
 Rectangle {
@@ -39,37 +38,19 @@ Rectangle {
         textFormat: TextEdit.RichText
         wrapMode: TextEdit.WordWrap
         Keys.forwardTo: [textEditor]
-        style: TextAreaStyle {
-            textColor: btStyle.textColor
-            backgroundColor: btStyle.textBackgroundColor
-        }
     }
 
-    Action {
-        id: okAction
-        text: qsTr("Ok")
-        onTriggered: {
-            textEditor.visible = false;
-            editFinished(textArea.text);
-        }
-    }
-
-    Button {
+    BtButton {
         id: okButton
 
         anchors.horizontalCenter: parent.horizontalCenter
         anchors.bottom: parent.bottom
         anchors.bottomMargin: btStyle.pixelsPerMillimeterX * 0.5
         anchors.topMargin: btStyle.pixelsPerMillimeterX
-        height: {
-            var pixel = btStyle.pixelsPerMillimeterY * 5;
-            var uiFont = btStyle.uiFontPointSize * 3;
-            var mix = pixel * 0.8 + uiFont * 0.35;
-            return Math.max(pixel, mix);
-        }
-        width: parent.width/6
-        action: okAction
-        style: BtButtonStyle {
+        text: qsTr("Ok")
+        onClicked: {
+            textEditor.visible = false;
+            editFinished(textArea.text);
         }
     }
 }

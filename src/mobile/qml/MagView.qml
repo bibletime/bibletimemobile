@@ -11,8 +11,8 @@
 **********/
 
 import QtQuick 2.2
-import QtQuick.Controls 1.2
-import QtQuick.Controls.Styles 1.2
+import QtQuick.Controls 1.4 as Controls1
+import QtQuick.Controls 2.4
 import QtQuick.Layouts 1.1
 import BibleTime 1.0
 
@@ -213,7 +213,7 @@ FocusScope {
 
     }
 
-    SplitView {
+    Controls1.SplitView {
         id: splitView
 
         property real ratio: 0.5
@@ -387,8 +387,9 @@ FocusScope {
                 anchors.rightMargin: magView.magViewMargins
                 anchors.topMargin: magView.magViewMargins
                 anchors.bottomMargin: magView.magViewMargins
-                horizontalScrollBarPolicy: Qt.ScrollBarAlwaysOff
-                verticalScrollBarPolicy: Qt.ScrollBarAlwaysOff
+                clip: true
+                ScrollBar.horizontal.policy: ScrollBar.AlwaysOn
+                ScrollBar.vertical.policy: ScrollBar.AlwaysOn
                 visible: btWindowInterface2.footnoteVisible
                 z: 1
                 Text {
@@ -429,7 +430,7 @@ FocusScope {
                 delegate: Text {
                     text: line
                     textFormat: Text.RichText
-                    width: referencesListView.width
+                    width: referencesListView.width - 8
                     color: btStyle.textColor
                     font.family: btWindowInterface2.fontName
                     font.pointSize: btWindowInterface2.fontSize

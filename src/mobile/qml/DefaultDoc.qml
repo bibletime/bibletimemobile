@@ -10,8 +10,7 @@
 *
 **********/
 import QtQuick 2.5
-import QtQuick.Controls 1.4
-import QtQuick.Controls.Styles 1.4
+import QtQuick.Controls 2.4
 import BibleTime 1.0
 
 Rectangle {
@@ -106,7 +105,7 @@ Rectangle {
                 color: btStyle.textColor
             }
 
-            ComboBox {
+            BtComboBox {
                 id: bibleCombo
 
                 width: parent.width
@@ -124,15 +123,6 @@ Rectangle {
                 }
 
                 model: btmConfig.availableBibles
-                style: ComboBoxStyle {
-                    label: Text {
-                        horizontalAlignment: Text.AlignHCenter
-                        font.pointSize: btStyle.uiFontPointSize
-                        color: "black"
-                        text: control.currentText
-                        elide: Text.ElideRight
-                    }
-                }
             }
 
             Rectangle {
@@ -153,7 +143,7 @@ Rectangle {
                 color: btStyle.textColor
             }
 
-            ComboBox {
+            BtComboBox {
                 id: hebrewStrongsCombo
 
                 width: parent.width
@@ -169,15 +159,6 @@ Rectangle {
                     var modules = btmConfig.availableHebrewStrongsLexicons
                     var defaultModule = modules[index];
                     btmConfig.setDefaultSwordModuleByType("standardHebrewStrongsLexicon", defaultModule);
-                }
-                style: ComboBoxStyle {
-                    label: Text {
-                        horizontalAlignment: Text.AlignHCenter
-                        font.pointSize: btStyle.uiFontPointSize
-                        color: "black"
-                        text: control.currentText
-                        elide: Text.ElideRight
-                    }
                 }
             }
 
@@ -199,7 +180,7 @@ Rectangle {
                 color: btStyle.textColor
             }
 
-            ComboBox {
+            BtComboBox {
                 id: greekStrongsCombo
 
                 width: parent.width
@@ -216,15 +197,6 @@ Rectangle {
                     btmConfig.setDefaultSwordModuleByType("standardGreekStrongsLexicon", defaultModule);
                 }
                 model: btmConfig.availableGreekStrongsLexicons
-                style: ComboBoxStyle {
-                    label: Text {
-                        horizontalAlignment: Text.AlignHCenter
-                        font.pointSize: btStyle.uiFontPointSize
-                        color: "black"
-                        text: control.currentText
-                        elide: Text.ElideRight
-                    }
-                }
             }
             Rectangle {
                 id: spacer4
@@ -244,7 +216,7 @@ Rectangle {
                 color: btStyle.textColor
             }
 
-            ComboBox {
+            BtComboBox {
                 id: hebrewMorphCombo
 
                 width: parent.width
@@ -260,15 +232,6 @@ Rectangle {
                     var modules = btmConfig.availableHebrewMorphLexicons
                     var defaultModule = modules[index];
                     btmConfig.setDefaultSwordModuleByType("standardHebrewMorphLexicon", defaultModule);
-                }
-                style: ComboBoxStyle {
-                    label: Text {
-                        horizontalAlignment: Text.AlignHCenter
-                        font.pointSize: btStyle.uiFontPointSize
-                        color: "black"
-                        text: control.currentText
-                        elide: Text.ElideRight
-                    }
                 }
             }
 
@@ -290,7 +253,7 @@ Rectangle {
                 color: btStyle.textColor
             }
 
-            ComboBox {
+            BtComboBox {
                 id: greekMorphCombo
 
                 width: parent.width
@@ -307,15 +270,6 @@ Rectangle {
                     btmConfig.setDefaultSwordModuleByType("standardGreekMorphLexicon", defaultModule);
                 }
                 model: btmConfig.availableGreekMorphLexicons
-                style: ComboBoxStyle {
-                    label: Text {
-                        horizontalAlignment: Text.AlignHCenter
-                        font.pointSize: btStyle.uiFontPointSize
-                        color: "black"
-                        text: control.currentText
-                        elide: Text.ElideRight
-                    }
-                }
             }
         }
     }

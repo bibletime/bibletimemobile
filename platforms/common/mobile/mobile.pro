@@ -72,7 +72,6 @@ OTHER_FILES += \
     ../../../src/mobile/qml/Back.qml \
     ../../../src/mobile/qml/BookmarkFolders.qml \
     ../../../src/mobile/qml/BookmarkManager.qml \
-    ../../../src/mobile/qml/BtButtonStyle.qml \
     ../../../src/mobile/qml/ContextMenu.qml \
     ../../../src/mobile/qml/ContinueDialog.qml \
     ../../../src/mobile/qml/BookIcon.qml \
@@ -108,7 +107,6 @@ OTHER_FILES += \
     ../../../src/mobile/qml/SearchIcon.qml \
     ../../../src/mobile/qml/SearchResults.qml \
     ../../../src/mobile/qml/SetFont.qml \
-    ../../../src/mobile/qml/SimpleComboBox.qml \
     ../../../src/mobile/qml/StartupBookshelfManager.qml \
     ../../../src/mobile/qml/TextEditor.qml \
     ../../../src/mobile/qml/TitleColorBar.qml \

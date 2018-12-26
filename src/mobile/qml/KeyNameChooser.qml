@@ -11,8 +11,7 @@
 **********/
 
 import QtQuick 2.2
-import QtQuick.Controls 1.2
-import QtQuick.Controls 2.2
+import QtQuick.Controls 2.4
 import BibleTime 1.0
 
 Rectangle {
@@ -28,7 +27,7 @@ Rectangle {
     signal itemSelected(int index)
 
     Keys.onReleased: {
-        if ((event.key == Qt.Key_Back || event.key == Qt.Key_Escape) && top.visible == true) {
+        if ((event.key === Qt.Key_Back || event.key === Qt.Key_Escape) && top.visible === true) {
             event.accepted = true;
             top.visible = false;
         }

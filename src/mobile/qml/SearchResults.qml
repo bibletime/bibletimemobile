@@ -11,12 +11,11 @@
 **********/
 
 import QtQuick 2.2
-import QtQuick.Controls 1.2
-import QtQuick.Controls.Styles 1.2
+import QtQuick.Controls 1.2 as Control1
 import QtQuick.Layouts 1.1
 import BibleTime 1.0
 
-SplitView {
+Control1.SplitView {
     id: searchResults
 
     property alias searchText: btSearchInterface.searchText
@@ -100,8 +99,8 @@ SplitView {
     }
 
     Keys.onReleased: {
-        if ((event.key == Qt.Key_Back || event.key == Qt.Key_Escape) &&
-                screenView.currentIndex == screenModel.results) {
+        if ((event.key === Qt.Key_Back || event.key === Qt.Key_Escape) &&
+                screenView.currentIndex === screenModel.results) {
             resultsFinished();
             event.accepted = true;
         }
@@ -163,7 +162,7 @@ SplitView {
             }
         }
 
-        SplitView {
+        Control1.SplitView {
             id: topSplitter
 
             orientation: Qt.Horizontal
