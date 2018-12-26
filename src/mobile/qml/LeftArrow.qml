@@ -1,5 +1,5 @@
 
-import QtQuick 2.3
+import QtQuick 2.11
 
         Canvas {
             id: canvas

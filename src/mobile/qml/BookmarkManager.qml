@@ -11,7 +11,7 @@
 **********/
 
 import QtQml.Models 2.2
-import QtQuick 2.2
+import QtQuick 2.11
 import QtQuick.Controls 1.4 as Controls1
 import QtQuick.Controls.Styles 1.4 as ControlsStyle1
 import QtQuick.Controls 2.4

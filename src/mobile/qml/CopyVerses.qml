@@ -10,7 +10,7 @@
 *
 **********/
 
-import QtQuick 2.2
+import QtQuick 2.11
 import BibleTime 1.0
 import QtQuick.Controls 2.4
 
