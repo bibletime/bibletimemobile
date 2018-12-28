@@ -12,6 +12,7 @@
 
 import QtQuick 2.11
 import QtQuick.Controls 2.4
+import QtQuick.Controls.Material 2.3
 import QtQuick.Layouts 1.3
 import BibleTime 1.0
 
@@ -53,11 +54,10 @@ Item {
     Rectangle {
 
         anchors.fill: parent
-        color: btStyle.textBackgroundColor
-
+        color: Material.background
         Rectangle {
             id: searchTitleBar
-            color: btStyle.toolbarColor
+            color: Material.primary
             width: parent.width
             height: btStyle.pixelsPerMillimeterY * 7
 
@@ -75,7 +75,7 @@ Item {
 
             Text {
                 id: title
-                color: btStyle.toolbarTextColor
+                color: Material.foreground
                 font.pointSize: btStyle.uiFontPointSize
                 anchors.horizontalCenter: parent.horizontalCenter
                 anchors.top: parent.top
@@ -95,23 +95,18 @@ Item {
             anchors.topMargin: btStyle.pixelsPerMillimeterY*5
             spacing: search.spacing
 
-            Column {
+            TextField {
+                id: textInput
 
-                spacing: btStyle.pixelsPerMillimeterY
-
-                    TextField {
-                        id: textInput
-
-                        width: search.width -searchButton.width - search.spacing * 3
-                        height: searchIn.height*1.4
-                        font.pointSize: btStyle.uiFontPointSize
-                        verticalAlignment: Text.AlignVCenter
-                        inputMethodHints: Qt.ImhNoAutoUppercase
-                        focus: true
-                        text: ""
-                        onAccepted: {
-                            search.setupSearch();
-                        }
+                width: search.width -searchButton.width - search.spacing * 3
+                height: searchIn.height*1.4
+                font.pointSize: btStyle.uiFontPointSize
+                verticalAlignment: Text.AlignVCenter
+                inputMethodHints: Qt.ImhNoAutoUppercase
+                focus: true
+                text: ""
+                onAccepted: {
+                    search.setupSearch();
                 }
             }
 
@@ -133,41 +128,36 @@ Item {
             anchors.topMargin: btStyle.pixelsPerMillimeterY*5
             font.pointSize: btStyle.uiFontPointSize
             text: qsTr("Find")
-            color: btStyle.textColor
+            color: Material.foreground
         }
 
-        GroupBox {
+        ColumnLayout {
             id: findWords
 
             anchors.top: titleText.bottom
             anchors.left: parent.left
             anchors.leftMargin: search.spacing
-            title: ""
 
-            Column {
-                spacing: 10
+            RadioButton {
+                id: radioAll
 
-                RadioButton {
-                    id: radioAll
+                text: qsTr("All Words")
+                font.pointSize: btStyle.uiFontPointSize
+                checked: true
+            }
 
-                    text: qsTr("All Words")
-                    font.pointSize: btStyle.uiFontPointSize
-                    checked: true
-                }
+            RadioButton {
+                id: radioAny
 
-                RadioButton {
-                    id: radioAny
+                text: qsTr("Any Word")
+                font.pointSize: btStyle.uiFontPointSize
+            }
 
-                    text: qsTr("Any Word")
-                    font.pointSize: btStyle.uiFontPointSize
-                }
+            RadioButton {
+                id: radioPhrase
 
-                RadioButton {
-                    id: radioPhrase
-
-                    text: qsTr("Regular Expression")
-                    font.pointSize: btStyle.uiFontPointSize
-                }
+                text: qsTr("Regular Expression")
+                font.pointSize: btStyle.uiFontPointSize
             }
         }
 
@@ -185,7 +175,7 @@ Item {
 
                 text: qsTranslate("Search", "Search in")
                 font.pointSize: btStyle.uiFontPointSize
-                color: btStyle.textColor
+                color: Material.foreground
             }
 
             BtComboBox {

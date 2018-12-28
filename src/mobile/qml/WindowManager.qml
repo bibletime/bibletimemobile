@@ -11,6 +11,7 @@
 **********/
 
 import QtQuick 2.2
+import QtQuick.Controls.Material 2.3
 import BibleTime 1.0
 
 
@@ -317,7 +318,7 @@ Rectangle {
         anchors.margins: btStyle.pixelsPerMillimeterX*6
         horizontalAlignment: Text.AlignJustify
         font.pointSize: btStyle.uiFontPointSize;
-        color: btStyle.textColor
+        color: Material.foreground
         visible: false
         wrapMode: Text.Wrap
         z: 10
@@ -355,7 +356,7 @@ Rectangle {
                 tabbedWindowsStack.children[i].z = (i == current ? 1 : 0)
             }
         }
-        color: btStyle.toolbarColor
+        color: Material.background
         objectName: "tabbedWindows"
         anchors.fill: parent
         onCurrentChanged: changeTabs()
@@ -371,12 +372,12 @@ Rectangle {
 
                 function setColors() {
                     if (tabbedWindows.current == tabbedWindowsStack.index) {
-                        tabImage.color = btStyle.windowTabSelected
-                        tabText.color = btStyle.windowTabTextSelected
+                        tabImage.color = Material.accent
+                        tabText.color = Material.foreground
                     }
                     else {
-                        tabImage.color = btStyle.windowTab
-                        tabText.color = btStyle.windowTabText
+                        tabImage.color = Material.primary
+                        tabText.color = Material.foreground
                     }
                 }
 
@@ -400,7 +401,7 @@ Rectangle {
                         var mix = pixel * 0.7 + uiFont * 0.3;
                         return Math.max(pixel, mix);
                     }
-                    color: btStyle.toolbarColor
+                    color: Material.primary
 
                     Rectangle {
                         id: tabImage
@@ -408,9 +409,9 @@ Rectangle {
                         anchors { fill: parent; leftMargin: 4; topMargin: 4; rightMargin: 4 }
                         color: {
                             if (tabbedWindows.current == index)
-                                return btStyle.windowTabSelected
+                                return Material.accent
                             else
-                                return btStyle.windowTab
+                                return Material.background
                         }
                         radius: height/2
 
@@ -434,9 +435,9 @@ Rectangle {
                             elide: Text.ElideLeft
                             color: {
                                 if (tabbedWindows.current == index)
-                                    return btStyle.windowTabTextSelected
+                                    return Material.background
                                 else
-                                    return btStyle.windowTabText
+                                    return Material.foreground
                             }
                         }
                     }

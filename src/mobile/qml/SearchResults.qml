@@ -11,11 +11,11 @@
 **********/
 
 import QtQuick 2.11
-import QtQuick.Controls 1.2 as Control1
-import QtQuick.Layouts 1.1
+import QtQuick.Controls 1.2 as Controls1
+import QtQuick.Layouts 1.3
 import BibleTime 1.0
 
-Control1.SplitView {
+Controls1.SplitView {
     id: searchResults
 
     property alias searchText: btSearchInterface.searchText
@@ -162,7 +162,7 @@ Control1.SplitView {
             }
         }
 
-        Control1.SplitView {
+        Controls1.SplitView {
             id: topSplitter
 
             orientation: Qt.Horizontal

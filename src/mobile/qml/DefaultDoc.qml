@@ -109,7 +109,6 @@ Rectangle {
                 id: bibleCombo
 
                 width: parent.width
-                anchors.horizontalCenter: parent.horizontalCenter
                 currentIndex: {
                     var bibles = btmConfig.availableBibles;
                     var defaultBible = btmConfig.getDefaultSwordModuleByType("standardBible");
@@ -275,7 +274,7 @@ Rectangle {
     }
 
     Keys.onReleased: {
-        if ((event.key == Qt.Key_Back || event.key == Qt.Key_Escape) && defaultDoc.visible == true) {
+        if ((event.key === Qt.Key_Back || event.key === Qt.Key_Escape) && defaultDoc.visible === true) {
             defaultDoc.visible = false;
             event.accepted = true;
         }

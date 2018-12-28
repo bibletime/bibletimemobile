@@ -12,7 +12,8 @@
 
 import QtQuick 2.11
 import QtQuick.Controls 2.4
-import QtQuick.Layouts 1.1
+import QtQuick.Controls.Material 2.3
+import QtQuick.Layouts 1.3
 import BibleTime 1.0
 
 Rectangle {
@@ -23,15 +24,15 @@ Rectangle {
 
     signal textFontChanged
 
-    height: languageRow.height + slider.height + buttons.height + buttons.anchors.bottomMargin + languageRow.anchors.bottomMargin +btStyle.pixelsPerMillimeterX*7
+    height: languageRow.height + slider.height + buttons.height + buttons.anchors.bottomMargin + languageRow.anchors.bottomMargin
     width: {
         var width = Math.min(parent.width, parent.height);
         width = width - 2 * anchors.rightMargin
         return width;
     }
-    color: btStyle.textBackgroundColor
-    border.width: 3
-    border.color: btStyle.textColor
+    color: Material.background
+    border.width: 1
+    border.color: Material.accent
     anchors.right: parent.right
     anchors.bottom: parent.bottom
     anchors.bottomMargin: btStyle.pixelsPerMillimeterX * 2
@@ -91,6 +92,10 @@ Rectangle {
         id: moduleInterface
     }
 
+    MouseArea {
+        anchors.fill: parent
+    }
+
     Grid {
         id: languageRow
 
@@ -101,17 +106,19 @@ Rectangle {
         anchors.topMargin: btStyle.pixelsPerMillimeterX * 4
         anchors.horizontalCenter: parent.horizontalCenter
         spacing: btStyle.pixelsPerMillimeterX * 4
+        verticalItemAlignment: Grid.AlignVCenter
 
         Text {
             id: title
             horizontalAlignment: Text.AlignHCenter
+            verticalAlignment: Text.AlignVCenter
             elide: Text.ElideRight
             text: qsTr("For Language")
             font.pointSize: btStyle.uiFontPointSize
             color: btStyle.textColor
         }
 
-        ComboBox {
+        BtComboBox {
             id: languageCombo
 
             width: {
@@ -120,7 +127,6 @@ Rectangle {
                 width = width - languageRow.spacing * 3;
                 return width;
             }
-            Layout.fillWidth: true
             currentIndex: 0
             onActivated: {
                 updateUiFontNameAndSize(index);
@@ -136,13 +142,11 @@ Rectangle {
             color: btStyle.textColor
         }
 
-        ComboBox {
+        BtComboBox {
             id: fontCombo
 
             model: Qt.fontFamilies()
             width: languageCombo.width
-            height: languageCombo.height
-            Layout.fillWidth: true
             onActivated: {
                 var fontName = fontCombo.textAt(index);
                 setFont.setFontForLanguage(fontName);
@@ -166,15 +170,12 @@ Rectangle {
             id: slider
 
             width: languageCombo.width
-            height: fontSize.height * 1.2
             from: 10
             to: 30
             onValueChanged: {
-
                 var fontName = fontCombo.currentText
                 setFont.setFontForLanguage(fontName);
             }
-
         }
     }
 
@@ -186,7 +187,7 @@ Rectangle {
         columns: 2
         anchors.horizontalCenter: parent.horizontalCenter
         anchors.bottom: parent.bottom
-        anchors.bottomMargin: btStyle.pixelsPerMillimeterX * 4
+        anchors.bottomMargin: btStyle.pixelsPerMillimeterX * 5
 
         BtButton {
             id: okButton

@@ -11,10 +11,9 @@
 **********/
 
 import QtQuick 2.11
-import QtQml 2.2
-import QtQml.Models 2.2
+import QtQml.Models 2.3
 import QtQuick.Controls.Material 2.3
-import QtQuick.Window 2.1
+import QtQuick.Window 2.11
 import BibleTime 1.0
 
 Window {
@@ -64,6 +63,7 @@ Window {
     }
 
     Material.theme: Material.Dark
+    Material.accent: Material.Orange
 
     Item {
         id: keyReceiver

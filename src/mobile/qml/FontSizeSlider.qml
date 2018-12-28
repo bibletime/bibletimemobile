@@ -11,6 +11,7 @@
 **********/
 
 import QtQuick 2.11
+import QtQuick.Controls.Material 2.3
 import BibleTime 1.0
 import QtQuick.Controls 2.4
 
@@ -26,18 +27,19 @@ Rectangle {
 
     signal accepted(int pointSize);
 
-    color: btStyle.textBackgroundColor
-    border.color: btStyle.textColor
-    border.width: 3
+    color: Material.background
+    border.color: Material.accent
+    border.width: 1
     anchors.right: parent.right
     anchors.bottom: parent.bottom
-    anchors.topMargin: 20
+    anchors.topMargin: btStyle.pixelsPerMillimeterX * 2
     anchors.bottomMargin: btStyle.pixelsPerMillimeterX * 2
     anchors.rightMargin: btStyle.pixelsPerMillimeterX * 2
     height: {
         var height = titleText.contentHeight + slider.height + buttons.height;
         height = height + titleText.anchors.topMargin;
         height = height + buttons.anchors.bottomMargin + buttons.anchors.topMargin;
+        height = height + btStyle.pixelsPerMillimeterX * 2
         return height;
     }
     width: {
@@ -61,13 +63,17 @@ Rectangle {
         }
     }
 
+    MouseArea {
+        anchors.fill: parent
+    }
+
     Text {
         id: titleText
 
         text: qsTranslate("main", title)
         anchors.horizontalCenter: parent.horizontalCenter
         anchors.top: parent.top
-        anchors.topMargin: 20
+        anchors.topMargin: btStyle.pixelsPerMillimeterX * 4
         font.pointSize: btStyle.uiFontPointSize
         color: btStyle.textColor
     }
@@ -77,13 +83,12 @@ Rectangle {
         anchors.top: titleText.bottom
         anchors.horizontalCenter: parent.horizontalCenter
         width: parent.width - 60
-        anchors.topMargin: 20
+        anchors.topMargin: btStyle.pixelsPerMillimeterX * 2
         from: fontPointSize.min
         to: fontPointSize.max
         onMoved: {
             if (fontPointSize.ready)
                 accepted(slider.value);
-
         }
     }
 
@@ -94,8 +99,8 @@ Rectangle {
         columns: 2
         anchors.horizontalCenter: parent.horizontalCenter
         anchors.bottom: parent.bottom
-        anchors.bottomMargin: 20
-        anchors.topMargin: 30
+        anchors.bottomMargin: btStyle.pixelsPerMillimeterX * 4
+        anchors.topMargin: btStyle.pixelsPerMillimeterX * 3
 
         BtButton {
 

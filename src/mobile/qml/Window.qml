@@ -11,6 +11,7 @@
 **********/
 
 import QtQuick 2.11
+import QtQuick.Controls.Material 2.3
 import QtQuick.Controls 2.2
 import BibleTime 1.0
 
@@ -27,8 +28,7 @@ Rectangle {
         menuButton.visible = windowView.toolbarEnabled;
     }
 
-    border.color: btStyle.toolbarTextColor
-
+    border.color: Material.accent
     signal windowMenusDialog(variant window)
 
     signal moduleChooserRequest(variant window, int moduleNumber)
@@ -208,14 +208,14 @@ Rectangle {
         anchors.margins: 1
 
 
-        color: btStyle.toolbarColor
+        color: Material.background
 
         PrevNextArrow {
             id: prevHistory
 
-            background: btStyle.toolbarColor
-            textColor: btStyle.toolbarTextColor
-            borderColor: btStyle.toolbarTextColor
+            background: Material.background
+            textColor: Material.accent
+            borderColor: Material.background
             prev: true
             width: parent.height * 0.80
             height: parent.height * 0.80
@@ -232,9 +232,9 @@ Rectangle {
         PrevNextArrow {
             id: nextHistory
 
-            background: btStyle.toolbarColor
-            textColor: btStyle.toolbarTextColor
-            borderColor: btStyle.toolbarTextColor
+            background: Material.background
+            textColor: Material.accent
+            borderColor: Material.background
             prev: false
             width: parent.height * 0.80
             height: parent.height * 0.80
@@ -325,8 +325,8 @@ Rectangle {
             height: parent.height
             anchors.right: parent.right
             anchors.top: parent.top
-            foreground: btStyle.toolbarTextColor
-            background: btStyle.toolbarColor
+            background: Material.background
+            foreground: Material.accent
 
             onButtonClicked: {
                 windowMenusDialog(windowView);
@@ -344,8 +344,8 @@ Rectangle {
             anchors.topMargin: btStyle.pixelsPerMillimeterY * 0.7
             anchors.bottomMargin: btStyle.pixelsPerMillimeterY * 0.7
             anchors.leftMargin:  parent.height * 0.1
-            color: btStyle.textBackgroundColor
-            border.color: btStyle.toolbarTextColor
+            color: Material.background
+            border.color: Material.accent
             border.width: 2
 
             Text {
@@ -357,7 +357,7 @@ Rectangle {
                 verticalAlignment: Text.AlignVCenter
                 font.pointSize: btStyle.uiFontPointSize
                 elide: Text.ElideMiddle
-                color: btStyle.textColor
+                color: Material.foreground
                 text: btWindowInterface.reference
             }
 

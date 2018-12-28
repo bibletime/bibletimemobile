@@ -11,12 +11,13 @@
 **********/
 
 import QtQuick 2.11
+import QtQuick.Controls.Material 2.3
 import BibleTime 1.0
 
 Rectangle {
     id: toolbar
 
-    color: btStyle.toolbarColor
+    color: Material.background
     z:0
     onEnabledChanged: {
         menuButton.visible = toolbar.enabled
@@ -45,7 +46,7 @@ Rectangle {
 
     Text {
         id: title
-        color: btStyle.toolbarTextColor
+        color: Material.accent
         font.pointSize: btStyle.uiFontPointSize * 1.1
         anchors.left: logo.right
         anchors.top: parent.top
@@ -62,8 +63,8 @@ Rectangle {
         height: parent.height
         anchors.right: parent.right
         anchors.top: parent.top
-        foreground: btStyle.toolbarTextColor
-        background: btStyle.toolbarColor
+        foreground: Material.accent
+        background: Material.background
         onButtonClicked: {
             toolbar.buttonClicked()
         }
@@ -77,7 +78,7 @@ Rectangle {
         anchors.right: menuButton.left
         anchors.top: parent.top
         anchors.rightMargin: 0
-        strokeStyle: btStyle.toolbarTextColor
+        strokeStyle: Material.accent
 
         MouseArea {
             anchors.fill: parent

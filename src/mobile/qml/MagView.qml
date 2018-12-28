@@ -13,7 +13,7 @@
 import QtQuick 2.11
 import QtQuick.Controls 1.4 as Controls1
 import QtQuick.Controls 2.4
-import QtQuick.Layouts 1.1
+import QtQuick.Layouts 1.3
 import BibleTime 1.0
 
 FocusScope {

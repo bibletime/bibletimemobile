@@ -11,6 +11,7 @@
 **********/
 
 import QtQuick 2.11
+import QtQuick.Controls.Material 2.3
 import BibleTime 1.0
 
 Rectangle {
@@ -20,9 +21,9 @@ Rectangle {
 
     signal activated()
 
-    border.color: btStyle.inputBorderColor
+    border.color: Material.accent
     border.width: 3
-    color: btStyle.textBackgroundColor
+    color: Material.background
     radius:btStyle.pixelsPerMillimeterX
     width: visible? text.width + btStyle.pixelsPerMillimeterX * 2: 0
 
@@ -33,7 +34,7 @@ Rectangle {
         anchors.verticalCenter: parent.verticalCenter
         anchors.leftMargin: btStyle.pixelsPerMillimeterX * 1
         anchors.rightMargin: 4
-        color: btStyle.textColor
+        color: Material.foreground
         elide: Text.ElideMiddle
         font.pointSize: btStyle.uiFontPointSize
         text: moduleText

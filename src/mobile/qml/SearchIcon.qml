@@ -1,5 +1,6 @@
 
 import QtQuick 2.11
+import QtQuick.Controls.Material 2.3
 
         Canvas {
             id: canvas
@@ -7,8 +8,8 @@ import QtQuick 2.11
             height: 160
             antialiasing: true
 
-            property color strokeStyle:  "#888888"
-            property color fillStyle: "#000000"
+            property color strokeStyle:  Material.accent
+            property color fillStyle: Material.background
 
             onStrokeStyleChanged:requestPaint();
 
