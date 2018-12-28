@@ -11,6 +11,7 @@
 **********/
 
 import QtQuick 2.2
+import QtQuick.Controls 2.4
 import QtQuick.Controls.Material 2.3
 import BibleTime 1.0
 
@@ -175,13 +176,13 @@ Rectangle {
     }
 
     function openWindow(category, modules, key) {
-        if (category == "" ||
-            category == "Bibles" ||
-            category == "Cults/Unorthodox" ||
-            category == "Commentaries" ||
-            category == "Books" ||
-            category == "Lexicons and Dictionaries" ||
-            category == "Daily Devotionals")
+        if (category === "" ||
+                category === "Bibles" ||
+                category === "Cults/Unorthodox" ||
+                category === "Commentaries" ||
+                category === "Books" ||
+                category === "Lexicons and Dictionaries" ||
+                category === "Daily Devotionals")
             component = Qt.createComponent("Window.qml");
         else {
             console.log(category, " are not yet supported.");
@@ -362,93 +363,32 @@ Rectangle {
         onCurrentChanged: changeTabs()
         Component.onCompleted: changeTabs()
 
-        Row {
-            id: header
+        MouseArea {
+            id: tabMouseArea
 
-            objectName: "header"
+            anchors.top: parent.top
+            width: parent.width
+            height: 34
+            z:8
+            TabBar {
+                id: tabBar
 
-            Repeater {
-                id: tabRepeater
-
-                function setColors() {
-                    if (tabbedWindows.current == tabbedWindowsStack.index) {
-                        tabImage.color = Material.accent
-                        tabText.color = Material.foreground
-                    }
-                    else {
-                        tabImage.color = Material.primary
-                        tabText.color = Material.foreground
-                    }
+                anchors.fill: parent
+                currentIndex: tabbedWindows.current
+                bottomPadding: 2
+                topPadding: 2
+                opacity: .7
+                z:9
+                onCurrentIndexChanged: {
+                    tabbedWindows.current = currentIndex
                 }
 
-                model: tabbedWindowsStack.children.length
-                delegate: Rectangle {
-                    id: tab
+                Repeater {
+                    model: tabbedWindowsStack.children.length
 
-                    function calculateTabWidth() {
-                        var tabWidth = (tabbedWindows.width) / tabbedWindowsStack.children.length;
-                        tabWidth = Math.min(tabbedWindows.width/2, tabWidth)
-                        return tabWidth;
-                    }
-
-                    visible: tabbedWindows.tabVisible
-                    width: {
-                        calculateTabWidth()
-                    }
-                    height: {
-                        var pixel = btStyle.pixelsPerMillimeterY * 6;
-                        var uiFont = btStyle.uiFontPointSize * 4.4;
-                        var mix = pixel * 0.7 + uiFont * 0.3;
-                        return Math.max(pixel, mix);
-                    }
-                    color: Material.primary
-
-                    Rectangle {
-                        id: tabImage
-
-                        anchors { fill: parent; leftMargin: 4; topMargin: 4; rightMargin: 4 }
-                        color: {
-                            if (tabbedWindows.current == index)
-                                return Material.accent
-                            else
-                                return Material.background
-                        }
-                        radius: height/2
-
-                        Rectangle {
-                            color: tabImage.color
-                            height: tabImage.height/2
-                            width: tabImage.width
-                            anchors.left: tabImage.left
-                            anchors.bottom: tabImage.bottom
-                        }
-
-                        Text {
-                            id: tabText
-
-                            horizontalAlignment: Qt.AlignHCenter;
-                            verticalAlignment: Qt.AlignVCenter
-                            anchors.fill: parent
-                            anchors.topMargin: 4
-                            font.pointSize: btStyle.uiFontPointSize -1
-                            text: tabbedWindowsStack.children[index].title
-                            elide: Text.ElideLeft
-                            color: {
-                                if (tabbedWindows.current == index)
-                                    return Material.background
-                                else
-                                    return Material.foreground
-                            }
-                        }
-                    }
-
-                    MouseArea {
-                        id: tabMouseArea
-
-                        anchors.fill: parent
-                        onClicked: {
-                            tabbedWindows.current = index
-                        }
+                    TabButton {
+                        text: tabbedWindowsStack.children[modelData].title
+                        width: Math.max(200, tabBar.width / tabbedWindowsStack.children.length)
                     }
                 }
             }
@@ -459,7 +399,8 @@ Rectangle {
 
             objectName: "tabbedWindowsStack"
             width: parent.width
-            anchors.top: header.bottom;
+            anchors.top: tabMouseArea.bottom;
+            anchors.topMargin: btStyle.pixelsPerMillimeterX * 2.6
             anchors.bottom: tabbedWindows.bottom
         }
     }
