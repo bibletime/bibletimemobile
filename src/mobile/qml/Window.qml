@@ -346,7 +346,7 @@ Rectangle {
             anchors.leftMargin:  parent.height * 0.1
             color: Material.background
             border.color: Material.accent
-            border.width: 2
+            border.width: 1
 
             Text {
                 id: referenceText
@@ -438,7 +438,7 @@ Rectangle {
 
             delegate: Component {
                 Rectangle {
-                    color: btStyle.textBackgroundColor
+                    color: Material.background
                     width: listView.width
                     height: {
                         if (listView.columns == 1)
@@ -460,7 +460,7 @@ Rectangle {
                         anchors.top: parent.top
                         anchors.left: parent.left
                         width: listView.width / listView.columns
-                        color: btStyle.textColor
+                        color: Material.foreground
                         font.family: btWindowInterface.fontName
                         font.pointSize: btWindowInterface.fontSize
                         wrapMode: Text.WordWrap

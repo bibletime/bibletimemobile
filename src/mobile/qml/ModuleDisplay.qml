@@ -22,7 +22,7 @@ Rectangle {
     signal activated()
 
     border.color: Material.accent
-    border.width: 3
+    border.width: 1
     color: Material.background
     radius:btStyle.pixelsPerMillimeterX
     width: visible? text.width + btStyle.pixelsPerMillimeterX * 2: 0

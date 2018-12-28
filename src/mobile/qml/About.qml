@@ -11,12 +11,13 @@
 **********/
 import QtQuick 2.11
 import QtQuick.Controls 2.4
+import QtQuick.Controls.Material 2.3
 import BibleTime 1.0
 
 Rectangle {
     id: aboutDialog
 
-    color: btStyle.textBackgroundColor
+    color: Material.background
     anchors.fill: parent
 
     BtStyle {
@@ -25,7 +26,7 @@ Rectangle {
 
     Rectangle {
         id: aboutTitleBar
-        color: btStyle.toolbarColor
+        color: Material.background
         width: parent.width
         height: btStyle.pixelsPerMillimeterY * 7
 
@@ -81,7 +82,7 @@ Rectangle {
                 width: aboutDialog.width
                 horizontalAlignment: Text.AlignHCenter
                 font.pointSize: btStyle.uiFontPointSize + 4
-                color: btStyle.textColor
+                color: Material.foreground
             }
 
             Text {
@@ -93,7 +94,7 @@ Rectangle {
                 textFormat: Text.RichText
                 text: formatText();
                 font.pointSize: btStyle.uiFontPointSize
-                color: btStyle.textColor
+                color: Material.foreground
                 onLinkActivated: {
                     Qt.openUrlExternally(link);
                 }

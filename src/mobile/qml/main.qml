@@ -44,7 +44,7 @@ Window {
         sessionInterface.saveDefaultSession();
     }
 
-    color: "#404040"
+    color: Material.background
     height: btStyle.height
     visible: true
     width:  btStyle.width
