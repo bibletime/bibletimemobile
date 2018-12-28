@@ -187,6 +187,8 @@ void setupSwordLog() {
 int main(int argc, char *argv[]) {
     namespace DU = util::directory;
 
+    QCoreApplication::setAttribute(Qt::AA_EnableHighDpiScaling);
+
     BibleTimeApp app(argc, argv);
 
     QQuickStyle::setStyle("Material");
