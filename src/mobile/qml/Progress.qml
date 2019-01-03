@@ -12,6 +12,7 @@
 
 import QtQuick 2.11
 import QtQuick.Controls 2.4
+import QtQuick.Controls.Material 2.3
 import BibleTime 1.0
 
 Rectangle {
@@ -22,8 +23,8 @@ Rectangle {
     property alias maximumValue: progressBar.to
     property alias text: label.text
 
-    color: btStyle.textBackgroundColor
-    border.color: btStyle.textColor
+    color: Material.background
+    border.color: Material.foreground
     border.width: 5
     radius: btStyle.pixelsPerMillimeterX * 3
 
@@ -40,7 +41,7 @@ Rectangle {
         anchors.bottom: progressBar.top
         anchors.bottomMargin: parent.height / 8
         font.pointSize: btStyle.uiFontPointSize
-        color: btStyle.textColor
+        color: Material.foreground
     }
 
     ProgressBar {

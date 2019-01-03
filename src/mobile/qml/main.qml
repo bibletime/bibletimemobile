@@ -387,25 +387,24 @@ Window {
         }
     }
 
-    Progress {
+    ProgressDialog {
         id: indexProgress
 
         value: 0
         text: ""
         minimumValue: 0
         maximumValue: 100
-        width:parent.width * 0.85
-        height: btStyle.pixelsPerMillimeterY * 40
-        anchors.centerIn: parent
-        anchors.top: parent.top
+        width:parent.width * 0.9
         visible: false
+        x: (parent.width - width) / 2
+        y: (parent.height - height) / 2
         z: 4
         onVisibleChanged: {
             if (visible == true) {
                 searchDrawer.indexModules();
             }
         }
-        onCancel: {
+        onRejected: {
             searchDrawer.cancel();
         }
     }
@@ -556,19 +555,18 @@ Window {
         }
     }
 
-    Progress {
+    ProgressDialog {
         id: installProgress
 
         value: installInterface.progressValue
         minimumValue: installInterface.progressMin
         maximumValue: installInterface.progressMax
-        width:parent.width * 0.85
-        height: btStyle.pixelsPerMillimeterY * 30
-        anchors.centerIn: parent
-        anchors.top: parent.top
+        width:parent.width * 0.9
         text: installInterface.progressText
         visible: installInterface.progressVisible
-        onCancel: installManagerChooser.cancel();
+        onRejected: installManagerChooser.cancel();
+        x: (parent.width - width) / 2
+        y: (parent.height - height) / 2
         z: 1
     }
 
@@ -817,11 +815,9 @@ Window {
                 }
             }
             onProgressTextChanged: {
-                console.log("progressText", text)
                 indexProgress.text = text;
             }
             onProgressValueChanged: {
-                console.log("progressValue", value);
                 indexProgress.value = value;
             }
         }
@@ -936,18 +932,15 @@ Window {
         }
 
         onIndexingFinishedChanged: {
-            console.log("indexingFinished")
             indexProgress.visible = false;
             if ( ! searchDrawer.indexingWasCancelled()) {
                 searchDrawer.openSearchResults();
             }
         }
         onProgressTextChanged: {
-            console.log("progressText", text)
             indexProgress.text = text;
         }
         onProgressValueChanged: {
-            console.log("progressValue", value);
             indexProgress.value = value;
         }
 

@@ -207,12 +207,10 @@ Drawer {
                 id: btSearchInterface
 
                 onProgressTextChanged: {
-                    console.log("progressTextChanged 1")
                     searchDrawer.progressTextChanged(btSearchInterface.progressText);
                 }
                 onProgressValueChanged: {
                     var value = btSearchInterface.progressValue
-                    console.log("progressValueChanged 1", value)
                     searchDrawer.progressValueChanged(btSearchInterface.progressValue)
                 }
             }

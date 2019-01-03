@@ -99,8 +99,7 @@ OTHER_FILES += \
     ../../../src/mobile/qml/ModuleChooser.qml \
     ../../../src/mobile/qml/ModuleDisplay.qml \
     ../../../src/mobile/qml/PrevNextArrow.qml \
-    ../../../src/mobile/qml/Progress.qml \
-    ../../../src/mobile/qml/Question.qml \
+    ../../../src/mobile/qml/ProgressDialog.qml \
     ../../../src/mobile/qml/QuestionDialog.qml \
     ../../../src/mobile/qml/ReferenceDisplay.qml \
     ../../../src/mobile/qml/RightArrow.qml \
