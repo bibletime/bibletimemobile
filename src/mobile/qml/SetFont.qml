@@ -115,7 +115,7 @@ Rectangle {
             elide: Text.ElideRight
             text: qsTr("For Language")
             font.pointSize: btStyle.uiFontPointSize
-            color: btStyle.textColor
+            color: Material.foreground
         }
 
         BtComboBox {
@@ -139,7 +139,7 @@ Rectangle {
             elide: Text.ElideRight
             text: qsTr("Font")
             font.pointSize: btStyle.uiFontPointSize
-            color: btStyle.textColor
+            color: Material.foreground
         }
 
         BtComboBox {
@@ -163,7 +163,7 @@ Rectangle {
             elide: Text.ElideRight
             text: qsTr("Font Size")
             font.pointSize: btStyle.uiFontPointSize
-            color: btStyle.textColor
+            color: Material.foreground
         }
 
         Slider {

@@ -11,13 +11,14 @@
 **********/
 
 import QtQuick 2.11
+import QtQuick.Controls.Material 2.3
 import QtQuick.Dialogs 1.2
 import BibleTime 1.0
 
 Rectangle {
     id: viewFile
 
-    color: btStyle.textBackgroundColor
+    color: Material.background
     anchors.fill: parent
 
     function open() {
@@ -30,7 +31,7 @@ Rectangle {
 
     Rectangle {
         id: viewFileTitleBar
-        color: btStyle.toolbarColor
+        color: Material.background
         width: parent.width
         height: btStyle.pixelsPerMillimeterY * 7
 
@@ -84,12 +85,12 @@ Rectangle {
             width: parent.width
             wrapMode: Text.Wrap
             font.pointSize: btStyle.uiFontPointSize -1
-            color: btStyle.textColor
+            color: Material.foreground
         }
     }
 
     Keys.onReleased: {
-        if ((event.key == Qt.Key_Back || event.key == Qt.Key_Escape) && viewFile.visible == true) {
+        if ((event.key === Qt.Key_Back || event.key === Qt.Key_Escape) && viewFile.visible === true) {
             viewFile.visible = false;
             debugDialog.visible = true;
             event.accepted = true;

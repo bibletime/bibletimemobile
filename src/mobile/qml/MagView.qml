@@ -13,6 +13,7 @@
 import QtQuick 2.11
 import QtQuick.Controls 1.4 as Controls1
 import QtQuick.Controls 2.4
+import QtQuick.Controls.Material 2.3
 import QtQuick.Layouts 1.3
 import BibleTime 1.0
 
@@ -29,7 +30,7 @@ FocusScope {
         btWindowInterface.updateDefaultModules();
         if (btWindowInterface.moduleName == "") {
             var moduleName = btWindowInterface.getDefaultSwordModuleByType("standardBible");
-            if (moduleName != "") {
+            if (moduleName !== "") {
                 btWindowInterface.moduleName = moduleName;
             }
         }
@@ -85,7 +86,7 @@ FocusScope {
 
     Rectangle {
         anchors.fill: parent
-        color: btStyle.toolbarColor
+        color: Material.background
     }
 
     Back {
@@ -104,7 +105,7 @@ FocusScope {
 
     Text {
         id: pageTitle
-        color: btStyle.toolbarTextColor
+        color: Material.foreground
         font.pointSize: btStyle.uiFontPointSize * 1.1
         anchors.left: parent.left
         anchors.right: parent.right
@@ -129,7 +130,7 @@ FocusScope {
         anchors.right: parent.right
         anchors.top: parent.top
         anchors.topMargin: height * 0.8
-        color: btStyle.toolbarColor
+        color: Material.background
 
         Rectangle {
             id: moduleDisplay
@@ -142,8 +143,8 @@ FocusScope {
             anchors.leftMargin: magView.magViewMargins
             anchors.topMargin: magView.magViewMargins
             anchors.bottomMargin: magView.magViewMargins
-            color: btStyle.textBackgroundColor
-            border.color: btStyle.toolbarTextColor
+            color: Material.background
+            border.color: Material.foreground
             border.width: 2
 
             Text {
@@ -154,7 +155,7 @@ FocusScope {
                 anchors.rightMargin: 4
                 font.pointSize: btStyle.uiFontPointSize
                 elide: Text.ElideMiddle
-                color: btStyle.textColor
+                color: Material.foreground
                 text: btWindowInterface.moduleName
             }
 
@@ -179,9 +180,9 @@ FocusScope {
             anchors.bottomMargin: magView.magViewMargins
             anchors.leftMargin:  magView.magViewMargins
             anchors.rightMargin: magView.magViewMargins
-            border.color: btStyle.toolbarTextColor
+            border.color: Material.foreground
             border.width: 2
-            color: btStyle.textBackgroundColor
+            color: Material.background
             radius: magView.cornerRadius
 
             Text {
@@ -193,7 +194,7 @@ FocusScope {
                 verticalAlignment: Text.AlignVCenter
                 font.pointSize: btStyle.uiFontPointSize
                 elide: Text.ElideMiddle
-                color: btStyle.textColor
+                color: Material.foreground
                 text: btWindowInterface.reference
             }
 
@@ -242,7 +243,7 @@ FocusScope {
 
             width: btStyle.pixelsPerMillimeterX * 1.6
             height: btStyle.pixelsPerMillimeterX * 1.6
-            color: btStyle.toolbarColor
+            color: Material.background
         }
 
         Component.onCompleted: {
@@ -283,9 +284,9 @@ FocusScope {
 
             height: 100
             width: 100
-            color: btStyle.textBackgroundColor
+            color: Material.background
             border.width: 1
-            border.color: btStyle.textColor
+            border.color: Material.foreground
             radius: magView.cornerRadius
 
             onWidthChanged: {
@@ -324,7 +325,7 @@ FocusScope {
                     text: line
                     textFormat: Text.RichText
                     width: parent.width
-                    color: btStyle.textColor
+                    color: Material.foreground
                     font.family: btWindowInterface.fontName
                     font.pointSize: btWindowInterface.fontSize
                     wrapMode: Text.WordWrap
@@ -344,7 +345,7 @@ FocusScope {
                 anchors.bottom: parent.bottom
                 anchors.leftMargin: btStyle.pixelsPerMillimeterX
                 font.pointSize: btStyle.uiFontPointSize
-                color: btStyle.textColor
+                color: Material.foreground
                 elide: Text.ElideMiddle
                 text: btWindowInterface2.prompt
                 visible: promptVisible
@@ -355,11 +356,11 @@ FocusScope {
             id: referencesView
 
             property int refMargins: btStyle.pixelsPerMillimeterX * 2
-            color: btStyle.textBackgroundColor
+            color: Material.background
             Layout.fillWidth: (splitView.orientation == Qt.Horizontal) ? true : false
             Layout.fillHeight: (splitView.orientation == Qt.Vertical) ? true : false
             border.width: 1
-            border.color: btStyle.textColor
+            border.color: Material.foreground
             radius: magView.cornerRadius
 
 
@@ -371,7 +372,7 @@ FocusScope {
                 anchors.topMargin: btStyle.pixelsPerMillimeterY
                 font.pointSize: btStyle.uiFontPointSize
                 font.bold: true
-                color: btStyle.textColor
+                color: Material.foreground
                 elide: Text.ElideMiddle
                 text: btWindowInterface2.referencesViewTitle
             }
@@ -395,7 +396,7 @@ FocusScope {
                 Text {
                     id: footnoteText
 
-                    color: btStyle.textColor
+                    color: Material.foreground
                     font.family: btWindowInterface2.fontName
                     font.pointSize: btWindowInterface2.fontSize
                     text: btWindowInterface2.footnoteText
@@ -431,7 +432,7 @@ FocusScope {
                     text: line
                     textFormat: Text.RichText
                     width: referencesListView.width - 8
-                    color: btStyle.textColor
+                    color: Material.foreground
                     font.family: btWindowInterface2.fontName
                     font.pointSize: btWindowInterface2.fontSize
                     wrapMode: Text.WordWrap

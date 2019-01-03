@@ -11,6 +11,7 @@
 **********/
 
 import QtQuick 2.11
+import QtQuick.Controls.Material 2.3
 
 Rectangle {
     id: treeChooser
@@ -25,16 +26,15 @@ Rectangle {
     property string path: ""
     property int pathCount: 0
 
-    color: btStyle.textBackgroundColor
+    color: Material.background
     border.width: 2
-    border.color: btStyle.textColor
-
+    border.color: Material.foreground
     signal back()
     signal next(string childText)
     signal select(string childText)
 
     Keys.onReleased: {
-        if ((event.key == Qt.Key_Back || event.key == Qt.Key_Escape) && treeChooser.visible == true) {
+        if ((event.key === Qt.Key_Back || event.key === Qt.Key_Escape) && treeChooser.visible === true) {
             event.accepted = true;
             treeChooser.visible = false;
         }
@@ -43,10 +43,7 @@ Rectangle {
     Rectangle {
         id: pathArea
 
-        border.color: "black"
-        border.width: 0
-        color: btStyle.textBackgroundColor
-
+        color: Material.background
         height: btStyle.uiFontPointSize * (5 + pathCount *3);
         anchors.right: parent.right
         anchors.left: parent.left
@@ -81,7 +78,7 @@ Rectangle {
             anchors.verticalCenter: parent.verticalCenter
             anchors.right : parent.right
             anchors.topMargin: 2
-            color: btStyle.textColor
+            color: Material.foreground
             visible: true
 
             MouseArea {
@@ -102,7 +99,7 @@ Rectangle {
             anchors.right: backButton.left
             anchors.leftMargin: 10
             elide: Text.ElideRight
-            color: btStyle.textColor
+            color: Material.foreground
         }
     }
 
@@ -133,9 +130,7 @@ Rectangle {
 
             property string action: ""
 
-            color: btStyle.textBackgroundColor
-            border.color: "#eeeeee"
-            border.width: 1
+            color: Material.background
             width: parent.width
             height: {
                 var pixel = btStyle.pixelsPerMillimeterY * 8;
@@ -149,14 +144,13 @@ Rectangle {
                 font.pointSize: btStyle.uiFontPointSize
                 anchors.top: entry.top
                 anchors.left: entry.left
-                anchors.right: entry.right
-                width: 340
+                anchors.right: imageButton.left
                 anchors.leftMargin: 10
                 anchors.rightMargin: 10
                 anchors.topMargin: 10
                 text: name
                 elide: Text.ElideRight
-                color: btStyle.textColor
+                color: Material.foreground
             }
 
             RightArrow {
@@ -167,7 +161,7 @@ Rectangle {
                 anchors.right: parent.right
                 anchors.top: parent.top
                 anchors.topMargin: 2
-                color: btStyle.textColor
+                color: Material.foreground
                 visible: childcount > 0
 
                 MouseArea {

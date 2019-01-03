@@ -12,6 +12,7 @@
 
 import QtQuick 2.11
 import QtQuick.Controls 2.4
+import QtQuick.Controls.Material 2.3
 import BibleTime 1.0
 
 Rectangle {
@@ -39,9 +40,7 @@ Rectangle {
         unlockDlg.visible = true;
     }
 
-    color: "lightgray"
-    border.color: "black"
-    border.width: 2
+    color: Material.background
 
     Keys.onReleased: {
         if ((event.key == Qt.Key_Back || event.key == Qt.Key_Escape) && moduleChooser.visible == true) {
@@ -81,7 +80,7 @@ Rectangle {
 
         z: 100
         visible: false
-        color: btStyle.textBackgroundColor
+        color: Material.background
         anchors.fill: parent
 
         signal finished(string unlockKey);
@@ -97,7 +96,7 @@ Rectangle {
             font.pointSize: btStyle.uiFontPointSize
             width: parent.width
             height: contentHeight * 1.1
-            color: btStyle.textColor
+            color: Material.foreground
         }
 
         TextField {
@@ -148,7 +147,7 @@ Rectangle {
 
     Rectangle {
         id: newWindowTitleBar
-        color: btStyle.toolbarColor
+        color: Material.background
         width: parent.width
         height: btStyle.pixelsPerMillimeterY * 7
 
@@ -166,7 +165,7 @@ Rectangle {
 
         Text {
             id: title
-            color: btStyle.toolbarTextColor
+            color: Material.foreground
             font.pointSize: btStyle.uiFontPointSize
             anchors.horizontalCenter: parent.horizontalCenter
             anchors.top: parent.top
@@ -179,7 +178,7 @@ Rectangle {
 
     Grid {
         id:  grid
-        columns: 2
+        columns: 3
         rows: 1
         spacing: parent.spacing
         width: parent.width - moduleChooser.spacing
@@ -200,6 +199,12 @@ Rectangle {
             }
         }
 
+        Rectangle {
+            width: 1
+            height: grid.height
+            color: "gray"
+        }
+
         ListTextView {
             id: languageView
 
@@ -211,6 +216,15 @@ Rectangle {
                 languageChanged(currentIndex);
             }
         }
+    }
+
+    Rectangle {
+        anchors.left: parent.left
+        anchors.right: parent.right
+        anchors.top: grid.bottom
+        height: 1
+        color: "gray"
+        z: 2
     }
 
     ListTextView {

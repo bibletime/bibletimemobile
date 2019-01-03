@@ -1,13 +1,14 @@
 
 import QtQuick 2.11
+import QtQuick.Controls.Material 2.3
 
 Item {
     id:container
 
-    property color background: "#000000"
+    property color background: Material.background
     property bool show: false
     property bool prev: false
-    property color borderColor: "black"
+    property color borderColor: Material.background
     property color textColor: Qt.rgba(1,1,1, 1)
     onTextColorChanged: canvas.requestPaint();
 
@@ -31,7 +32,7 @@ Item {
     MouseArea {
         anchors.fill: parent
         onClicked: {
-                container.clicked();
+            container.clicked();
         }
     }
     Column {

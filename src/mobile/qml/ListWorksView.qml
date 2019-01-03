@@ -12,6 +12,7 @@
 
 import QtQuick 2.11
 import QtQuick.Controls 2.4
+import QtQuick.Controls.Material 2.3
 import BibleTime 1.0
 
 Rectangle {
@@ -19,16 +20,13 @@ Rectangle {
     property alias model: listView.model
     property alias title: title.text
 
-    border.color: "black"
-    border.width: 2
+    color: Material.background
 
     signal itemSelected(int index)
 
     Rectangle {
         id: titleRect
 
-        border.color: "black"
-        border.width: 1
         height: btStyle.uiFontPointSize * 4;
         anchors.left: parent.left
         anchors.right: parent.right
@@ -36,8 +34,7 @@ Rectangle {
         anchors.leftMargin: 3
         anchors.rightMargin: 3
         anchors.topMargin: 3
-        color: btStyle.textBackgroundColor
-
+        color: Material.background
         Text {
             id: title
             anchors.horizontalCenter: parent.horizontalCenter
@@ -47,7 +44,7 @@ Rectangle {
             verticalAlignment: Text.AlignBottom
             style: Text.Sunken
             font.pointSize: btStyle.uiFontPointSize
-            color: btStyle.textColor
+            color: Material.foreground
         }
     }
 
@@ -70,7 +67,7 @@ Rectangle {
         Rectangle {
             id: background
 
-            color: btStyle.textBackgroundColor
+            color: Material.background
             anchors.fill: parent
             z: -1
         }
@@ -78,9 +75,7 @@ Rectangle {
         delegate: Rectangle {
             id: entry
 
-            color: btStyle.textBackgroundColor
-            border.width: 1
-            border.color: ListView.isCurrentItem ? "#c0c0c0" : "#a0a0a0"
+            color: Material.background
             width: parent.width
             height: {
                 var pixel = btStyle.pixelsPerMillimeterY * 7;
@@ -110,7 +105,7 @@ Rectangle {
                 }
                 anchors.verticalCenter: parent.verticalCenter
                 anchors.left: parent.left
-                anchors.leftMargin: 10
+                anchors.leftMargin: btStyle.pixelsPerMillimeterX
 
                 checkable: true;
             }
@@ -123,13 +118,13 @@ Rectangle {
                 anchors.right: entry.right
                 height: entry.height
                 wrapMode: Text.WrapAtWordBoundaryOrAnywhere
-                anchors.leftMargin: btStyle.pixelsPerMillimeterX
+                anchors.leftMargin: btStyle.pixelsPerMillimeterX * 2
                 anchors.rightMargin: 10
                 anchors.topMargin: 5
                 verticalAlignment: Text.AlignVCenter
                 text: "<b>" + title + "</b> - " + desc
                 font.pointSize: btStyle.uiFontPointSize
-                color: btStyle.textColor
+                color: Material.foreground
             }
         }
 

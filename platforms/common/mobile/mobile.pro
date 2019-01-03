@@ -1,4 +1,4 @@
-CONFIG += clucene  mobile c++11
+CONFIG += clucene  mobile c++11 qml_debug
 QT += svg xml qml quick quickcontrols2
 
 QML_ROOT_PATH = ../../../src/mobile/qml
@@ -101,13 +101,19 @@ OTHER_FILES += \
     ../../../src/mobile/qml/PrevNextArrow.qml \
     ../../../src/mobile/qml/Progress.qml \
     ../../../src/mobile/qml/Question.qml \
+    ../../../src/mobile/qml/QuestionDialog.qml \
     ../../../src/mobile/qml/ReferenceDisplay.qml \
     ../../../src/mobile/qml/RightArrow.qml \
     ../../../src/mobile/qml/Search.qml \
+    ../../../src/mobile/qml/SearchDialog.qml \
+    ../../../src/mobile/qml/SearchDrawer.qml \
     ../../../src/mobile/qml/SearchIcon.qml \
     ../../../src/mobile/qml/SearchResults.qml \
+    ../../../src/mobile/qml/SearchResultsModules.qml \
+    ../../../src/mobile/qml/SearchResultsReferences.qml \
+    ../../../src/mobile/qml/SearchResultsText.qml \
+    ../../../src/mobile/qml/SearchResultsTitleBar.qml \
     ../../../src/mobile/qml/SetFont.qml \
-    ../../../src/mobile/qml/StartupBookshelfManager.qml \
     ../../../src/mobile/qml/TextEditor.qml \
     ../../../src/mobile/qml/TitleColorBar.qml \
     ../../../src/mobile/qml/TreeChooser.qml \

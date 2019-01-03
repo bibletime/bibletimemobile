@@ -12,114 +12,22 @@
 
 import QtQuick 2.11
 import QtQuick.Controls 2.4
+import QtQuick.Controls.Material 2.3
+//import QtQuick.Dialogs 1.2
 import BibleTime 1.0
 
-Rectangle {
+Dialog {
     id: continueDialog
 
     property alias text: continueText.text
-    property bool answer
-    property color background
 
-    signal finished();
+    standardButtons: Dialog.Ok
 
-    anchors.fill: parent
-    color: btStyle.textBackgroundColor
-    visible: false
-    width: parent.width
-
-    Rectangle {
-        id: continueTitleBar
-        color: btStyle.toolbarColor
-        width: parent.width
-        height: {
-            var pixel = btStyle.pixelsPerMillimeterY * 7.5;
-            var uiFont = btStyle.uiFontPointSize * 4.4;
-            var mix = pixel * 0.7 + uiFont * 0.3;
-            return Math.max(pixel, mix);
-        }
-
-        Image {
-            id: logo
-
-            width: parent.height - 10
-            height: parent.height - 10
-            anchors.left: parent.left
-            anchors.top: parent.top
-            anchors.topMargin: width * 0.1
-            anchors.leftMargin: width * 0.1
-            source: "qrc:/share/bibletime/icons/bibletime.svg"
-        }
-
-
-        Text {
-            id: continueTitle
-
-            color: btStyle.toolbarTextColor
-            font.pointSize: btStyle.uiFontPointSize * 1.1
-            text: qsTr("BibleTime Mobile")
-            anchors.left: logo.right
-            anchors.verticalCenter: logo.verticalCenter
-            anchors.leftMargin: logo.width * 0.2
-        }
-    }
-
-    Text {
-        id: dummyTextForHeight
-        text: "x"
-        font.pointSize: btStyle.uiFontPointSize
-        visible: false
-    }
-
-    Rectangle {
-        id: outline
-
-        anchors.left: parent.left
-        anchors.right: parent.right
-        anchors.top: continueText.top
-        anchors.bottom: buttons.bottom
-        height: parent.height * 0.25
-        anchors.topMargin: btStyle.pixelsPerMillimeterX * -5
-        anchors.bottomMargin: btStyle.pixelsPerMillimeterX * -5
-        anchors.leftMargin: btStyle.pixelsPerMillimeterX * 5
-        anchors.rightMargin: btStyle.pixelsPerMillimeterX * 5
-        color: btStyle.textBackgroundColor
-        border.color: btStyle.textColor
-        border.width: 5
-        radius: btStyle.pixelsPerMillimeterX * 3
-    }
-
-    Text {
+    contentItem: Text {
         id: continueText
         width: parent.width
-        anchors.verticalCenter: parent.verticalCenter
-        anchors.left: parent.left
-        anchors.right: parent.right
-        anchors.leftMargin: btStyle.pixelsPerMillimeterX * 8
-        anchors.rightMargin: btStyle.pixelsPerMillimeterX * 8
-        horizontalAlignment: Text.AlignHCenter
         wrapMode: Text.WordWrap
         font.pointSize: btStyle.uiFontPointSize
-        color: btStyle.textColor
-    }
-
-    Grid {
-        id: buttons
-
-        spacing: btStyle.pixelsPerMillimeterY * 4
-        columns: 2
-        anchors.top: continueText.bottom
-        anchors.horizontalCenter: parent.horizontalCenter
-        anchors.topMargin: btStyle.pixelsPerMillimeterX * 5
-
-
-        BtButton {
-            text: qsTr("Continue")
-            onClicked: {
-                continueDialog.visible = false;
-                answer = true;
-                finished();
-            }
-        }
+        color: Material.foreground
     }
 }

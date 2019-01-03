@@ -59,9 +59,13 @@ Rectangle {
     MenuButton {
         id: menuButton
 
-        width: parent.height * 1.2
-        height: parent.height
+        width: parent.height * 1.1
+        height: parent.height * 0.9
         anchors.right: parent.right
+
+        // margin for searchDrawer dragging
+        anchors.rightMargin: Qt.styleHints.startDragDistance
+
         anchors.top: parent.top
         foreground: Material.accent
         background: Material.background
@@ -73,7 +77,7 @@ Rectangle {
     SearchIcon {
         id: searchIconQml
 
-        width: parent.height * 1.2
+        width: parent.height * 1
         height: parent.height
         anchors.right: menuButton.left
         anchors.top: parent.top

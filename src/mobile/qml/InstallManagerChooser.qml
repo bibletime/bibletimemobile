@@ -12,6 +12,7 @@
 
 import QtQuick 2.11
 import QtQuick.Controls 2.4
+import QtQuick.Controls.Material 2.3
 import BibleTime 1.0
 
 Rectangle {
@@ -59,10 +60,15 @@ Rectangle {
         installInterface.cancel();
     }
 
+    function refreshSources() {
+        var source = installInterface.getSource(sourceView.currentIndex);
+        var category = installInterface.getCategory(categoryView.currentIndex);
+        var language = installInterface.getLanguage(languageView.currentIndex);
+        installInterface.refreshLists(source, category, language);
+    }
+
     objectName: "installManager"
-    color: btStyle.toolbarColor
-    border.color: "black"
-    border.width: 2
+    color: Material.background
 
     signal sourceChanged(int index);
     signal categoryChanged(int index);
@@ -71,12 +77,12 @@ Rectangle {
     onVisibleChanged: {
         if (refreshOnOpen) {
             refreshOnOpen =false;
-            refreshAction.trigger();
+            refreshSources();
         }
     }
 
     Keys.onReleased: {
-        if ((event.key == Qt.Key_Back || event.key == Qt.Key_Escape) && installManager.visible == true) {
+        if ((event.key === Qt.Key_Back || event.key === Qt.Key_Escape) && installManager.visible === true) {
             event.accepted = true;
             installManager.visible = false;
         }
@@ -84,7 +90,7 @@ Rectangle {
 
     Rectangle {
         id: installTitleBar
-        color: btStyle.toolbarColor
+        color: Material.background
         width: parent.width
         height: btStyle.pixelsPerMillimeterY * 7
 
@@ -102,7 +108,7 @@ Rectangle {
 
         Text {
             id: title
-            color: btStyle.toolbarTextColor
+            color: Material.foreground
             font.pointSize: btStyle.uiFontPointSize
             anchors.horizontalCenter: parent.horizontalCenter
             anchors.top: parent.top
@@ -115,7 +121,7 @@ Rectangle {
 
     Grid {
         id:  grid
-        columns: 3
+        columns: 5
         rows: 1
         spacing: installManager.spacing
         width: parent.width - installManager.spacing
@@ -150,6 +156,12 @@ Rectangle {
             }
         }
 
+        Rectangle {
+            width: 1
+            color: "gray"
+            height: grid.height
+        }
+
         ListTextView {
             id: categoryView
 
@@ -171,6 +183,12 @@ Rectangle {
             }
         }
 
+        Rectangle {
+            width: 1
+            color: "gray"
+            height: grid.height
+        }
+
         ListTextView {
             id: languageView
 
@@ -189,6 +207,14 @@ Rectangle {
                 installInterface.updateWorksModel(source, category, language);
             }
         }
+    }
+
+    Rectangle {
+        anchors.top: worksView.top
+        width: grid.width
+        color: "gray"
+        height: 1
+        z: 2
     }
 
     ListWorksView {
@@ -228,12 +254,7 @@ Rectangle {
             id: refreshButton
 
             text: qsTranslate("InstallManagerChooser", "Refresh Sources")
-            onClicked: {
-                var source = installInterface.getSource(sourceView.currentIndex);
-                var category = installInterface.getCategory(categoryView.currentIndex);
-                var language = installInterface.getLanguage(languageView.currentIndex);
-                installInterface.refreshLists(source, category, language);
-            }
+            onClicked: refreshSources();
         }
 
         BtButton {

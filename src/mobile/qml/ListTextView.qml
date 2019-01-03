@@ -11,7 +11,8 @@
 **********/
 
 import QtQuick 2.11
-import QtQuick.Controls 2.2
+import QtQuick.Controls 2.4
+import QtQuick.Controls.Material 2.3
 
 Rectangle {
     id: top
@@ -21,17 +22,14 @@ Rectangle {
     property alias title: title.text
     property bool highlight: true
 
-    border.color: "black"
-    border.width: 2
-
     signal itemSelected(int index)
+
+    color: Material.background
 
     Rectangle {
         id: titleRect
 
-        border.color: btStyle.textColor
-        border.width: 1
-        color: btStyle.textBackgroundColor
+        color: Material.background
         height: btStyle.uiFontPointSize * 4;
         anchors.left: parent.left
         anchors.right: parent.right
@@ -47,7 +45,7 @@ Rectangle {
             horizontalAlignment: Text.AlignCenter
             verticalAlignment: Text.AlignBottom
             style: Text.Sunken
-            color: btStyle.textColor
+            color: Material.foreground
             font.pointSize: btStyle.uiFontPointSize
         }
     }
@@ -79,7 +77,7 @@ Rectangle {
         Rectangle {
             id: background
 
-            color: btStyle.textBackgroundColor
+            color: Material.background
             anchors.fill: parent
             z: -1
         }
@@ -90,9 +88,7 @@ Rectangle {
             property bool selected: ListView.isCurrentItem ? true : false
             objectName: "entry"
 
-            color: (highlight && ListView.isCurrentItem) ? btStyle.textBackgroundHighlightColor : btStyle.textBackgroundColor
-            border.width: buttonMouseArea.pressed ? 5 :1
-            border.color: "darkgray"
+            color: (highlight && ListView.isCurrentItem) ? Material.primary: Material.background
             width: parent.width
             height: {
                 var pixel = btStyle.pixelsPerMillimeterY * 8;
@@ -110,7 +106,7 @@ Rectangle {
                 anchors.topMargin: 10
                 verticalAlignment: Text.AlignVCenter
                 text: modelText
-                color: btStyle.textColor
+                color: Material.foreground
                 font.pointSize: btStyle.uiFontPointSize - 1
                 font.bold: highlight && entry.selected
             }

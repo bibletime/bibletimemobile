@@ -11,27 +11,28 @@
 **********/
 
 import QtQuick 2.11
-import QtQuick.Controls 2.2
+import QtQuick.Controls 2.4
+import QtQuick.Controls.Material 2.3
 
 Rectangle {
     id: top
 
     property alias model: listView.model
     property alias currentIndex: listView.currentIndex
-    property real leftTextMargin: 10
+    property real leftTextMargin: 2
     property bool highlight: true
 
     signal itemSelected(int index)
 
-    color: btStyle.textBackgroundColor
+    color: Material.background
 
     ListView {
         id: listView
 
         anchors.fill: parent
-        anchors.leftMargin: 3
-        anchors.rightMargin: 3
-        anchors.bottomMargin: 3
+        anchors.leftMargin: 1
+        anchors.rightMargin: 1
+        anchors.bottomMargin: 1
         clip: true
         highlightFollowsCurrentItem: true
         currentIndex: 2
@@ -51,9 +52,7 @@ Rectangle {
             property bool selected: ListView.isCurrentItem ? true : false
             objectName: "entry"
 
-            color: (highlight && ListView.isCurrentItem) ? btStyle.textBackgroundHighlightColor : btStyle.textBackgroundColor
-            border.width: buttonMouseArea.pressed ? 5 :1
-            border.color: "darkgray"
+            color: (highlight && ListView.isCurrentItem) ? Material.primary : Material.background
             width: parent.width
             height: {
                 var pixel = btStyle.pixelsPerMillimeterY * 7;
@@ -72,7 +71,7 @@ Rectangle {
                 text: model.text
                 font.pointSize: btStyle.uiFontPointSize
                 font.bold: highlight && entry.selected
-                color: btStyle.textColor
+                color: Material.foreground
             }
         }
 

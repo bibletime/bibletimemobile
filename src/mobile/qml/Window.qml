@@ -12,7 +12,7 @@
 
 import QtQuick 2.11
 import QtQuick.Controls.Material 2.3
-import QtQuick.Controls 2.2
+import QtQuick.Controls 2.4
 import BibleTime 1.0
 
 Rectangle {
@@ -176,8 +176,7 @@ Rectangle {
         console.log(text);
     }
 
-    color: "black"
-
+    color: Material.background
     BtWindowInterface {
         id: btWindowInterface
 
@@ -239,6 +238,7 @@ Rectangle {
             width: parent.height * 0.80
             height: parent.height * 0.80
             anchors.left: prevHistory.right
+            anchors.leftMargin: Qt.styleHints.startDragDistance/2
             anchors.top: parent.top
             anchors.margins: parent.height * 0.1;
             show: btWindowInterface.historyForwardVisible
@@ -323,12 +323,16 @@ Rectangle {
 
             width: parent.height * 1.1
             height: parent.height
+
+            // margin for searchDrawer dragging
+            anchors.rightMargin: Qt.styleHints.startDragDistance
             anchors.right: parent.right
             anchors.top: parent.top
             background: Material.background
             foreground: Material.accent
 
             onButtonClicked: {
+                console.log("menuButton clicked")
                 windowMenusDialog(windowView);
             }
         }
@@ -389,7 +393,7 @@ Rectangle {
     Rectangle {
         id: mainTextView
 
-        color: btStyle.textBackgroundColor
+        color: Material.background
         anchors.top: toolbar.bottom
         anchors.left: windowView.left
         anchors.right: windowView.right
@@ -483,7 +487,7 @@ Rectangle {
                         anchors.left: column0Text.right
                         anchors.leftMargin: btStyle.pixelsPerMillimeterX * 0.8
                         width: listView.width / listView.columns
-                        color: btStyle.textColor
+                        color: Material.foreground
                         font.family: btWindowInterface.fontName
                         font.pointSize: btWindowInterface.fontSize
                         wrapMode: Text.WordWrap
@@ -506,7 +510,7 @@ Rectangle {
                         anchors.left: column1Text.right
                         anchors.leftMargin: btStyle.pixelsPerMillimeterX * 0.8
                         width: listView.width / listView.columns
-                        color: btStyle.textColor
+                        color: Material.foreground
                         font.family: btWindowInterface.fontName
                         font.pointSize: btWindowInterface.fontSize
                         wrapMode: Text.WordWrap
@@ -529,7 +533,7 @@ Rectangle {
                         anchors.left: column2Text.right
                         anchors.leftMargin: btStyle.pixelsPerMillimeterX * 0.8
                         width: listView.width / listView.columns
-                        color: btStyle.textColor
+                        color: Material.foreground
                         font.family: btWindowInterface.fontName
                         font.pointSize: btWindowInterface.fontSize
                         wrapMode: Text.WordWrap

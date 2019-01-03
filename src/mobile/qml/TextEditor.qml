@@ -12,13 +12,13 @@
 
 import QtQuick 2.11
 import QtQuick.Controls 2.4
+import QtQuick.Controls.Material 2.3
 import BibleTime 1.0
 
 Rectangle {
     id: textEditor
 
-    color: btStyle.toolbarColor
-
+    color: Material.background
     function open(text) {
         visible = true;
         textArea.text = text;

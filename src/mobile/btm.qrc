@@ -49,12 +49,18 @@
         <file>qml/PrevNextArrow.qml</file>
         <file>qml/Progress.qml</file>
         <file>qml/Question.qml</file>
+        <file>qml/QuestionDialog.qml</file>
         <file>qml/ReferenceDisplay.qml</file>
         <file>qml/RightArrow.qml</file>
         <file>qml/Search.qml</file>
+        <file>qml/SearchDialog.qml</file>
+        <file>qml/SearchDrawer.qml</file>
         <file>qml/SearchIcon.qml</file>
         <file>qml/SearchResults.qml</file>
-        <file>qml/StartupBookshelfManager.qml</file>
+        <file>qml/SearchResultsModules.qml</file>
+        <file>qml/SearchResultsReferences.qml</file>
+        <file>qml/SearchResultsText.qml</file>
+        <file>qml/SearchResultsTitleBar.qml</file>
         <file>qml/SetFont.qml</file>
         <file>qml/TitleColorBar.qml</file>
         <file>qml/TextEditor.qml</file>

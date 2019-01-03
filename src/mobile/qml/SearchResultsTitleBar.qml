@@ -15,32 +15,33 @@ import QtQuick.Controls.Material 2.3
 import BibleTime 1.0
 
 Rectangle {
-    id: titleBar
+    id: searchResultsTitleBar
 
-    property string title: ""
-    property int barHeight: {
-        var pixel = btStyle.pixelsPerMillimeterY * 6;
-        var uiFont = btStyle.uiFontPointSize * 2;
-        return Math.max(pixel, uiFont);
-    }
+    signal back();
 
     color: Material.background
-    height: barHeight
-    border.width: 1
-    border.color: Material.accent
+
+    Back {
+        id: backTool
+
+        anchors.left: parent.left
+        anchors.top: parent.top
+        anchors.bottom: parent.bottom
+        text: qsTranslate("Navigation", "Main")
+        onClicked: {
+            back();
+        }
+    }
 
     Text {
-        id: title
+        id: title2
         color: Material.foreground
         font.pointSize: btStyle.uiFontPointSize
-        anchors.fill: parent
-        horizontalAlignment: Text.AlignHCenter
+        anchors.horizontalCenter: parent.horizontalCenter
+        anchors.top: parent.top
+        anchors.bottom: parent.bottom
+        anchors.leftMargin: search.spacing
         verticalAlignment: Text.AlignVCenter
-        text: titleBar.title
-    }
-
-    BtStyle {
-        id: btStyle
+        text: qsTranslate("SearchResults", "Search Results")
     }
 }
-

@@ -4,9 +4,7 @@ import QtQuick 2.11
 Item {
     id:container
 
-    property color background: "#000000"
     property bool show: false
-    property color borderColor: "black"
     property color textColor: Qt.rgba(1,1,1, 1)
     onTextColorChanged: canvas.requestPaint();
 
@@ -22,8 +20,6 @@ Item {
             width:  parent.width
             height: parent.height
             antialiasing: true
-
-            property color bright: Qt.rgba(255, 255, 255, 0.0)
 
             onPaint: {
                 var ctx = getContext("2d");

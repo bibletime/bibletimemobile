@@ -12,6 +12,7 @@
 
 import QtQuick 2.11
 import QtQml.Models 2.3
+import QtQuick.Controls 2.4
 import QtQuick.Controls.Material 2.3
 import QtQuick.Window 2.11
 import BibleTime 1.0
@@ -22,23 +23,48 @@ Window {
     property int opacitypopup: 0
     property QtObject component: null;
     property Item window: null;
+    property int orientation: Qt.Vertical
+
+    function setOrientation() {
+        if (width > height) {
+            orientation = Qt.Horizontal;
+        } else {
+            orientation = Qt.Vertical;
+        }
+    }
 
     function installModules() {
         installManagerChooser.open();
     }
+
     function startSearch() {
         var moduleNames = windowManager.getUniqueModuleNames();
-        search.appendModuleChoices(moduleNames);
-        search.searchText = "";
-        search.initialize();
-        screenView.changeScreen(screenModel.search);
+        searchDialog.initialize(moduleNames);
+        searchDialog.open();
+        //        screenView.changeScreen(screenModel.search);
+
+//        searchDialog.appendModuleChoices(moduleNames);
+//        searchDialog.searchText = "";
+//        searchDrawer.initialize();
+//        searchDrawer.open();
+//        console.log("open search drawer")
+//        searchDrawer.openSearchDialog();
     }
+
     function viewReferencesScreen(moduleName, reference) {
-        magView.initialize();
-        magView.setModule(moduleName);
-        magView.setReference(reference);
-        magView.scrollDocumentViewToCurrentReference();
-        screenView.changeScreen(screenModel.references);
+        magViewDrawer.initialize();
+        magViewDrawer.setModule(moduleName);
+        magViewDrawer.setReference(reference);
+        magViewDrawer.scrollDocumentViewToCurrentReference();
+        magDrawer.open();
+
+
+
+        //        magView.initialize();
+        //        magView.setModule(moduleName);
+        //        magView.setReference(reference);
+        //        magView.scrollDocumentViewToCurrentReference();
+        //        screenView.changeScreen(screenModel.references);
     }
     function saveSession() {
         sessionInterface.saveDefaultSession();
@@ -49,8 +75,15 @@ Window {
     visible: true
     width:  btStyle.width
 
-    onWidthChanged: btStyle.width = width;
-    onHeightChanged: btStyle.height = height;
+    onWidthChanged: {
+        setOrientation();
+        btStyle.width = width;
+    }
+
+    onHeightChanged: {
+        setOrientation();
+        btStyle.height = height;
+    }
 
     Component.onCompleted: {
         setFontDialog.textFontChanged.connect(windowManager.updateTextFont)
@@ -73,6 +106,7 @@ Window {
         Keys.forwardTo: [
             searchResultsMenu,
             windowArrangementMenus,
+
             viewWindowsMenus,
             windowMenus,
             mainMenus,
@@ -83,7 +117,7 @@ Window {
             gridChooser,
             moduleChooser,
             magView,
-            searchResults,
+//            searchResults,
             search,
             textEditor,
             defaultDoc,
@@ -107,6 +141,7 @@ Window {
             if (event.key === Qt.Key_Back || event.key === Qt.Key_Escape) {
                 event.accepted = true;
                 quitQuestion.visible = true;
+                quitQuestion.open();
             }
         }
 
@@ -333,10 +368,13 @@ Window {
         z: 2
     }
 
-    Question {
+    QuestionDialog{
         id: indexQuestion
-        background: btStyle.toolbarColor
+
         text: qsTr("Some of the modules you want to search need to be indexed. Do you want to index them now?")
+        width: Math.min(parent.width, parent.height) * 0.9
+        x: (parent.width - width) / 2
+        y: (parent.height - height) / 2
         z: 4
         onFinished: {
             indexQuestion.visible = false;
@@ -364,11 +402,11 @@ Window {
         z: 4
         onVisibleChanged: {
             if (visible == true) {
-                searchResults.indexModules();
+                searchDrawer.indexModules();
             }
         }
         onCancel: {
-            searchResults.cancel();
+            searchDrawer.cancel();
         }
     }
 
@@ -437,13 +475,15 @@ Window {
         onCanceled: installManagerChooser.visible = false;
     }
 
-    Question {
+    QuestionDialog {
         id: installManagerStartup
 
-        background: btStyle.toolbarColor
         text: qsTr("BibleTime views documents such as Bibles and commentaries. These documents are downloaded and stored locally." +
                    "There are currently no documents. Do you want to download documents now?")
         visible: false
+        width: Math.min(parent.width, parent.height) * 0.9
+        x: (parent.width - width) / 2
+        y: (parent.height - height) / 2
         z: 4
         onFinished: {
             installManagerStartup.visible = false;
@@ -453,10 +493,12 @@ Window {
         }
     }
 
-    Question {
+    QuestionDialog {
         id: basicWorks
 
-        background: btStyle.toolbarColor
+        width: Math.min(parent.width, parent.height) * 0.9
+        x: (parent.width - width) / 2
+        y: (parent.height - height) / 2
         text: {
             var lang = btStyle.systemLocale;
             var names = installAutomatic.getAutoInstallDocumentNames(lang);
@@ -490,12 +532,13 @@ Window {
     ContinueDialog {
         id: continueDialog
 
-        background: btStyle.toolbarColor
         text: qsTr("The \"Manage Installed Documents\" window will now be opened. You can open it later from the menus at the upper right of the Main view.")
+        width: Math.min(parent.width, parent.height) * 0.9
+        x: (parent.width - width) / 2
+        y: (parent.height - height) / 2
         visible: false
-        z: 3
-        onFinished: {
-            continueDialog.visible = false;
+        onClosed: {
+//            continueDialog.visible = false;
             installManagerChooser.refreshOnOpen = true;
             installModules();
         }
@@ -539,6 +582,26 @@ Window {
         visible: false
     }
 
+    Drawer {
+        id: magDrawer
+
+        y: 1
+        width: parent.width
+        height: parent.height - y
+        dragMargin: Qt.styleHints.startDragDistance/2
+
+        MagView {
+            id: magViewDrawer
+
+            width: parent.width
+            height: parent.height
+            //            onMagFinished: {
+            //                screenView.changeScreen(screenModel.main);
+            //            }
+        }
+
+    }
+
     ListModel {
         id: mainMenusModel
 
@@ -557,6 +620,7 @@ Window {
 
         function doAction(action) {
             mainMenus.visible = false;
+            console.log("main menu action")
             if (action === "newWindow") {
                 windowManager.newWindow();
             }
@@ -608,10 +672,13 @@ Window {
         onCanceled: moduleChooser.visible = false;
     }
 
-    Question {
+    QuestionDialog {
         id: quitQuestion
-        background: btStyle.toolbarColor
+
         text: qsTranslate("Quit", "Are you sure you want to quit?")
+        width: Math.min(parent.width, parent.height) * 0.9
+        x: (parent.width - width) / 2
+        y: (parent.height - height) / 2
         z: 2
         onFinished: {
             if (answer == true)
@@ -720,7 +787,7 @@ Window {
                 anchors.left: parent.left
                 anchors.right: parent.right
                 anchors.bottom: parent.bottom
-                color: btStyle.textBackgroundColor
+                color: Material.background
                 visible: true
                 onWindowMenus: {
                     windowMenus.theWindow = window
@@ -745,14 +812,16 @@ Window {
             }
             onIndexingFinishedChanged: {
                 indexProgress.visible = false;
-                if ( ! searchResults.indexingWasCancelled()) {
-                    search.openSearchResults();
+                if ( ! searchDrawer.indexingWasCancelled()) {
+                    searchDrawer.openSearchResults();
                 }
             }
             onProgressTextChanged: {
+                console.log("progressText", text)
                 indexProgress.text = text;
             }
             onProgressValueChanged: {
+                console.log("progressValue", value);
                 indexProgress.value = value;
             }
         }
@@ -778,23 +847,15 @@ Window {
                 search.modules = modules;
             }
 
-            function openSearchResults() {
-                searchResults.searchText = search.searchText;
-                searchResults.findChoice = search.findChoice;
-                searchResults.moduleList = search.moduleList;
-                searchResults.performSearch();
-                screenView.changeScreen(screenModel.results);
-            }
-
             width: screenView.width
             height: screenView.height
             onSearchRequest: {
-                searchResults.moduleList = search.moduleList;
-                if ( ! searchResults.modulesAreIndexed()) {
+                searchDrawer.moduleList = search.moduleList;
+                if ( ! searchDrawer.modulesAreIndexed()) {
                     indexQuestion.visible = true;
                     return;
                 }
-                openSearchResults();
+                searchDrawer.openSearchResults();
             }
             onSearchFinished: {
                 screenView.changeScreen(screenModel.main);
@@ -839,13 +900,67 @@ Window {
         }
     }
 
+    SearchDialog {
+        id: searchDialog
+
+        visible: false
+        x: (parent.width - width) / 2
+        y: (parent.height - height) / 2
+        orientation: root.orientation
+        onSearchRequest: {
+            searchDrawer.moduleList = searchDialog.moduleList;
+            if ( ! searchDrawer.modulesAreIndexed()) {
+                indexQuestion.visible = true;
+                return;
+            }
+            searchDrawer.openSearchResults();
+        }
+    }
+
+    SearchDrawer {
+        id: searchDrawer
+
+        dragMargin: Qt.styleHints.startDragDistance/2
+        function openSearchResults() {
+//                searchResults.searchText = searchDialog.searchText;
+//                searchResults.findChoice = searchDialog.findChoice;
+//                searchResults.moduleList = searchDialog.moduleList;
+//                searchResults.performSearch();
+            screenView.changeScreen(screenModel.results);
+
+            searchDrawer.searchText = searchDialog.searchText;
+            searchDrawer.findChoice = searchDialog.findChoice;
+            searchDrawer.moduleList = searchDialog.moduleList;
+            searchDrawer.performSearch();
+            //screenView.changeScreen(screenModel.results);
+        }
+
+        onIndexingFinishedChanged: {
+            console.log("indexingFinished")
+            indexProgress.visible = false;
+            if ( ! searchDrawer.indexingWasCancelled()) {
+                searchDrawer.openSearchResults();
+            }
+        }
+        onProgressTextChanged: {
+            console.log("progressText", text)
+            indexProgress.text = text;
+        }
+        onProgressValueChanged: {
+            console.log("progressValue", value);
+            indexProgress.value = value;
+        }
+
+    }
+
+
     Menus {
         id: searchResultsMenu
 
         function doAction(action) {
             searchResultsMenu.visible = false;
-            var module = searchResults.getModule();
-            var reference = searchResults.getReference();
+            var module = searchDrawer.getModule();
+            var reference = searchDrawer.getReference();
             if (action === "newWindow") {
                 screenView.changeScreen(screenModel.main);
                 windowManager.newWindowWithReference(module, reference);

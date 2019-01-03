@@ -1,5 +1,6 @@
 
 import QtQuick 2.11
+import QtQuick.Controls.Material 2.3
 
 Item {
     id: backTool
@@ -14,16 +15,14 @@ Item {
         anchors.left: parent.left
         anchors.top: parent.top
         anchors.bottom: parent.bottom
-        background: btStyle.toolbarColor
-        textColor: btStyle.toolbarTextColor
-        borderColor: btStyle.toolbarTextColor
+        textColor: Material.foreground
         width: parent.height * 0.50
         height: parent.height * 0.85
     }
 
     Text {
         id: backText
-        color: btStyle.toolbarTextColor
+        color: Material.foreground
         font.pointSize: btStyle.uiFontPointSize
         anchors.top: parent.top
         anchors.bottom: parent.bottom
