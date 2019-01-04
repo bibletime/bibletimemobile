@@ -23,7 +23,7 @@
         <file>qml/ChooseReference.qml</file>
         <file>qml/BtComboBox.qml</file>
         <file>qml/ContinueDialog.qml</file>
-        <file>qml/CopyVerses.qml</file>
+        <file>qml/CopyVersesDialog.qml</file>
         <file>qml/DebugDialog.qml</file>
         <file>qml/DefaultDoc.qml</file>
         <file>qml/Folder.qml</file>

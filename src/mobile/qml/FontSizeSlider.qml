@@ -75,7 +75,7 @@ Rectangle {
         anchors.top: parent.top
         anchors.topMargin: btStyle.pixelsPerMillimeterX * 4
         font.pointSize: btStyle.uiFontPointSize
-        color: btStyle.textColor
+        color: Material.foreground
     }
 
     Slider {

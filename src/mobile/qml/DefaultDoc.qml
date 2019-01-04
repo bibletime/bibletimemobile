@@ -11,12 +11,13 @@
 **********/
 import QtQuick 2.11
 import QtQuick.Controls 2.4
+import QtQuick.Controls.Material 2.3
 import BibleTime 1.0
 
 Rectangle {
     id: defaultDoc
 
-    color: btStyle.textBackgroundColor
+    color: Material.background
     anchors.fill: parent
 
     BtStyle {
@@ -29,7 +30,7 @@ Rectangle {
 
     Rectangle {
         id: standardDocTitleBar
-        color: btStyle.toolbarColor
+        color: Material.background
         width: parent.width
         height: btStyle.pixelsPerMillimeterY * 7
 
@@ -72,7 +73,7 @@ Rectangle {
             Rectangle {
                 id: spacer0
 
-                color: btStyle.textBackgroundColor
+                color: Material.background
                 width:1
                 height: btStyle.pixelsPerMillimeterY * 2
             }
@@ -84,13 +85,13 @@ Rectangle {
                 width: parent.width
                 horizontalAlignment: Text.AlignHCenter
                 font.pointSize: btStyle.uiFontPointSize + 4
-                color: btStyle.textColor
+                color: Material.background
             }
 
             Rectangle {
                 id: spacer1
 
-                color: btStyle.textBackgroundColor
+                color: Material.background
                 width:1
                 height: btStyle.pixelsPerMillimeterY * 4
             }
@@ -102,7 +103,7 @@ Rectangle {
                 width: parent.width
                 horizontalAlignment: Text.AlignHCenter
                 font.pointSize: btStyle.uiFontPointSize
-                color: btStyle.textColor
+                color: Material.background
             }
 
             BtComboBox {
@@ -127,7 +128,7 @@ Rectangle {
             Rectangle {
                 id: spacer2
 
-                color: btStyle.textBackgroundColor
+                color: Material.background
                 width:1
                 height: btStyle.pixelsPerMillimeterY * 4
             }
@@ -139,7 +140,7 @@ Rectangle {
                 width: parent.width
                 horizontalAlignment: Text.AlignHCenter
                 font.pointSize: btStyle.uiFontPointSize
-                color: btStyle.textColor
+                color: Material.background
             }
 
             BtComboBox {
@@ -164,7 +165,7 @@ Rectangle {
             Rectangle {
                 id: spacer3
 
-                color: btStyle.textBackgroundColor
+                color: Material.background
                 width:1
                 height: btStyle.pixelsPerMillimeterY * 4
             }
@@ -176,7 +177,7 @@ Rectangle {
                 width: parent.width
                 horizontalAlignment: Text.AlignHCenter
                 font.pointSize: btStyle.uiFontPointSize
-                color: btStyle.textColor
+                color: Material.background
             }
 
             BtComboBox {
@@ -200,7 +201,7 @@ Rectangle {
             Rectangle {
                 id: spacer4
 
-                color: btStyle.textBackgroundColor
+                color: Material.background
                 width:1
                 height: btStyle.pixelsPerMillimeterY * 4
             }
@@ -212,7 +213,7 @@ Rectangle {
                 width: parent.width
                 horizontalAlignment: Text.AlignHCenter
                 font.pointSize: btStyle.uiFontPointSize
-                color: btStyle.textColor
+                color: Material.background
             }
 
             BtComboBox {
@@ -237,7 +238,7 @@ Rectangle {
             Rectangle {
                 id: spacer5
 
-                color: btStyle.textBackgroundColor
+                color: Material.background
                 width:1
                 height: btStyle.pixelsPerMillimeterY * 4
             }
@@ -249,7 +250,7 @@ Rectangle {
                 width: parent.width
                 horizontalAlignment: Text.AlignHCenter
                 font.pointSize: btStyle.uiFontPointSize
-                color: btStyle.textColor
+                color: Material.background
             }
 
             BtComboBox {

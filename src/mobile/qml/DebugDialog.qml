@@ -12,12 +12,13 @@
 
 import QtQuick 2.11
 import QtQuick.Controls 2.4
+import QtQuick.Controls.Material 2.3
 import BibleTime 1.0
 
 Rectangle {
     id: debugDialog
 
-    color: btStyle.textBackgroundColor
+    color: Material.background
     anchors.fill: parent
 
     BtStyle {
@@ -26,7 +27,7 @@ Rectangle {
 
     Rectangle {
         id: aboutTitleBar
-        color: btStyle.toolbarColor
+        color: Material.background
         width: parent.width
         height: btStyle.pixelsPerMillimeterY * 7
 
@@ -71,7 +72,7 @@ Rectangle {
             Rectangle {
                 id: bibletimeDebugMode
 
-                color: btStyle.textBackgroundColor
+                color: Material.background
                 width: debugDialog.width
                 height:btStyle.pixelsPerMillimeterX * 5
 
@@ -81,7 +82,7 @@ Rectangle {
                     anchors.left: parent.left
                     anchors.leftMargin: btStyle.pixelsPerMillimeterX * 2
                     anchors.verticalCenter: bibletimeDebugMode.verticalCenter
-                    color: btStyle.textColor
+                    color: Material.foreground
                     text: "BibleTime Debug Mode"
                     font.pointSize: btStyle.uiFontPointSize
                 }
@@ -101,7 +102,7 @@ Rectangle {
             Rectangle {
                 id: swordDebugMode
 
-                color: btStyle.textBackgroundColor
+                color: Material.background
                 width: debugDialog.width
                 height:btStyle.pixelsPerMillimeterX * 5
 
@@ -111,7 +112,7 @@ Rectangle {
                     anchors.left: parent.left
                     anchors.leftMargin: btStyle.pixelsPerMillimeterX * 2
                     anchors.verticalCenter: swordDebugMode.verticalCenter
-                    color: btStyle.textColor
+                    color: Material.foreground
                     text: "Sword Debug Mode"
                     font.pointSize: btStyle.uiFontPointSize
                 }
@@ -129,7 +130,7 @@ Rectangle {
             }
 
             Rectangle {
-                color: btStyle.textBackgroundColor
+                color: Material.background
                 width: debugDialog.width
                 height:btStyle.pixelsPerMillimeterX * 5
 
@@ -137,7 +138,7 @@ Rectangle {
                     anchors.left: parent.left
                     anchors.leftMargin: btStyle.pixelsPerMillimeterX * 2
                     anchors.verticalCenter: parent.verticalCenter
-                    color: btStyle.textColor
+                    color: Material.foreground
                     text: {
                         var path = "UserBaseDir: " + configInterface.getUserBaseDir();
                         return path;
@@ -146,7 +147,7 @@ Rectangle {
             }
 
             Rectangle {
-                color: btStyle.textBackgroundColor
+                color: Material.background
                 width: debugDialog.width
                 height:btStyle.pixelsPerMillimeterX * 5
 
@@ -154,7 +155,7 @@ Rectangle {
                     anchors.left: parent.left
                     anchors.leftMargin: btStyle.pixelsPerMillimeterX * 2
                     anchors.verticalCenter: parent.verticalCenter
-                    color: btStyle.textColor
+                    color: Material.foreground
                     text: {
                         var path = "Home Sword Dir: " + configInterface.getUserHomeSwordDir();
                         return path;
@@ -163,7 +164,7 @@ Rectangle {
             }
 
             Rectangle {
-                color: btStyle.textBackgroundColor
+                color: Material.background
                 width: debugDialog.width
                 height:btStyle.pixelsPerMillimeterX * 5
 
@@ -171,7 +172,7 @@ Rectangle {
                     anchors.left: parent.left
                     anchors.leftMargin: btStyle.pixelsPerMillimeterX * 2
                     anchors.verticalCenter: parent.verticalCenter
-                    color: btStyle.textColor
+                    color: Material.foreground
                     text: {
                         var path = "Writable Tmp Dir: " + configInterface.getWritableTmpDir();
                         return path;
@@ -180,7 +181,7 @@ Rectangle {
             }
 
             Rectangle {
-                color: btStyle.textBackgroundColor
+                color: Material.background
                 width: debugDialog.width
                 height:btStyle.pixelsPerMillimeterX * 5
 

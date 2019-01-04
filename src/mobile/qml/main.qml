@@ -47,7 +47,6 @@ Window {
 //        searchDialog.searchText = "";
 //        searchDrawer.initialize();
 //        searchDrawer.open();
-//        console.log("open search drawer")
 //        searchDrawer.openSearchDialog();
     }
 
@@ -129,7 +128,7 @@ Window {
             debugDialog,
             uiFontPointSize,
             setFontDialog,
-            copyVerses,
+            copyVersesDialog,
             bookmarkFoldersParent,
             addFolder1,
             bookmarkFolders,
@@ -334,22 +333,22 @@ Window {
         id: configInterface
     }
 
-    CopyVerses {
-        id: copyVerses
+    CopyVersesDialog {
+        id: copyVersesDialog
 
-        function open() {
+        onLoadReferences: {
             var moduleNames = windowMenus.theWindow.getModuleNames();
             moduleName = moduleNames[0];
+            console.log("moduleName: ", moduleName)
             theWindow = windowMenus.theWindow;
-            copyVerses.visible = true;
+            mainToolbar.enabled = ! copyVersesDialog.visible
+            windowManager.toolbarsEnabled = ! copyVersesDialog.visible
         }
 
-        visible: false
-        z: 2
-        onVisibleChanged: {
-            mainToolbar.enabled = ! copyVerses.visible
-            windowManager.toolbarsEnabled = ! copyVerses.visible
-        }
+        width: parent.width * 0.85
+        x: (parent.width - width) / 2
+        y: (parent.height - height) - btStyle.pixelsPerMillimeterX * 3
+ //       z: 1
 
     }
 
@@ -368,7 +367,7 @@ Window {
         z: 2
     }
 
-    QuestionDialog{
+    QuestionDialog {
         id: indexQuestion
 
         text: qsTr("Some of the modules you want to search need to be indexed. Do you want to index them now?")
@@ -513,7 +512,6 @@ Window {
                 }
                 message += "<br><br>" + qsTr("Would you like to automatically download these documents?");
             }
-            console.log(lang);
             return message;
         }
         visible: false
@@ -618,7 +616,6 @@ Window {
 
         function doAction(action) {
             mainMenus.visible = false;
-            console.log("main menu action")
             if (action === "newWindow") {
                 windowManager.newWindow();
             }
@@ -660,7 +657,7 @@ Window {
         width: Math.min(parent.height, parent.width);
         height: parent.height
         anchors.centerIn: parent
-        z: 2
+        z: 4
         Keys.onReleased: {
             if ((event.key === Qt.Key_Back || event.key === Qt.Key_Escape)  && moduleChooser.visible === true) {
                 event.accepted = true;
@@ -1204,7 +1201,7 @@ Window {
                 windowManager.closeWindow(index);
             }
             else if (action === "copy") {
-                copyVerses.open();
+                copyVersesDialog.openDialog();
             }
             else if (action === "addParallel") {
                 theWindow.addParallelModule();
