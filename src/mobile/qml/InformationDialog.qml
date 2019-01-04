@@ -12,15 +12,14 @@
 
 import QtQuick 2.11
 import QtQuick.Controls 2.4
+import QtQuick.Controls.Material 2.3
 import QtQuick.Dialogs 1.2
 
 Rectangle {
     id: informationDialog
 
     property string text: ""
-    border.color: btStyle.textColor
-    border.width: 3
-    color: btStyle.textBackgroundColor
+    color: Material.background
 
     Keys.onReleased: {
         if ((event.key === Qt.Key_Back || event.key === Qt.Key_Escape)  && informationDialog.visible === true) {
@@ -36,6 +35,7 @@ Rectangle {
         anchors.right:parent.right
         anchors.bottom: closeButton.top
         anchors.margins: btStyle.pixelsPerMillimeterX * 2
+        color: Material.foreground
         font.pointSize: btStyle.uiFontPointSize + 1
         readOnly: true
         textMargin: btStyle.pixelsPerMillimeterX

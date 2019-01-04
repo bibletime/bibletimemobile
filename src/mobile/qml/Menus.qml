@@ -11,6 +11,7 @@
 **********/
 
 import QtQuick 2.11
+import QtQuick.Controls.Material 2.3
 import BibleTime 1.0
 
 Rectangle {
@@ -30,7 +31,7 @@ Rectangle {
 
     visible: false
     anchors.fill: parent
-    color: btStyle.textBackgroundColor
+    color: Material.background
 
     BtStyle {
         id: btStyle
@@ -42,14 +43,14 @@ Rectangle {
         Rectangle {
             width: menu.width
             height: menuHeight
-            color: btStyle.textBackgroundColor
-            border.color: btStyle.menuBorder
-            border.width: 2
+            color: Material.background
+            border.color: Material.foreground
+            border.width: 1
 
             Text {
                 text: qsTranslate("main",title)
                 font.pointSize: btStyle.uiFontPointSize
-                color: btStyle.textColor
+                color: Material.foreground
                 anchors.fill: parent
                 anchors.leftMargin: leftMenuMargin
                 verticalAlignment: Text.AlignVCenter
@@ -66,7 +67,7 @@ Rectangle {
 
     Rectangle {
         id: menuTitleBar
-        color: btStyle.toolbarColor
+        color: Material.background
         width: parent.width
         height: btStyle.pixelsPerMillimeterY * 7
 

@@ -11,13 +11,14 @@
 **********/
 
 import QtQuick 2.11
+import QtQuick.Controls.Material 2.3
 import BibleTime 1.0
 
 Rectangle {
     id: installAutomatic
 
     anchors.fill: parent
-    color: btStyle.textBackgroundColor
+    color: Material.background
     onVisibleChanged: {
         if (visible)
             install();
@@ -103,7 +104,7 @@ Rectangle {
 
     Rectangle {
         id: titleBar
-        color: btStyle.toolbarColor
+        color: Material.background
         width: parent.width
         anchors.margins: btStyle.pixelsPerMillimeterX * 2
         height: {
@@ -128,7 +129,7 @@ Rectangle {
         Text {
             id: title
 
-            color: btStyle.toolbarTextColor
+            color: Material.foreground
             font.pointSize: btStyle.uiFontPointSize * 1.1
             text: qsTr("BibleTime Mobile")
             anchors.left: logo.right

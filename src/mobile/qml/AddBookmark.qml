@@ -13,6 +13,7 @@
 
 import QtQuick 2.11
 import QtQuick.Controls 2.4
+import QtQuick.Controls.Material 2.3
 import QtQuick.Layouts 1.3
 import BibleTime 1.0
 
@@ -27,7 +28,7 @@ Rectangle {
     signal bookmarkFolders();
     signal addTheBookmark();
 
-    color: btStyle.textBackgroundColor
+    color: Material.background
     anchors.fill: parent
 
     Keys.onReleased: {
@@ -49,13 +50,13 @@ Rectangle {
         anchors.left: parent.left
         anchors.right: parent.right
         height: titleText.contentHeight * 1.4
-        color: btStyle.toolbarColor
-        border.color: btStyle.toolbarTextColor
+        color: Material.background
+        border.color: Material.foreground
         border.width: 2
 
         Rectangle {
             id: addBookmarkTitleBar
-            color: btStyle.toolbarColor
+            color: Material.background
             width: parent.width
             height: btStyle.pixelsPerMillimeterY * 7
 
@@ -71,7 +72,7 @@ Rectangle {
 
             Text {
                 id: titleText
-                color: btStyle.toolbarTextColor
+                color: Material.foreground
                 font.pointSize: btStyle.uiFontPointSize
                 anchors.horizontalCenter: parent.horizontalCenter
                 anchors.top: parent.top
@@ -95,7 +96,7 @@ Rectangle {
         text: qsTranslate("Bookmarks", "Bookmark") + ":"
         elide: Text.ElideMiddle
         font.pointSize: btStyle.uiFontPointSize + 1
-        color: btStyle.textColor
+        color: Material.foreground
     }
 
     Text {
@@ -110,7 +111,7 @@ Rectangle {
         text: reference + " (" + moduleName + ")"
         elide: Text.ElideMiddle
         font.pointSize: btStyle.uiFontPointSize + 1
-        color: btStyle.textColor
+        color: Material.foreground
     }
 
     Text {
@@ -123,7 +124,7 @@ Rectangle {
         text: qsTranslate("Bookmarks", "Folder") + ":"
         horizontalAlignment: Text.AlignHCenter
         font.pointSize: btStyle.uiFontPointSize + 1
-        color: btStyle.textColor
+        color: Material.foreground
 
         Action {
             id: chooseAction
@@ -144,9 +145,9 @@ Rectangle {
         anchors.leftMargin:btStyle.pixelsPerMillimeterX * 8
         anchors.rightMargin:btStyle.pixelsPerMillimeterX * 5
         anchors.topMargin: 10
-        border.color: btStyle.textColor
+        border.color: Material.foreground
         border.width: 2
-        color: btStyle.textBackgroundColor
+        color: Material.background
 
         Text {
             id: folder
@@ -156,7 +157,7 @@ Rectangle {
             anchors.verticalCenter: parent.verticalCenter
             anchors.leftMargin: 10
             font.pointSize: btStyle.uiFontPointSize + 1
-            color: btStyle.textColor
+            color: Material.foreground
         }
 
         MouseArea {

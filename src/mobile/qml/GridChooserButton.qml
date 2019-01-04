@@ -11,6 +11,7 @@
 **********/
 
 import QtQuick 2.11
+import QtQuick.Controls.Material 2.3
 import BibleTime 1.0
 
 Rectangle {
@@ -28,12 +29,12 @@ Rectangle {
 
     width: buttonWidth
     height: buttonHeight
-    color: btStyle.textBackgroundColor
+    color: Material.background
     smooth: true
 
     border {
         width: 1
-        color: btStyle.buttonBorder
+        color: Material.foreground
     }
 
     BtStyle {
@@ -45,7 +46,7 @@ Rectangle {
 
         width: buttonWidth-8
         anchors.centerIn: parent
-        color: btStyle.textColor
+        color: Material.foreground
         font.pointSize: parent.textHeight
         elide: Text.ElideRight
     }

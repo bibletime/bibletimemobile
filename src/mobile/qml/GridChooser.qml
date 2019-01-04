@@ -11,6 +11,7 @@
 **********/
 
 import QtQuick 2.11
+import QtQuick.Controls.Material 2.3
 import BibleTime 1.0
 
 Rectangle {
@@ -30,7 +31,7 @@ Rectangle {
     signal accepted(string choosenText);
     signal backup();
 
-    color: btStyle.toolbarColor
+    color: Material.background
     height: parent.height
     width: parent.width
 
@@ -121,9 +122,6 @@ Rectangle {
                     textHeight: btStyle.uiFontPointSize
                     buttonWidth: gridChooser.buttonWidth
                     buttonHeight: gridChooser.buttonHeight
-                    textColor: btStyle.buttonTextColor
-                    buttonColor: (text == gridChooser.selected) ? btStyle.buttonBackground : "white"
-                    activeButtonColor: btStyle.buttonTextColor
                     onClicked: gridChooser.accept(text)
                 }
             }

@@ -12,6 +12,7 @@
 
 import QtQuick 2.11
 import QtQuick.Controls 2.4
+import QtQuick.Controls.Material 2.3
 import QtQuick.Layouts 1.3
 import BibleTime 1.0
 
@@ -24,7 +25,7 @@ Rectangle {
     signal folderAdd(string folderName)
     signal folderWasAdded()
 
-    color: btStyle.textBackgroundColor
+    color: Material.background
     anchors.fill: parent
 
     onVisibleChanged: {
@@ -42,9 +43,9 @@ Rectangle {
         anchors.left: parent.left
         anchors.right: parent.right
         height: titleText.contentHeight * 1.4
-        color: btStyle.toolbarColor
-        border.color: btStyle.toolbarTextColor
-        border.width: 2
+        color: Material.background
+        border.color: Material.foreground
+        border.width: 1
 
         Text {
             id: titleText
@@ -55,7 +56,7 @@ Rectangle {
             text: qsTranslate("Bookmarks", "New Folder")
             horizontalAlignment: Text.AlignHCenter
             font.pointSize: btStyle.uiFontPointSize + 4
-            color: btStyle.toolbarTextColor
+            color: Material.foreground
         }
     }
 
@@ -70,22 +71,22 @@ Rectangle {
         height: btStyle.pixelsPerMillimeterY * 6
         verticalAlignment: TextEdit.AlignVCenter
         font.pointSize: btStyle.uiFontPointSize
-        color: btStyle.textColor
+        color: Material.foreground
     }
 
     Rectangle {
         id: folderRect
 
-        height: folderLabel.contentHeight * 2.8
+        height: folderLabel.contentHeight * 2.4
         anchors.bottom: parentFolderLabel.top
         anchors.bottomMargin: btStyle.pixelsPerMillimeterX * 10
         anchors.left: parent.left
         anchors.leftMargin: btStyle.pixelsPerMillimeterX * 8
         anchors.right: parent.right
         anchors.rightMargin: btStyle.pixelsPerMillimeterX * 5
-        color: btStyle.textBackgroundColor
-        border.color: btStyle.textColor
-        border.width: 2
+        color: Material.background
+        border.color: Material.foreground
+        border.width: 1
 
         TextField {
             id: textEdit
@@ -113,7 +114,7 @@ Rectangle {
         text: qsTranslate("Bookmarks", "Parent folder") + ":"
         horizontalAlignment: Text.AlignHCenter
         font.pointSize: btStyle.uiFontPointSize
-        color: btStyle.textColor
+        color: Material.foreground
     }
 
     Rectangle {
@@ -126,9 +127,9 @@ Rectangle {
         anchors.leftMargin:btStyle.pixelsPerMillimeterX * 8
         anchors.rightMargin:btStyle.pixelsPerMillimeterX * 5
         anchors.topMargin: 10
-        border.color: btStyle.textColor
+        border.color: Material.foreground
         border.width: 2
-        color: btStyle.textBackgroundColor
+        color: Material.background
 
         Text {
             id: parentFolder
@@ -138,7 +139,7 @@ Rectangle {
             anchors.verticalCenter: parent.verticalCenter
             anchors.leftMargin: 10
             font.pointSize: btStyle.uiFontPointSize
-            color: btStyle.textColor
+            color: Material.foreground
         }
 
         MouseArea {

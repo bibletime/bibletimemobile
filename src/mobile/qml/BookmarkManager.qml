@@ -15,6 +15,7 @@ import QtQuick 2.11
 import QtQuick.Controls 1.4 as Controls1
 import QtQuick.Controls.Styles 1.4 as ControlsStyle1
 import QtQuick.Controls 2.4
+import QtQuick.Controls.Material 2.3
 import QtQuick.Layouts 1.3
 import BibleTime 1.0
 
@@ -71,7 +72,7 @@ Rectangle {
             treeView.expand(index);
     }
 
-    color: btStyle.textBackgroundColor
+    color: Material.background
     anchors.fill: parent
     onVisibleChanged: {
         if (visible)
@@ -89,7 +90,7 @@ Rectangle {
 
     Rectangle {
         id: bookmarkManagerTitleBar
-        color: btStyle.toolbarColor
+        color: Material.background
         width: parent.width
         height: btStyle.pixelsPerMillimeterY * 7
 
@@ -107,7 +108,7 @@ Rectangle {
 
         Text {
             id: title
-            color: btStyle.toolbarTextColor
+            color: Material.foreground
             font.pointSize: btStyle.uiFontPointSize
             anchors.horizontalCenter: parent.horizontalCenter
             anchors.top: parent.top
@@ -173,8 +174,8 @@ Rectangle {
 
         rowDelegate: Rectangle {
             height: bookmarkManager.rowHeight
-            property color selectedColor: btStyle.textBackgroundHighlightColor
-            color: styleData.selected ? selectedColor : btStyle.textBackgroundColor
+            property color selectedColor: Material.primary
+            color: styleData.selected ? selectedColor : Material.background
         }
 
         itemDelegate: Item {
@@ -189,8 +190,7 @@ Rectangle {
                 width: parent.height * 1
                 height: parent.height * 1
                 anchors.verticalCenter: parent.verticalCenter
-                color: btStyle.textColor
-
+                color: Material.foreground
             }
 
             BookIcon {
@@ -202,13 +202,13 @@ Rectangle {
                 width: parent.height * 1
                 height: parent.height * 1
                 anchors.verticalCenter: parent.verticalCenter
-                color: btStyle.textColor
+                color: Material.foreground
             }
 
             Text {
                 anchors.verticalCenter: parent.verticalCenter
                 anchors.left: folderIcon.right
-                color: btStyle.textColor
+                color: Material.foreground
                 elide: styleData.elideMode
                 text: {
                     return styleData.value;

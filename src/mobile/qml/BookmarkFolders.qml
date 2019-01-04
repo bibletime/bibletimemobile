@@ -15,6 +15,7 @@ import QtQuick 2.11
 import QtQuick.Controls 1.4 as Controls1
 import QtQuick.Controls.Styles 1.4 as ControlsStyle1
 import QtQuick.Controls 2.4
+import QtQuick.Controls.Material 2.3
 import QtQuick.Layouts 1.3
 import BibleTime 1.0
 
@@ -46,7 +47,7 @@ Rectangle {
         }
     }
 
-    color: btStyle.textBackgroundColor
+    color: Material.background
     anchors.fill: parent
 
     onVisibleChanged: {
@@ -70,8 +71,8 @@ Rectangle {
         anchors.left: parent.left
         anchors.right: parent.right
         height: titleText.contentHeight * 1.4
-        color: btStyle.toolbarColor
-        border.color: btStyle.toolbarTextColor
+        color: Material.background
+        border.color: Material.foreground
         border.width: 2
 
         Text {
@@ -83,7 +84,7 @@ Rectangle {
             text: qsTranslate("Bookmarks", "Choose Folder")
             horizontalAlignment: Text.AlignHCenter
             font.pointSize: btStyle.uiFontPointSize + 4
-            color: btStyle.toolbarTextColor
+            color: Material.foreground
         }
     }
 
@@ -124,8 +125,8 @@ Rectangle {
 
         rowDelegate: Rectangle {
             height: bookmarkFolders.rowHeight
-            property color selectedColor: btStyle.textBackgroundHighlightColor
-            color: styleData.selected ? selectedColor : btStyle.textBackgroundColor
+            property color selectedColor: Material.primary
+            color: styleData.selected ? selectedColor : Material.background
         }
 
         itemDelegate: Item {
@@ -136,14 +137,14 @@ Rectangle {
                 width: parent.height * 0.7
                 height: parent.height * 0.7
                 anchors.verticalCenter: parent.verticalCenter
-                color: btStyle.textColor
+                color: Material.foreground
 
             }
 
             Text {
                 anchors.verticalCenter: parent.verticalCenter
                 anchors.left: icon.right
-                color: btStyle.textColor
+                color: Material.foreground
                 elide: styleData.elideMode
                 text: {
                     return styleData.value;
