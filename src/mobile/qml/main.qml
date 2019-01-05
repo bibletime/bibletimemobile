@@ -71,7 +71,7 @@ Window {
 
     Component.onCompleted: {
         setFontDialog.textFontChanged.connect(windowManager.updateTextFont)
-//        setFontDialog.textFontChanged.connect(magView.updateTextFont)
+        //        setFontDialog.textFontChanged.connect(magView.updateTextFont)
         sessionInterface.loadDefaultSession();
         if (installInterface.installedModulesCount() === 0)
             installManagerStartup.visible = true;
@@ -655,98 +655,98 @@ Window {
         }
     }
 
-        Rectangle {
-            id: mainScreen
+    Rectangle {
+        id: mainScreen
 
-            objectName: "mainScreen"
-            width: parent.width
-            height: parent.height
-            Keys.forwardTo: [keyReceiver]
-            MainToolbar {
-                id: mainToolbar
+        objectName: "mainScreen"
+        width: parent.width
+        height: parent.height
+        Keys.forwardTo: [keyReceiver]
+        MainToolbar {
+            id: mainToolbar
 
-                anchors.left: parent.left
-                anchors.top: parent.top
-                anchors.right: parent.right
-                height: {
-                    var pixel = btStyle.pixelsPerMillimeterY * 7.5;
-                    var uiFont = btStyle.uiFontPointSize * 4.4;
-                    var mix = pixel * 0.7 + uiFont * 0.3;
-                    return Math.max(pixel, mix);
-                }
-                onButtonClicked: {
-                    mainMenus.visible = ! mainMenus.visible;
-                }
-                onSearchClicked: {
-                    startSearch();
-                }
+            anchors.left: parent.left
+            anchors.top: parent.top
+            anchors.right: parent.right
+            height: {
+                var pixel = btStyle.pixelsPerMillimeterY * 7.5;
+                var uiFont = btStyle.uiFontPointSize * 4.4;
+                var mix = pixel * 0.7 + uiFont * 0.3;
+                return Math.max(pixel, mix);
             }
-
-            Rectangle {
-                id: spacer
-
-                anchors.top: mainToolbar.bottom
-                height:2
-                width: parent.width
-                color: "#646464"
+            onButtonClicked: {
+                mainMenus.visible = ! mainMenus.visible;
             }
-
-            SessionInterface {
-                id: sessionInterface
-
-                function loadDefaultSession() {
-                    var windowList = getWindowList();
-                    var count = windowList.length
-                    if (installInterface.installedModulesCount() > 0) {
-                        for (var i=0; i < count; ++i) {
-                            var window = windowList[i];
-                            var modules = getWindowModuleList(window);
-                            var key = getWindowKey(window);
-                            windowManager.openWindow("", modules, key);
-                        }
-                    }
-                    var color = getColorTheme();
-                    btStyle.setStyle(color);
-                    var winMode = getWindowArrangementMode();
-                    windowManager.windowArrangement = winMode;
-                }
-
-                function saveDefaultSession() {
-                    var color = btStyle.getStyle();
-                    setColorTheme(color);
-                    var winMode = windowManager.windowArrangement;
-                    setWindowArrangementMode(winMode);
-                    var windowList = [];
-                    var count = windowManager.getWindowCount();
-                    for (var i=0; i<count; ++i) {
-                        var win = i.toString();
-                        windowList[i] = win;
-                        var window = windowManager.getWindow(i);
-                        var moduleList = window.getModuleNames();
-                        sessionInterface.setWindowModuleList(i, moduleList);
-                        var key = window.getReference();
-                        sessionInterface.setWindowKey(i, key);
-                    }
-                    sessionInterface.setWindowList(windowList);
-                }
-            }
-
-            WindowManager {
-                id: windowManager
-
-                anchors.top: spacer.bottom
-                anchors.left: parent.left
-                anchors.right: parent.right
-                anchors.bottom: parent.bottom
-                color: Material.background
-                visible: true
-                onWindowMenus: {
-                    windowMenus.theWindow = window
-                    window.createMenus(windowMenusModel)
-                    windowMenus.visible = true;
-                }
+            onSearchClicked: {
+                startSearch();
             }
         }
+
+        Rectangle {
+            id: spacer
+
+            anchors.top: mainToolbar.bottom
+            height:2
+            width: parent.width
+            color: "#646464"
+        }
+
+        SessionInterface {
+            id: sessionInterface
+
+            function loadDefaultSession() {
+                var windowList = getWindowList();
+                var count = windowList.length
+                if (installInterface.installedModulesCount() > 0) {
+                    for (var i=0; i < count; ++i) {
+                        var window = windowList[i];
+                        var modules = getWindowModuleList(window);
+                        var key = getWindowKey(window);
+                        windowManager.openWindow("", modules, key);
+                    }
+                }
+                var color = getColorTheme();
+                btStyle.setStyle(color);
+                var winMode = getWindowArrangementMode();
+                windowManager.windowArrangement = winMode;
+            }
+
+            function saveDefaultSession() {
+                var color = btStyle.getStyle();
+                setColorTheme(color);
+                var winMode = windowManager.windowArrangement;
+                setWindowArrangementMode(winMode);
+                var windowList = [];
+                var count = windowManager.getWindowCount();
+                for (var i=0; i<count; ++i) {
+                    var win = i.toString();
+                    windowList[i] = win;
+                    var window = windowManager.getWindow(i);
+                    var moduleList = window.getModuleNames();
+                    sessionInterface.setWindowModuleList(i, moduleList);
+                    var key = window.getReference();
+                    sessionInterface.setWindowKey(i, key);
+                }
+                sessionInterface.setWindowList(windowList);
+            }
+        }
+
+        WindowManager {
+            id: windowManager
+
+            anchors.top: spacer.bottom
+            anchors.left: parent.left
+            anchors.right: parent.right
+            anchors.bottom: parent.bottom
+            color: Material.background
+            visible: true
+            onWindowMenus: {
+                windowMenus.theWindow = window
+                window.createMenus(windowMenusModel)
+                windowMenus.visible = true;
+            }
+        }
+    }
 
     SearchDialog {
         id: searchDialog
