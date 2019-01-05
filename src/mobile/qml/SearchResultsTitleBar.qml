@@ -40,7 +40,7 @@ Rectangle {
         anchors.horizontalCenter: parent.horizontalCenter
         anchors.top: parent.top
         anchors.bottom: parent.bottom
-        anchors.leftMargin: search.spacing
+        anchors.leftMargin: btStyle.pixelsPerMillimeterX * 2.5
         verticalAlignment: Text.AlignVCenter
         text: qsTranslate("SearchResults", "Search Results")
     }

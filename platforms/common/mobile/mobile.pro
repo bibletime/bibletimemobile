@@ -103,11 +103,9 @@ OTHER_FILES += \
     ../../../src/mobile/qml/QuestionDialog.qml \
     ../../../src/mobile/qml/ReferenceDisplay.qml \
     ../../../src/mobile/qml/RightArrow.qml \
-    ../../../src/mobile/qml/Search.qml \
     ../../../src/mobile/qml/SearchDialog.qml \
     ../../../src/mobile/qml/SearchDrawer.qml \
     ../../../src/mobile/qml/SearchIcon.qml \
-    ../../../src/mobile/qml/SearchResults.qml \
     ../../../src/mobile/qml/SearchResultsModules.qml \
     ../../../src/mobile/qml/SearchResultsReferences.qml \
     ../../../src/mobile/qml/SearchResultsText.qml \

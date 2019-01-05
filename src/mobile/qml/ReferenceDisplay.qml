@@ -24,7 +24,7 @@ Rectangle {
     border.color: Material.accent
     border.width: 1
     color: Material.background
-    radius: magView.cornerRadius
+    radius: btStyle.pixelsPerMillimeterX * 0.9;
 
     Text {
         id: referenceText

@@ -41,13 +41,6 @@ Window {
         var moduleNames = windowManager.getUniqueModuleNames();
         searchDialog.initialize(moduleNames);
         searchDialog.open();
-        //        screenView.changeScreen(screenModel.search);
-
-//        searchDialog.appendModuleChoices(moduleNames);
-//        searchDialog.searchText = "";
-//        searchDrawer.initialize();
-//        searchDrawer.open();
-//        searchDrawer.openSearchDialog();
     }
 
     function viewReferencesScreen(moduleName, reference) {
@@ -56,14 +49,6 @@ Window {
         magViewDrawer.setReference(reference);
         magViewDrawer.scrollDocumentViewToCurrentReference();
         magDrawer.open();
-
-
-
-        //        magView.initialize();
-        //        magView.setModule(moduleName);
-        //        magView.setReference(reference);
-        //        magView.scrollDocumentViewToCurrentReference();
-        //        screenView.changeScreen(screenModel.references);
     }
     function saveSession() {
         sessionInterface.saveDefaultSession();
@@ -86,7 +71,7 @@ Window {
 
     Component.onCompleted: {
         setFontDialog.textFontChanged.connect(windowManager.updateTextFont)
-        setFontDialog.textFontChanged.connect(magView.updateTextFont)
+//        setFontDialog.textFontChanged.connect(magView.updateTextFont)
         sessionInterface.loadDefaultSession();
         if (installInterface.installedModulesCount() === 0)
             installManagerStartup.visible = true;
@@ -105,7 +90,6 @@ Window {
         Keys.forwardTo: [
             searchResultsMenu,
             windowArrangementMenus,
-
             viewWindowsMenus,
             windowMenus,
             mainMenus,
@@ -115,9 +99,6 @@ Window {
             informationDialog,
             gridChooser,
             moduleChooser,
-            magView,
-//            searchResults,
-            search,
             textEditor,
             defaultDoc,
             installManagerChooser,
@@ -348,7 +329,6 @@ Window {
         width: parent.width * 0.85
         x: (parent.width - width) / 2
         y: (parent.height - height) - btStyle.pixelsPerMillimeterX * 3
- //       z: 1
 
     }
 
@@ -380,8 +360,6 @@ Window {
 
             if (answer == true) {
                 indexProgress.visible = true;
-            } else {
-                screenView.changeScreen(screenModel.main);
             }
         }
     }
@@ -535,7 +513,6 @@ Window {
         y: (parent.height - height) / 2
         visible: false
         onClosed: {
-//            continueDialog.visible = false;
             installManagerChooser.refreshOnOpen = true;
             installModules();
         }
@@ -591,9 +568,6 @@ Window {
 
             width: parent.width
             height: parent.height
-            //            onMagFinished: {
-            //                screenView.changeScreen(screenModel.main);
-            //            }
         }
 
     }
@@ -681,30 +655,12 @@ Window {
         }
     }
 
-    ObjectModel {
-        id: screenModel
-
-        property int references: 0
-        property int main: 1
-        property int results: 2
-        property int search: 3
-
-        MagView {
-            id: magView
-
-            width: screenView.width
-            height: screenView.height
-            onMagFinished: {
-                screenView.changeScreen(screenModel.main);
-            }
-        }
-
         Rectangle {
             id: mainScreen
 
             objectName: "mainScreen"
-            width: screenView.width
-            height: screenView.height
+            width: parent.width
+            height: parent.height
             Keys.forwardTo: [keyReceiver]
             MainToolbar {
                 id: mainToolbar
@@ -792,107 +748,6 @@ Window {
             }
         }
 
-        SearchResults {
-            id: searchResults
-
-            z:2
-            width: screenView.width
-            height: screenView.height
-            onResultsMenuRequested: {
-                searchResultsMenu.visible = true;
-            }
-            onResultsFinished: {
-                screenView.changeScreen(screenModel.main);
-                searchResultsMenu.visible = false;
-            }
-            onIndexingFinishedChanged: {
-                indexProgress.visible = false;
-                if ( ! searchDrawer.indexingWasCancelled()) {
-                    searchDrawer.openSearchResults();
-                }
-            }
-            onProgressTextChanged: {
-                indexProgress.text = text;
-            }
-            onProgressValueChanged: {
-                indexProgress.value = value;
-            }
-        }
-
-        Search {
-            id: search
-
-            function appendModuleChoices(choices) {
-                var modules = [];
-                var firstChoice = "";
-                for (var j=0; j<choices.length; ++j) {
-                    var choice = choices[j];
-                    if (j>0)
-                        firstChoice += ", ";
-                    firstChoice += choice;
-                }
-                modules.push(firstChoice);
-
-                for (var k=0; k<choices.length; ++k) {
-                    var choice2 = choices[k];
-                    modules.push(choice2);
-                }
-                search.modules = modules;
-            }
-
-            width: screenView.width
-            height: screenView.height
-            onSearchRequest: {
-                searchDrawer.moduleList = search.moduleList;
-                if ( ! searchDrawer.modulesAreIndexed()) {
-                    indexQuestion.visible = true;
-                    return;
-                }
-                searchDrawer.openSearchResults();
-            }
-            onSearchFinished: {
-                screenView.changeScreen(screenModel.main);
-            }
-        }
-    }
-
-    ListView {
-        id: screenView
-
-        property int nextIndex: 0
-
-        function changeScreen(screen) {
-            screenView.nextIndex = screen
-            screenAnimation.start();
-        }
-
-        anchors.fill: parent
-        model: screenModel
-        preferredHighlightBegin: 0; preferredHighlightEnd: 0
-        highlightRangeMode: ListView.StrictlyEnforceRange
-        orientation: ListView.Horizontal
-        snapMode: ListView.SnapOneItem; flickDeceleration: 2000
-        highlightFollowsCurrentItem: true
-        currentIndex: screenModel.main
-        maximumFlickVelocity: 4000
-        highlightMoveDuration: 4000
-        onCurrentIndexChanged: {
-            magView.initialize();
-            if (currentIndex == screenModel.search) {
-                var moduleNames = windowManager.getUniqueModuleNames();
-                search.appendModuleChoices(moduleNames);
-            }
-        }
-
-        NumberAnimation on contentX {
-            id: screenAnimation
-
-            to: screenView.width * screenView.nextIndex
-            duration: 400
-            running: false
-        }
-    }
-
     SearchDialog {
         id: searchDialog
 
@@ -914,18 +769,12 @@ Window {
         id: searchDrawer
 
         dragMargin: Qt.styleHints.startDragDistance/2
-        function openSearchResults() {
-//                searchResults.searchText = searchDialog.searchText;
-//                searchResults.findChoice = searchDialog.findChoice;
-//                searchResults.moduleList = searchDialog.moduleList;
-//                searchResults.performSearch();
-            screenView.changeScreen(screenModel.results);
 
+        function openSearchResults() {
             searchDrawer.searchText = searchDialog.searchText;
             searchDrawer.findChoice = searchDialog.findChoice;
             searchDrawer.moduleList = searchDialog.moduleList;
             searchDrawer.performSearch();
-            //screenView.changeScreen(screenModel.results);
         }
 
         onIndexingFinishedChanged: {
@@ -952,7 +801,6 @@ Window {
             var module = searchDrawer.getModule();
             var reference = searchDrawer.getReference();
             if (action === "newWindow") {
-                screenView.changeScreen(screenModel.main);
                 windowManager.newWindowWithReference(module, reference);
             } else if (action === "viewReferences") {
                 viewReferencesScreen(module, reference);

@@ -26,7 +26,7 @@ Item {
         font.pointSize: btStyle.uiFontPointSize
         anchors.top: parent.top
         anchors.bottom: parent.bottom
-        anchors.leftMargin: search.spacing
+        anchors.leftMargin: btStyle.pixelsPerMillimeterX * 2.5
         anchors.left: leftSymbol.right
         verticalAlignment: Text.AlignVCenter
         text: backTool.text
