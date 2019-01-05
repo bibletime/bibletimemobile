@@ -40,6 +40,7 @@ Drawer {
         btWindowInterface.highlightWords = btSearchInterface.searchText;
         btSearchInterface.performSearch();
         open()
+        searchResultsModules.currentIndex = 0
     }
 
     function cancel() {
