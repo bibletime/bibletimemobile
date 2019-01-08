@@ -371,7 +371,7 @@ Window {
         text: ""
         minimumValue: 0
         maximumValue: 100
-        width:parent.width * 0.9
+        implicitWidth:parent.width * 0.9
         visible: false
         x: (parent.width - width) / 2
         y: (parent.height - height) / 2
@@ -536,7 +536,7 @@ Window {
         value: installInterface.progressValue
         minimumValue: installInterface.progressMin
         maximumValue: installInterface.progressMax
-        width:parent.width * 0.9
+        implicitWidth:parent.width * 0.9
         text: installInterface.progressText
         visible: installInterface.progressVisible
         onRejected: installManagerChooser.cancel();
@@ -561,7 +561,7 @@ Window {
         y: 1
         width: parent.width
         height: parent.height - y
-        dragMargin: Qt.styleHints.startDragDistance/2
+        dragMargin: Qt.styleHints.startDragDistance / 3
 
         MagView {
             id: magViewDrawer
@@ -622,37 +622,6 @@ Window {
             }
         }
 
-    }
-
-    ModuleChooser {
-        id: moduleChooser
-
-        visible: false
-        width: Math.min(parent.height, parent.width);
-        height: parent.height
-        anchors.centerIn: parent
-        z: 4
-        Keys.onReleased: {
-            if ((event.key === Qt.Key_Back || event.key === Qt.Key_Escape)  && moduleChooser.visible === true) {
-                event.accepted = true;
-                moduleChooser.visible = false;
-            }
-        }
-        onCanceled: moduleChooser.visible = false;
-    }
-
-    QuestionDialog {
-        id: quitQuestion
-
-        text: qsTranslate("Quit", "Are you sure you want to quit?")
-        width: Math.min(parent.width, parent.height) * 0.9
-        x: (parent.width - width) / 2
-        y: (parent.height - height) / 2
-        z: 2
-        onFinished: {
-            if (answer == true)
-                Qt.quit();
-        }
     }
 
     Rectangle {
@@ -748,6 +717,37 @@ Window {
         }
     }
 
+    ModuleChooser {
+        id: moduleChooser
+
+        visible: false
+        width: Math.min(parent.height, parent.width);
+        height: parent.height
+        anchors.centerIn: parent
+        z: 4
+        Keys.onReleased: {
+            if ((event.key === Qt.Key_Back || event.key === Qt.Key_Escape)  && moduleChooser.visible === true) {
+                event.accepted = true;
+                moduleChooser.visible = false;
+            }
+        }
+        onCanceled: moduleChooser.visible = false;
+    }
+
+    QuestionDialog {
+        id: quitQuestion
+
+        text: qsTranslate("Quit", "Are you sure you want to quit?")
+        width: Math.min(parent.width, parent.height) * 0.9
+        x: (parent.width - width) / 2
+        y: (parent.height - height) / 2
+        z: 2
+        onFinished: {
+            if (answer == true)
+                Qt.quit();
+        }
+    }
+
     SearchDialog {
         id: searchDialog
 
@@ -768,7 +768,7 @@ Window {
     SearchDrawer {
         id: searchDrawer
 
-        dragMargin: Qt.styleHints.startDragDistance/2
+        dragMargin: Qt.styleHints.startDragDistance / 3
 
         function openSearchResults() {
             searchDrawer.searchText = searchDialog.searchText;

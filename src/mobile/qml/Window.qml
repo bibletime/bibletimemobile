@@ -219,6 +219,7 @@ Rectangle {
             width: parent.height * 0.80
             height: parent.height * 0.80
             anchors.left: parent.left
+            anchors.leftMargin: Qt.styleHints.startDragDistance * 0.3
             anchors.top: parent.top
             anchors.margins: parent.height * 0.1;
             show: btWindowInterface.historyBackwardVisible
@@ -238,7 +239,7 @@ Rectangle {
             width: parent.height * 0.80
             height: parent.height * 0.80
             anchors.left: prevHistory.right
-            anchors.leftMargin: Qt.styleHints.startDragDistance/2
+            anchors.leftMargin: parent.height * 0.1
             anchors.top: parent.top
             anchors.margins: parent.height * 0.1;
             show: btWindowInterface.historyForwardVisible
@@ -325,7 +326,7 @@ Rectangle {
             height: parent.height
 
             // margin for searchDrawer dragging
-            anchors.rightMargin: Qt.styleHints.startDragDistance
+            anchors.rightMargin: Qt.styleHints.startDragDistance * 0.3
             anchors.right: parent.right
             anchors.top: parent.top
             background: Material.background

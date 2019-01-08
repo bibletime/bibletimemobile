@@ -92,9 +92,6 @@ Dialog {
             return h
         }
 
-        implicitWidth: Math.min(parent.width, parent.height) * 0.9
-
-
         Grid {
             id: grid
 

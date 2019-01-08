@@ -64,7 +64,7 @@ Rectangle {
         anchors.right: parent.right
 
         // margin for searchDrawer dragging
-        anchors.rightMargin: Qt.styleHints.startDragDistance
+        anchors.rightMargin: Qt.styleHints.startDragDistance *0.3
 
         anchors.top: parent.top
         foreground: Material.accent
