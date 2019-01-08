@@ -10,7 +10,7 @@
 *
 **********/
 
-import QtQuick 2.2
+import QtQuick 2.11
 import QtQuick.Controls 2.4
 import QtQuick.Controls.Material 2.3
 import BibleTime 1.0
@@ -346,7 +346,7 @@ Rectangle {
 
         default property alias content: tabbedWindowsStack.children
         property bool tabVisible: true
-        property int current: 0
+        property alias current: tabBar2.currentIndex
 
         function changeTabs() {
             setOpacities();
@@ -368,29 +368,39 @@ Rectangle {
 
             anchors.top: parent.top
             width: parent.width
-            height: 34
+            height: {
+                var pixel = btStyle.pixelsPerMillimeterY * 7.5;
+                var uiFont = btStyle.uiFontPointSize * 4.4;
+                var mix = pixel * 0.7 + uiFont * 0.3;
+                return Math.max(pixel, mix);
+            }
             z:8
-            TabBar {
-                id: tabBar
+
+            TabBar2 {
+                id: tabBar2
+
+                elideWidth: mainScreen.width *.5
+
+                topMargin: btStyle.pixelsPerMillimeterX * 2
+                bottomMargin: btStyle.pixelsPerMillimeterX * 1
+
+                function getTitle(index) {
+                    return tabbedWindowsStack.children[index].title;
+                }
+
+                function maxWidth() {
+                    var mWidth= 80;       // minimum
+                    for (var i=0; i<count; i++) {
+                        var iTitle = getTitle(i);
+                        var iWidth = btStyle.textWidth(btStyle.elideLeft(iTitle, tabBar2.elideWidth))
+                        mWidth = Math.max(iWidth, mWidth);
+                    }
+                    return mWidth
+                }
 
                 anchors.fill: parent
-                currentIndex: tabbedWindows.current
-                bottomPadding: 2
-                topPadding: 2
-                opacity: .7
-                z:9
-                onCurrentIndexChanged: {
-                    tabbedWindows.current = currentIndex
-                }
-
-                Repeater {
-                    model: tabbedWindowsStack.children.length
-
-                    TabButton {
-                        text: tabbedWindowsStack.children[modelData].title
-                        width: Math.max(200, tabBar.width / tabbedWindowsStack.children.length)
-                    }
-                }
+                model: tabbedWindowsStack.children.length
+                pointSize: btStyle.uiFontPointSize
             }
         }
 
@@ -400,9 +410,7 @@ Rectangle {
             objectName: "tabbedWindowsStack"
             width: parent.width
             anchors.top: tabMouseArea.bottom;
-            anchors.topMargin: btStyle.pixelsPerMillimeterX * 2.6
             anchors.bottom: tabbedWindows.bottom
         }
     }
-
 }

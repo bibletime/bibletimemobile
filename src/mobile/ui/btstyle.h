@@ -76,6 +76,8 @@ class BtStyle : public QObject {
 public:
     Q_INVOKABLE void setStyle(int style);
     Q_INVOKABLE int getStyle();
+    Q_INVOKABLE QString elideLeft(const QString& text, int pixels);
+    Q_INVOKABLE int textWidth(const QString& text);
 
     enum Style {
         darkTheme = 1,

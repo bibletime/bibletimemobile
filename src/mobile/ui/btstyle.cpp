@@ -12,8 +12,10 @@
 
 #include "btstyle.h"
 #include <QGuiApplication>
+#include <QFontMetrics>
 #include <QList>
 #include <QPointer>
+#include <QRect>
 #include <QScreen>
 #include "backend/config/btconfig.h"
 #include "backend/models/btmoduletextmodel.h"
@@ -468,18 +470,37 @@ double BtStyle::getUiFontPointSize() {
 }
 
 void BtStyle::setUiFontPointSize(double pointSize) {
-    btConfig().setValue<int>("ui/uiFontSize", pointSize);
+    btConfig().setValue<int>("ui/uiFontSize", static_cast<int>(pointSize));
     emitChanged();
 }
 
 int BtStyle::pixelsPerMillimeterX() {
     QScreen* screen = QGuiApplication::screens().at(0);
-    return screen->physicalDotsPerInchX() / millimeterPerInch;
+    return screen->physicalDotsPerInchX() / static_cast<int>(millimeterPerInch);
+}
+
+QString BtStyle::elideLeft(const QString& text, int pixels) {
+    if (pixels == 0)
+        return text;
+    QFont font = QGuiApplication::font();
+    QFontMetrics fontMetrics(font);
+    QString elidedText = fontMetrics.elidedText(text,Qt::ElideLeft, pixels);
+    return elidedText;
+}
+
+int BtStyle::textWidth(const QString& text) {
+    if (text.isEmpty())
+        return 0;
+    QFont font = QGuiApplication::font();
+    font.setPointSizeF(getUiFontPointSize());
+    QFontMetrics fontMetrics(font);
+    QRect bbox = fontMetrics.boundingRect(text);
+    return bbox.width();
 }
 
 int BtStyle::pixelsPerMillimeterY() {
     QScreen* screen = QGuiApplication::screens().at(0);
-    int dpm = screen->physicalDotsPerInchY() / millimeterPerInch;
+    int dpm = static_cast<int>(screen->physicalDotsPerInchY() / millimeterPerInch);
     return dpm;
 }
 

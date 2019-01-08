@@ -111,6 +111,7 @@ OTHER_FILES += \
     ../../../src/mobile/qml/SearchResultsText.qml \
     ../../../src/mobile/qml/SearchResultsTitleBar.qml \
     ../../../src/mobile/qml/SetFont.qml \
+    ../../../src/mobile/qml/TabBar2.qml \
     ../../../src/mobile/qml/TextEditor.qml \
     ../../../src/mobile/qml/TitleColorBar.qml \
     ../../../src/mobile/qml/TreeChooser.qml \

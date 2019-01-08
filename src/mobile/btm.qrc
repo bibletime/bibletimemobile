@@ -59,6 +59,7 @@
         <file>qml/SearchResultsText.qml</file>
         <file>qml/SearchResultsTitleBar.qml</file>
         <file>qml/SetFont.qml</file>
+        <file>qml/TabBar2.qml</file>
         <file>qml/TitleColorBar.qml</file>
         <file>qml/TextEditor.qml</file>
         <file>qml/TreeChooser.qml</file>
