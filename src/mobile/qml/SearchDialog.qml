@@ -20,7 +20,7 @@ Dialog {
     id: searchDialog
 
 
-    property string searchText: "love"
+    property string searchText: ""
     property string findChoice: ""
     property string moduleList: ""
     property var modules
@@ -33,7 +33,6 @@ Dialog {
         findChoice = "";
         appendModuleChoices(moduleNames);
         title = qsTranslate("Search", "Search")
-        //        standardButtons = Dialog.Ok|Dialog.Cancel
     }
 
     function appendModuleChoices(moduleNames) {
@@ -66,8 +65,11 @@ Dialog {
         if (radioPhrase.checked)
             findChoice = "regexpr";
         moduleList = searchComboBox.currentText;
-        visible = false;
         searchRequest();
+        if (searchText === "")
+            reject();
+        else
+            accept();
     }
 
     function openSearchDialog() {

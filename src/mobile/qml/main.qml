@@ -85,6 +85,8 @@ Window {
     Item {
         id: keyReceiver
 
+        property bool ignoreOnce: false
+
         objectName: "keyReceiver"
         focus: true
         Keys.forwardTo: [
@@ -120,8 +122,12 @@ Window {
         Keys.onReleased: {
             if (event.key === Qt.Key_Back || event.key === Qt.Key_Escape) {
                 event.accepted = true;
-                quitQuestion.visible = true;
-                quitQuestion.open();
+                if (ignoreOnce) {
+                    ignoreOnce = false;
+                } else {
+                    quitQuestion.visible = true;
+                    quitQuestion.open();
+                }
             }
         }
 
@@ -326,10 +332,15 @@ Window {
             windowManager.toolbarsEnabled = ! copyVersesDialog.visible
         }
 
-        width: parent.width * 0.85
+        width: parent.width * 0.95
         x: (parent.width - width) / 2
         y: (parent.height - height) - btStyle.pixelsPerMillimeterX * 3
-
+        onOpened: {
+            keyReceiver.ignoreOnce = true
+        }
+        onClosed: {
+            keyReceiver.ignoreOnce = false
+        }
     }
 
     DefaultDoc {
@@ -562,6 +573,9 @@ Window {
         width: parent.width
         height: parent.height - y
         dragMargin: Qt.styleHints.startDragDistance / 3
+        onClosed: {
+            keyReceiver.forceActiveFocus();
+        }
 
         MagView {
             id: magViewDrawer
@@ -745,6 +759,7 @@ Window {
         onFinished: {
             if (answer == true)
                 Qt.quit();
+            keyReceiver.forceActiveFocus();
         }
     }
 
@@ -762,6 +777,13 @@ Window {
                 return;
             }
             searchDrawer.openSearchResults();
+        }
+        onOpened: {
+            keyReceiver.ignoreOnce = true;
+        }
+        onClosed: {
+            keyReceiver.ignoreOnce = false;
+            keyReceiver.forceActiveFocus();
         }
     }
 
@@ -788,6 +810,9 @@ Window {
         }
         onProgressValueChanged: {
             indexProgress.value = value;
+        }
+        onClosed: {
+            keyReceiver.forceActiveFocus();
         }
 
     }
@@ -933,6 +958,8 @@ Window {
             {
                 uiFontPointSize.current = btStyle.uiFontPointSize;
                 uiFontPointSize.previous = btStyle.uiFontPointSize;
+            } else {
+                keyReceiver.forceActiveFocus();
             }
         }
         onAccepted: {

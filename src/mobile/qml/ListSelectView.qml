@@ -56,7 +56,7 @@ Rectangle {
             width: parent.width
             height: {
                 var pixel = btStyle.pixelsPerMillimeterY * 7;
-                var uiFont = btStyle.uiFontPointSize * 3.5;
+                var uiFont = btStyle.uiFontPointSize * 2;
                 return Math.max(pixel, uiFont);
             }
 

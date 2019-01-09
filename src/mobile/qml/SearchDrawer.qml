@@ -52,14 +52,6 @@ Drawer {
         return indexingCancelled;
     }
 
-    Keys.onReleased: {
-        if ((event.key === Qt.Key_Back || event.key === Qt.Key_Escape) &&
-                screenView.currentIndex === screenModel.results) {
-            resultsFinished();
-            event.accepted = true;
-        }
-    }
-
     function modulesAreIndexed() {
         return btSearchInterface.modulesAreIndexed();
     }

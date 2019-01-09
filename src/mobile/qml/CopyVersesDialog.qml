@@ -71,13 +71,6 @@ Dialog {
         open();
     }
 
-    Keys.onReleased: {
-        if ((event.key === Qt.Key_Back || event.key === Qt.Key_Escape) && copyVerses.visible === true) {
-            copyVerses.visible = false;
-            event.accepted = true;
-        }
-    }
-
     onAccepted: {
         btWinIfc.copy(moduleName, reference1, reference2);
     }
