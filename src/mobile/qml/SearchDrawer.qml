@@ -36,6 +36,14 @@ Drawer {
     signal progressTextChanged(string text);
     signal progressValueChanged(int value);
 
+    function getModule() {
+        return btWindowInterface.moduleName;
+    }
+
+    function getReference() {
+        return btWindowInterface.reference;
+    }
+
     function performSearch() {
         btWindowInterface.highlightWords = btSearchInterface.searchText;
         btSearchInterface.performSearch();

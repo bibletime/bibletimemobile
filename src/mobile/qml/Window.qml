@@ -173,7 +173,6 @@ Rectangle {
     function debugData() {
         var i = 31472;
         var text = btWindowInterface.getModelTextByIndex(i);
-        console.log(text);
     }
 
     color: Material.background
@@ -333,7 +332,6 @@ Rectangle {
             foreground: Material.accent
 
             onButtonClicked: {
-                console.log("menuButton clicked")
                 windowMenusDialog(windowView);
             }
         }

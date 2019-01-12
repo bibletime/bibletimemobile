@@ -25,12 +25,16 @@ Rectangle {
     signal itemSelected(int index)
 
     color: Material.background
+    border.color: Material.foreground
+    border.width: 1
 
     Rectangle {
         id: titleRect
 
-        color: Material.background
-        height: btStyle.uiFontPointSize * 4;
+        color: Material.primary
+        border.color: Material.foreground
+        border.width: 1
+        height: btStyle.pixelsPerMillimeterY * 8
         anchors.left: parent.left
         anchors.right: parent.right
         anchors.top: parent.top
@@ -88,7 +92,7 @@ Rectangle {
             property bool selected: ListView.isCurrentItem ? true : false
             objectName: "entry"
 
-            color: (highlight && ListView.isCurrentItem) ? Material.primary: Material.background
+            color: Material.background
             width: parent.width
             height: {
                 var pixel = btStyle.pixelsPerMillimeterY * 8;
@@ -106,8 +110,8 @@ Rectangle {
                 anchors.topMargin: 10
                 verticalAlignment: Text.AlignVCenter
                 text: modelText
-                color: Material.foreground
-                font.pointSize: btStyle.uiFontPointSize - 1
+                color: (highlight && entry.selected) ? Material.accent : Material.foreground
+                font.pointSize: (highlight && entry.selected) ? btStyle.uiFontPointSize + 1 : btStyle.uiFontPointSize - 1
                 font.bold: highlight && entry.selected
             }
         }

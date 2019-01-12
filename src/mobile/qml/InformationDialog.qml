@@ -20,6 +20,8 @@ Rectangle {
 
     property string text: ""
     color: Material.background
+    border.color: Material.foreground
+    border.width: 1
 
     Keys.onReleased: {
         if ((event.key === Qt.Key_Back || event.key === Qt.Key_Escape)  && informationDialog.visible === true) {
@@ -27,10 +29,32 @@ Rectangle {
             informationDialog.visible = false;
         }
     }
+
+    TitleColorBar {
+        id: title
+
+        title: qsTranslate("Information", "New Features")
+        anchors.top: parent.top
+        anchors.horizontalCenter: parent.horizontalCenter
+        width: parent.width
+    }
+
+    Back {
+        id: backTool
+
+        anchors.left: parent.left
+        anchors.top: title.top
+        anchors.bottom: title.bottom
+        text: qsTranslate("Navigation", "Main")
+        onClicked: {
+            informationDialog.visible = false;
+        }
+    }
+
     TextArea {
         id: textArea
 
-        anchors.top: parent.top
+        anchors.top: title.bottom
         anchors.left: parent.left
         anchors.right:parent.right
         anchors.bottom: closeButton.top

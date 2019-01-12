@@ -26,7 +26,7 @@ Rectangle {
     property alias moduleIndex: worksView.currentIndex
     property int lastCategoryIndex: 0
     property int lastLanguageIndex: 0
-    property int spacing: 4
+    property int spacing: 1
     property string selectedModule: ""
     property string selectedCategory: ""
     property string backText: ""
@@ -43,7 +43,7 @@ Rectangle {
     color: Material.background
 
     Keys.onReleased: {
-        if ((event.key == Qt.Key_Back || event.key == Qt.Key_Escape) && moduleChooser.visible == true) {
+        if ((event.key === Qt.Key_Back || event.key === Qt.Key_Escape) && moduleChooser.visible === true) {
             event.accepted = true;
             moduleChooser.visible = false;
             unlockDlg.visible = false;
@@ -146,10 +146,12 @@ Rectangle {
     }
 
     Rectangle {
-        id: newWindowTitleBar
-        color: Material.background
+        id: moduleChooserTitleBar
+        color: Material.primary
+        border.color: Material.foreground
+        border.width: 1
         width: parent.width
-        height: btStyle.pixelsPerMillimeterY * 7
+        height: btStyle.pixelsPerMillimeterY * 8
 
         Back {
             id: backTool
@@ -178,13 +180,13 @@ Rectangle {
 
     Grid {
         id:  grid
-        columns: 3
+        columns: 2
         rows: 1
         spacing: parent.spacing
         width: parent.width - moduleChooser.spacing
         height: parent.height/2.5
         anchors.left: parent.left
-        anchors.top: newWindowTitleBar.bottom
+        anchors.top: moduleChooserTitleBar.bottom
         anchors.margins: parent.spacing
 
         ListTextView {
@@ -197,12 +199,6 @@ Rectangle {
             onItemSelected: {
                 categoryChanged(currentIndex)
             }
-        }
-
-        Rectangle {
-            width: 1
-            height: grid.height
-            color: "gray"
         }
 
         ListTextView {

@@ -15,14 +15,14 @@ Item {
         anchors.left: parent.left
         anchors.top: parent.top
         anchors.bottom: parent.bottom
-        textColor: Material.foreground
+        textColor: Material.accent
         width: parent.height * 0.50
         height: parent.height * 0.85
     }
 
     Text {
         id: backText
-        color: Material.foreground
+        color: Material.accent
         font.pointSize: btStyle.uiFontPointSize
         anchors.top: parent.top
         anchors.bottom: parent.bottom

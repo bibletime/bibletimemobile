@@ -19,7 +19,7 @@ Rectangle {
 
     signal back();
 
-    color: Material.background
+    color: Material.primary
 
     Back {
         id: backTool

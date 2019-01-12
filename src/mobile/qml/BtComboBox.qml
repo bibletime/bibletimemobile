@@ -23,16 +23,17 @@ ComboBox {
 
     function updateWidth(modules) {
         control.model = modules
-        textMetrics.font = control.font
-
+        modelWidth = 0;
         for (var i = 0; i < modules.length; i++) {
-            textMetrics.text = modules[i];
-            modelWidth = Math.max(textMetrics.width, modelWidth)
+            var t = modules[i];
+            var w = btStyle.textWidth(t);
+            modelWidth = Math.max(w, modelWidth)
         }
+        modelWidth = modelWidth * 1.4;
     }
 
+    implicitWidth: modelWidth
     font.pointSize: btStyle.uiFontPointSize
-    width: (sizeToContents) ? modelWidth + 2*leftPadding + 2*rightPadding : implicitWidth
     delegate: ItemDelegate {
         width: control.width
         text: control.textRole ? (Array.isArray(control.model) ? modelData[control.textRole] : model[control.textRole]) : modelData

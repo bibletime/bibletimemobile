@@ -67,9 +67,11 @@ Rectangle {
 
     Rectangle {
         id: menuTitleBar
-        color: Material.background
+        color: Material.primary
+        border.color: Material.foreground
+        border.width: 1
         width: parent.width
-        height: btStyle.pixelsPerMillimeterY * 7
+        height: btStyle.pixelsPerMillimeterY * 9
 
         Back {
             id: backTool

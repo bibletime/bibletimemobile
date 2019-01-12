@@ -27,14 +27,16 @@ Rectangle {
     Rectangle {
         id: titleRect
 
-        height: btStyle.uiFontPointSize * 4;
+        height: btStyle.pixelsPerMillimeterY * 8
         anchors.left: parent.left
         anchors.right: parent.right
         anchors.top: parent.top
         anchors.leftMargin: 3
         anchors.rightMargin: 3
         anchors.topMargin: 3
-        color: Material.background
+        color: Material.primary
+        border.color: Material.foreground
+        border.width: 1
         Text {
             id: title
             anchors.horizontalCenter: parent.horizontalCenter

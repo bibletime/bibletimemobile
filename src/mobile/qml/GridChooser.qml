@@ -31,7 +31,7 @@ Rectangle {
     signal accepted(string choosenText);
     signal backup();
 
-    color: Material.background
+    color: Material.primary
     height: parent.height
     width: parent.width
 

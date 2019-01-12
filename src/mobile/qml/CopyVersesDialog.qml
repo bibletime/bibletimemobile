@@ -64,7 +64,6 @@ Dialog {
         copyVerses.showError = false;
         loadReferences();
         reference1 = theWindow.getReference();
-        console.log("reference: ", reference1)
         reference2 = reference1;
         btWinIfc.moduleName = theWindow.getModule();
         btWinIfc.reference = theWindow.getReference();

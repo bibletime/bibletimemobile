@@ -90,9 +90,11 @@ Rectangle {
 
     Rectangle {
         id: installTitleBar
-        color: Material.background
+        color: Material.primary
+        border.color: Material.foreground
+        border.width: 1
         width: parent.width
-        height: btStyle.pixelsPerMillimeterY * 7
+        height: btStyle.pixelsPerMillimeterY * 8
 
         Back {
             id: backTool
@@ -121,7 +123,7 @@ Rectangle {
 
     Grid {
         id:  grid
-        columns: 5
+        columns: 3
         rows: 1
         spacing: installManager.spacing
         width: parent.width - installManager.spacing
@@ -156,12 +158,6 @@ Rectangle {
             }
         }
 
-        Rectangle {
-            width: 1
-            color: "gray"
-            height: grid.height
-        }
-
         ListTextView {
             id: categoryView
 
@@ -181,12 +177,6 @@ Rectangle {
                 installManager.languageIndex = lIndex;
 
             }
-        }
-
-        Rectangle {
-            width: 1
-            color: "gray"
-            height: grid.height
         }
 
         ListTextView {

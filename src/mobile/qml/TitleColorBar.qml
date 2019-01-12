@@ -19,15 +19,15 @@ Rectangle {
 
     property string title: ""
     property int barHeight: {
-        var pixel = btStyle.pixelsPerMillimeterY * 6;
+        var pixel = btStyle.pixelsPerMillimeterY * 8;
         var uiFont = btStyle.uiFontPointSize * 2;
         return Math.max(pixel, uiFont);
     }
 
-    color: Material.background
+    color: Material.primary
     height: barHeight
     border.width: 1
-    border.color: Material.accent
+    border.color: Material.foreground
 
     Text {
         id: title

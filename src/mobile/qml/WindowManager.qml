@@ -369,7 +369,7 @@ Rectangle {
             anchors.top: parent.top
             width: parent.width
             height: {
-                var pixel = btStyle.pixelsPerMillimeterY * 7.5;
+                var pixel = btStyle.pixelsPerMillimeterY * 8;
                 var uiFont = btStyle.uiFontPointSize * 4.4;
                 var mix = pixel * 0.7 + uiFont * 0.3;
                 var h = Math.max(pixel, mix);
@@ -383,7 +383,7 @@ Rectangle {
 
                 elideWidth: mainScreen.width *.5
 
-                topMargin: btStyle.pixelsPerMillimeterX * 2
+                topMargin: btStyle.pixelsPerMillimeterX * 2.5
                 bottomMargin: btStyle.pixelsPerMillimeterX * 1
 
                 function getTitle(index) {
@@ -403,6 +403,16 @@ Rectangle {
                 anchors.fill: parent
                 model: tabbedWindowsStack.children.length
                 pointSize: btStyle.uiFontPointSize
+            }
+
+            Rectangle {
+                id: spacer
+
+                anchors.bottom: tabMouseArea.bottom
+                height:1
+                width: parent.width
+                color: Material.foreground
+                z:10
             }
         }
 

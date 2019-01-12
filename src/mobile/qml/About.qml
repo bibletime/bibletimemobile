@@ -26,9 +26,11 @@ Rectangle {
 
     Rectangle {
         id: aboutTitleBar
-        color: Material.background
+        color: Material.primary
+        border.color: Material.foreground
+        border.width: 1
         width: parent.width
-        height: btStyle.pixelsPerMillimeterY * 7
+        height: btStyle.pixelsPerMillimeterY * 9
 
         Back {
             id: backTool
@@ -144,7 +146,7 @@ Rectangle {
     }
 
     Keys.onReleased: {
-        if ((event.key == Qt.Key_Back || event.key == Qt.Key_Escape) && aboutDialog.visible == true) {
+        if ((event.key === Qt.Key_Back || event.key === Qt.Key_Escape) && aboutDialog.visible === true) {
             aboutDialog.visible = false;
             event.accepted = true;
         }

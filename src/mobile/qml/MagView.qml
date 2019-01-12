@@ -55,9 +55,11 @@ FocusScope {
         moduleChooser.moduleSelected.connect(magView.moduleChoosenSlot);
         moduleChooser.backText = qsTr("View References");
         moduleChooser.visible = true;
+        magDrawer.close();
     }
 
     function moduleChoosenSlot() {
+        magDrawer.open();
         moduleChooser.moduleSelected.disconnect(magView.moduleChoosenSlot);
         var moduleName = moduleChooser.selectedModule;
         btWindowInterface.moduleName = moduleName;
@@ -73,15 +75,9 @@ FocusScope {
     }
 
     function referenceChoosen() {
+        magDrawer.open();
         btWindowInterface.reference = chooseReference.reference;
         btWindowInterface.referenceChosen();
-    }
-
-    Keys.onReleased: {
-        if ((event.key == Qt.Key_Back || event.key == Qt.Key_Escape) && magView.focus == true) {
-            magFinished();
-            event.accepted = true;
-        }
     }
 
     Rectangle {
@@ -89,12 +85,22 @@ FocusScope {
         color: Material.background
     }
 
+    Rectangle {
+        id: navigationBar
+
+        anchors.top: parent.top
+        anchors.left: parent.left
+        anchors.right: parent.right
+        height: toolbar.height
+        color: Material.primary
+    }
+
     Back {
         id: backTool
 
-        anchors.left: pageTitle.left
-        anchors.top: pageTitle.top
-        anchors.bottom: pageTitle.bottom
+        anchors.left: navigationBar.left
+        anchors.top: navigationBar.top
+        anchors.bottom: navigationBar.bottom
         anchors.bottomMargin: btStyle.pixelsPerMillimeterX *0.5
         text: qsTranslate("Navigation", "Main")
         z:1
@@ -144,8 +150,8 @@ FocusScope {
             anchors.topMargin: magView.magViewMargins
             anchors.bottomMargin: magView.magViewMargins
             color: Material.background
-            border.color: Material.foreground
-            border.width: 2
+            border.color: Material.accent
+            border.width: 1
 
             Text {
                 id: text
@@ -180,8 +186,8 @@ FocusScope {
             anchors.bottomMargin: magView.magViewMargins
             anchors.leftMargin:  magView.magViewMargins
             anchors.rightMargin: magView.magViewMargins
-            border.color: Material.foreground
-            border.width: 2
+            border.color: Material.accent
+            border.width: 1
             color: Material.background
             radius: magView.cornerRadius
 
@@ -205,6 +211,7 @@ FocusScope {
                 onClicked: {
                     chooseReference.finished.disconnect(magView.referenceChoosen)
                     chooseReference.finished.connect(magView.referenceChoosen)
+                    magDrawer.close();
                     var module = btWindowInterface.moduleName
                     var ref = btWindowInterface.reference;
                     chooseReference.start(module, ref, qsTranslate("MagView", "View References"));

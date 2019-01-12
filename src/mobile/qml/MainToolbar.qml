@@ -17,7 +17,7 @@ import BibleTime 1.0
 Rectangle {
     id: toolbar
 
-    color: Material.background
+    color: Material.primary
     z:0
     onEnabledChanged: {
         menuButton.visible = toolbar.enabled
@@ -68,7 +68,7 @@ Rectangle {
 
         anchors.top: parent.top
         foreground: Material.accent
-        background: Material.background
+        background: Material.primary
         onButtonClicked: {
             toolbar.buttonClicked()
         }

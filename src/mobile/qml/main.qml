@@ -54,6 +54,30 @@ Window {
         sessionInterface.saveDefaultSession();
     }
 
+    function setMaterialStyle(style) {
+        if (style === 1) {
+            Material.background = "#282828"
+            Material.foreground = "white"
+            Material.primary = "#111e6c"
+            Material.accent = Material.Amber
+            Material.accent = "#ffd700"
+            Material.theme = Material.Dark
+        } else if (style === 2) {
+            Material.background = "white"
+            Material.foreground = "black"
+            Material.primary = Material.color(Material.Yellow, Material.Shade50)
+            Material.accent = Material.Blue
+            Material.theme = Material.Light
+        } else {
+            Material.background = "white"
+            Material.foreground = "black"
+            Material.primary = Material.color(Material.Yellow, Material.Shade50)
+            Material.accent = "#990000"
+            Material.theme = Material.Light
+        }
+
+    }
+
     color: Material.background
     height: btStyle.height
     visible: true
@@ -78,9 +102,6 @@ Window {
         else
             informationDialog.openAtStartup();
     }
-
-    Material.theme: Material.Dark
-    Material.accent: Material.Orange
 
     Item {
         id: keyReceiver
@@ -285,13 +306,16 @@ Window {
         function doAction(action) {
             colorThemeMenus.visible = false;
             if (action === "dark") {
-                btStyle.setStyle(1)
+                btStyle.setStyle(1);
+                root.setMaterialStyle(1);
             }
             else if (action === "lightblue") {
-                btStyle.setStyle(2)
+                btStyle.setStyle(2);
+                root.setMaterialStyle(3);
             }
             else if (action === "crimson") {
-                btStyle.setStyle(3)
+                btStyle.setStyle(3);
+                root.setMaterialStyle(3);
             }
         }
 
@@ -326,7 +350,6 @@ Window {
         onLoadReferences: {
             var moduleNames = windowMenus.theWindow.getModuleNames();
             moduleName = moduleNames[0];
-            console.log("moduleName: ", moduleName)
             theWindow = windowMenus.theWindow;
             mainToolbar.enabled = ! copyVersesDialog.visible
             windowManager.toolbarsEnabled = ! copyVersesDialog.visible
@@ -413,14 +436,9 @@ Window {
         }
 
         visible: false
-        anchors.centerIn: parent
-        height: parent.height/1.4
-        width: parent.width * 0.9
+        anchors.fill: parent
         text: {
-            var t = "<center><b>";
-            t += qsTr("New Feature");
-            t += "</b></center><br>"
-            t += qsTr("You can write your own comments about Bible verses.");
+            var t = qsTr("You can write your own comments about Bible verses.");
             t += " " + qsTr("Install the Personal commentary from Crosswire.");
             t += " " + qsTr("Then open the Personal commentary and select a verse.");
             t += " " + qsTr("You can then enter your text.");
@@ -582,8 +600,10 @@ Window {
 
             width: parent.width
             height: parent.height
+            onMagFinished: {
+                magDrawer.close();
+            }
         }
-
     }
 
     ListModel {
@@ -669,9 +689,10 @@ Window {
             id: spacer
 
             anchors.top: mainToolbar.bottom
-            height:2
+            height:1
             width: parent.width
-            color: "#646464"
+            color: Material.foreground
+            z:11
         }
 
         SessionInterface {
@@ -690,6 +711,7 @@ Window {
                 }
                 var color = getColorTheme();
                 btStyle.setStyle(color);
+                root.setMaterialStyle(color);
                 var winMode = getWindowArrangementMode();
                 windowManager.windowArrangement = winMode;
             }
@@ -793,10 +815,17 @@ Window {
         dragMargin: Qt.styleHints.startDragDistance / 3
 
         function openSearchResults() {
+            if (searchDialog.searchText === "")
+                return;
             searchDrawer.searchText = searchDialog.searchText;
             searchDrawer.findChoice = searchDialog.findChoice;
             searchDrawer.moduleList = searchDialog.moduleList;
             searchDrawer.performSearch();
+        }
+
+        onResultsMenuRequested: {
+            searchDrawer.close();
+            searchResultsMenu.visible = true;
         }
 
         onIndexingFinishedChanged: {
@@ -814,7 +843,6 @@ Window {
         onClosed: {
             keyReceiver.forceActiveFocus();
         }
-
     }
 
 

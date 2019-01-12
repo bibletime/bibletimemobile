@@ -52,6 +52,7 @@ Dialog {
                 modules.push(choice2);
             }
         }
+        searchComboBox.updateWidth(modules)
         searchDialog.modules = modules;
     }
 
@@ -77,18 +78,23 @@ Dialog {
     }
 
     spacing: btStyle.pixelsPerMillimeterX * 2.5
+    width: Math.min(root.width, root.height)
+    contentItem: Rectangle {
+        id: item
 
-    contentItem: Item {
+        color: Material.background
 
         ColumnLayout {
 
+            anchors.horizontalCenter: parent.horizontalCenter
+            width: parent.width
             spacing: searchDialog.spacing
 
             GridLayout {
 
                 columns: searchDialog.orientation === Qt.Vertical ? 1 : 2
                 columnSpacing: btStyle.pixelsPerMillimeterX * 10
-                rowSpacing: btStyle.pixelsPerMillimeterX * 2
+                rowSpacing: btStyle.pixelsPerMillimeterX * 3
 
                 id: searchInput
 
@@ -177,6 +183,7 @@ Dialog {
             }
         }
     }
+
     BtStyle {
         id: btStyle
     }

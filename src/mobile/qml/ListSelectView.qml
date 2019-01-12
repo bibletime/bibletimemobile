@@ -52,7 +52,7 @@ Rectangle {
             property bool selected: ListView.isCurrentItem ? true : false
             objectName: "entry"
 
-            color: (highlight && ListView.isCurrentItem) ? Material.primary : Material.background
+            color: Material.background
             width: parent.width
             height: {
                 var pixel = btStyle.pixelsPerMillimeterY * 7;
@@ -71,7 +71,7 @@ Rectangle {
                 text: model.text
                 font.pointSize: btStyle.uiFontPointSize
                 font.bold: highlight && entry.selected
-                color: Material.foreground
+                color: (highlight && entry.selected) ? Material.accent : Material.foreground
             }
         }
 
