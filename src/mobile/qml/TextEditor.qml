@@ -35,7 +35,7 @@ Rectangle {
         anchors.bottom: okButton.top
         anchors.margins: btStyle.pixelsPerMillimeterX * 1
         font.pointSize: btStyle.uiFontPointSize + 2
-        textFormat: TextEdit.RichText
+        textFormat: TextEdit.PlainText
         wrapMode: TextEdit.WordWrap
         Keys.forwardTo: [textEditor]
     }
