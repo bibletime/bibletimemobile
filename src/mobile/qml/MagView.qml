@@ -384,7 +384,7 @@ FocusScope {
                 text: btWindowInterface2.referencesViewTitle
             }
 
-            ScrollView {
+            Flickable {
                 id: footnoteView
 
                 anchors.top: referenceTitle.bottom
@@ -396,8 +396,8 @@ FocusScope {
                 anchors.topMargin: magView.magViewMargins
                 anchors.bottomMargin: magView.magViewMargins
                 clip: true
-                ScrollBar.horizontal.policy: ScrollBar.AlwaysOn
-                ScrollBar.vertical.policy: ScrollBar.AlwaysOn
+                contentWidth: footnoteText.width
+                contentHeight: footnoteText.height
                 visible: btWindowInterface2.footnoteVisible
                 z: 1
                 Text {
