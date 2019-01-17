@@ -56,7 +56,7 @@ Window {
 
     function setMaterialStyle(style) {
         if (style === 1) {
-            Material.background = "#282828"
+            Material.background = "#000000"
             Material.foreground = "white"
             Material.primary = "#111e6c"
             Material.accent = Material.Amber
