@@ -66,7 +66,7 @@ Window {
             Material.background = "white"
             Material.foreground = "black"
             Material.primary = Material.color(Material.Yellow, Material.Shade50)
-            Material.accent = Material.Blue
+            Material.accent = Material.Indigo
             Material.theme = Material.Light
         } else {
             Material.background = "white"
