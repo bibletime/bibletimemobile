@@ -74,6 +74,7 @@ Item {
 
     function setupBook() {
         atState = "BOOK";
+        gridChooser.highlightIndex = chooserInterface.getNewTestamentIndex(verseChooser.module);
         gridChooser.model = chooserInterface.getBooks(module);
         gridChooser.selected = "";
         gridChooser.titleText = qsTr("Book");

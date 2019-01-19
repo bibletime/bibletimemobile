@@ -44,6 +44,7 @@ public:
     Q_INVOKABLE void next(QString value);
     Q_INVOKABLE void back();
     Q_INVOKABLE void select(QString value);
+    Q_INVOKABLE int getNewTestamentIndex(const QString& module);
 
 private:
     QStringList getKeyPath() const;

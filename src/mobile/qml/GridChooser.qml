@@ -27,6 +27,7 @@ Rectangle {
     property string backText: ""
     property int maxLength: 0
     property alias model: repeater.model
+    property int highlightIndex: 39
 
     signal accepted(string choosenText);
     signal backup();
@@ -36,7 +37,7 @@ Rectangle {
     width: parent.width
 
     Keys.onReleased: {
-        if ((event.key == Qt.Key_Back || event.key == Qt.Key_Escape) && gridChooser.visible == true) {
+        if ((event.key === Qt.Key_Back || event.key === Qt.Key_Escape) && gridChooser.visible === true) {
             event.accepted = true;
             backup();
         }
@@ -122,6 +123,12 @@ Rectangle {
                     textHeight: btStyle.uiFontPointSize
                     buttonWidth: gridChooser.buttonWidth
                     buttonHeight: gridChooser.buttonHeight
+                    highlight: {
+                        var h = false;
+                        if ( highlightIndex >= 0)
+                            h = index >= highlightIndex;
+                        return h;
+                    }
                     onClicked: gridChooser.accept(text)
                 }
             }

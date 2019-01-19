@@ -20,16 +20,16 @@ Rectangle {
     property int buttonWidth
     property int buttonHeight
     property int textHeight
-    property color textColor
-    property color buttonColor
-    property color activeButtonColor
     property alias text: buttonText.text
+    property bool highlight: true
 
     signal clicked
 
     width: buttonWidth
     height: buttonHeight
     color: Material.background
+    border.color: highlight ? Material.accent : Material.foreground
+    border.width: 4
     smooth: true
 
     border {
@@ -44,8 +44,10 @@ Rectangle {
     Text {
         id: buttonText
 
-        width: buttonWidth-8
-        anchors.centerIn: parent
+        anchors.verticalCenter: parent.verticalCenter
+        anchors.left: parent.left
+        anchors.leftMargin: btStyle.pixelsPerMillimeterX * 2
+        anchors.right: parent.right
         color: Material.foreground
         font.pointSize: parent.textHeight
         elide: Text.ElideRight

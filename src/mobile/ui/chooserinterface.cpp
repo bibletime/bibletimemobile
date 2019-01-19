@@ -40,6 +40,27 @@ void ChooserInterface::initializeRoleNameModel() {
     m_roleItemModel.setRoleNames(roleNames);
 }
 
+int ChooserInterface::getNewTestamentIndex(const QString& moduleName) {
+    CSwordModuleInfo* m = CSwordBackend::instance()->findModuleByName(moduleName);
+    const CSwordBibleModuleInfo* bibleModule = qobject_cast<const CSwordBibleModuleInfo*>(m);
+    if (! bibleModule)
+        return -1;
+    QStringList books = *bibleModule->books();
+    CSwordKey * key = CSwordKey::createInstance(m);
+    CSwordVerseKey* verseKey = dynamic_cast<CSwordVerseKey*>(key);
+    if (verseKey) {
+        for (int i=0; i<books.count(); ++i) {
+            QString book = books.at(i);
+            QString keyName = book + " 1:1";
+            verseKey->setKey(keyName);
+            int testament = verseKey->getTestament();
+            if (testament == 2)
+                return i;
+        }
+    }
+    return -1;
+}
+
 QStringList ChooserInterface::getBooks(const QString& moduleName) const {
     QStringList books;
     CSwordModuleInfo* module = CSwordBackend::instance()->findModuleByName(moduleName);
