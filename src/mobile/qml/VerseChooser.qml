@@ -83,6 +83,7 @@ Item {
 
     function setupChapter() {
         atState = "CHAPTER";
+        gridChooser.highlightIndex = -1;
         gridChooser.model  = chooserInterface.getChapters(module, book);
         gridChooser.selected = "";
         gridChooser.titleText = qsTr("Chapter");
@@ -91,6 +92,7 @@ Item {
 
     function setupVerse() {
         atState = "VERSE";
+        gridChooser.highlightIndex = -1;
         gridChooser.model  = chooserInterface.getVerses(module, book, chapter);
         gridChooser.selected = "";
         gridChooser.titleText = qsTr("Verse");
