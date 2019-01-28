@@ -62,18 +62,21 @@ Window {
             Material.accent = Material.Amber
             Material.accent = "#ffd700"
             Material.theme = Material.Dark
+            gridChooser.buttonBorderWidth = 2
         } else if (style === 2) {
             Material.background = "white"
             Material.foreground = "black"
             Material.primary = Material.color(Material.Yellow, Material.Shade50)
             Material.accent = Material.Indigo
             Material.theme = Material.Light
+            gridChooser.buttonBorderWidth = 4
         } else {
             Material.background = "white"
             Material.foreground = "black"
             Material.primary = Material.color(Material.Yellow, Material.Shade50)
             Material.accent = "#990000"
             Material.theme = Material.Light
+            gridChooser.buttonBorderWidth = 4
         }
 
     }

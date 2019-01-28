@@ -22,6 +22,7 @@ Rectangle {
     property int textHeight
     property alias text: buttonText.text
     property bool highlight: true
+    property int borderWidth: 1
 
     signal clicked
 
@@ -29,7 +30,7 @@ Rectangle {
     height: buttonHeight
     color: Material.background
     border.color: highlight ? Material.accent : Material.foreground
-    border.width: 4
+    border.width: button.borderWidth
     smooth: true
 
     border {

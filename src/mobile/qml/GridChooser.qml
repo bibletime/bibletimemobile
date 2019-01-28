@@ -28,6 +28,7 @@ Rectangle {
     property int maxLength: 0
     property alias model: repeater.model
     property int highlightIndex: 39
+    property int buttonBorderWidth: 5
 
     signal accepted(string choosenText);
     signal backup();
@@ -123,6 +124,7 @@ Rectangle {
                     textHeight: btStyle.uiFontPointSize
                     buttonWidth: gridChooser.buttonWidth
                     buttonHeight: gridChooser.buttonHeight
+                    borderWidth: gridChooser.buttonBorderWidth
                     highlight: {
                         var h = false;
                         if ( highlightIndex >= 0)
