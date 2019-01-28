@@ -64,10 +64,12 @@ Item {
         }
         else if (atState == "CHAPTER") {
             setupBook();
+            gridChooser.visible = false;
             gridChooser.visible = true;
         }
         else if (atState == "VERSE") {
             setupChapter();
+            gridChooser.visible = false;
             gridChooser.visible = true;
         }
     }
