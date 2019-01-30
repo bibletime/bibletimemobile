@@ -1,15 +1,15 @@
 <RCC>
     <qresource prefix="/share/bibletime/license">
-        <file>qml/Back.qml</file>
+        <file>../../platforms/dummy/a</file>
     </qresource>
     <qresource prefix="/share/bibletime/pics">
-        <file>qml/Back.qml</file>
+        <file>../../platforms/dummy/b</file>
     </qresource>
     <qresource prefix="/share/bibletime/docs/handbook/en">
-        <file>qml/Back.qml</file>
+        <file>../../platforms/dummy/c</file>
     </qresource>
     <qresource prefix="/share/bibletime/docs/howto/en">
-        <file>qml/Back.qml</file>
+        <file>../../platforms/dummy/d</file>
     </qresource>
     <qresource prefix="/share/bibletime">
         <file>qml/About.qml</file>
