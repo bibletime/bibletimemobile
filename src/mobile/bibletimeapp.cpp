@@ -29,6 +29,8 @@ BibleTimeApp::BibleTimeApp(int &argc, char **argv)
     , m_debugMode(false)
 {
     setApplicationName("bibletime");
+    setOrganizationName("BibleTime");
+    setOrganizationDomain("bibletime.info");
     setApplicationVersion(BT_VERSION);
     connect(this, SIGNAL(applicationStateChanged(Qt::ApplicationState)),
             this, SLOT(applicationStateChanged(Qt::ApplicationState)));
