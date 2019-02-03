@@ -457,7 +457,7 @@ Rectangle {
                         id: column0Text
                         text: text1
                         textFormat: Text.RichText
-                        anchors.bottom: parent.bottom
+                        anchors.top: parent.top
                         anchors.left: parent.left
                         width: listView.width / listView.columns
                         color: btStyle.textColor
