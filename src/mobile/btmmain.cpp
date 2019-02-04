@@ -193,9 +193,9 @@ int main(int argc, char *argv[]) {
 
     QQuickStyle::setStyle("Material");
 
-    // Adjust start scrolling drag distance
-    QStyleHints * sh = app.styleHints();
-    sh->setStartDragDistance(30);
+//    // Adjust start scrolling drag distance
+//    QStyleHints * sh = app.styleHints();
+//    sh->setStartDragDistance(30);
 
     btm::BtStyle::setCurrentStyle(btm::BtStyle::darkTheme);
 
