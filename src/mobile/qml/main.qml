@@ -995,6 +995,7 @@ Window {
         }
         onAccepted: {
             btStyle.uiFontPointSize = pointSize
+            windowManager.doTabLayout();
         }
     }
 

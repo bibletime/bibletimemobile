@@ -161,11 +161,11 @@ Rectangle {
     function formatTitle() {
         toolbar.title = btWindowInterface.moduleName;
         if (btWindowInterface.numModules >1)
-            toolbar.title += " / " + btWindowInterface.module2Name;
+            toolbar.title += "/" + btWindowInterface.module2Name;
         if (btWindowInterface.numModules >2)
-            toolbar.title += " / " + btWindowInterface.module3Name;
+            toolbar.title += "/" + btWindowInterface.module3Name;
         if (btWindowInterface.numModules >3)
-            toolbar.title += " / " + btWindowInterface.module4Name;
+            toolbar.title += "/" + btWindowInterface.module4Name;
 
         toolbar.title += " (" + btWindowInterface.reference + ")";
     }

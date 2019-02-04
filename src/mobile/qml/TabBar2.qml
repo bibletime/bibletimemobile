@@ -14,12 +14,12 @@ ListView {
     height: btStyle.pixelsPerMillimeterX * 9
     orientation: ListView.Horizontal
     snapMode: ListView.SnapOneItem
-    spacing: btStyle.pixelsPerMillimeterX * 3
+    spacing: btStyle.pixelsPerMillimeterX * 3.5
     delegate: Item {
         id: item
 
         height: fontMetrics.height + topMargin + bottomMargin
-        width: listView.maxWidth();
+        width: listView.calcWidth(index);
 
 
         Text {
@@ -28,7 +28,7 @@ ListView {
             color: (item.ListView.isCurrentItem) ? Material.accent : Material.foreground
             anchors.horizontalCenter: parent.horizontalCenter
             anchors.bottom: parent.bottom
-            anchors.bottomMargin: listView.bottomMargin * 2
+            anchors.bottomMargin: listView.bottomMargin * 1.5
             text: {
                 var t = listView.getTitle(index)
                 var t2 = btStyle.elideLeft(t, listView.elideWidth);
@@ -46,6 +46,7 @@ ListView {
             anchors.right: parent.right
             anchors.rightMargin: 5
             anchors.bottom: parent.bottom
+            anchors.bottomMargin: bottomMargin
             visible: item.ListView.isCurrentItem
             color: Material.accent
             height: 2

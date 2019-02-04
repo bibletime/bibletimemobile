@@ -276,6 +276,10 @@ Rectangle {
         layoutTiles(rows, columns);
     }
 
+    function doTabLayout() {
+        tabBar2.doLayout();
+    }
+
     function layoutWindows() {
 
         tabbedWindows.z = -2;
@@ -381,23 +385,24 @@ Rectangle {
             TabBar2 {
                 id: tabBar2
 
-                elideWidth: mainScreen.width *.5
+                elideWidth: mainScreen.width *.7
 
-                topMargin: btStyle.pixelsPerMillimeterX * 2.5
-                bottomMargin: btStyle.pixelsPerMillimeterX * 1
+                topMargin: btStyle.pixelsPerMillimeterX * 3
+                bottomMargin: btStyle.pixelsPerMillimeterX * 2
 
                 function getTitle(index) {
                     return tabbedWindowsStack.children[index].title;
                 }
 
-                function maxWidth() {
-                    var mWidth= 80;       // minimum
-                    for (var i=0; i<count; i++) {
-                        var iTitle = getTitle(i);
-                        var iWidth = btStyle.textWidth(btStyle.elideLeft(iTitle, tabBar2.elideWidth))
-                        mWidth = Math.max(iWidth, mWidth);
-                    }
-                    return mWidth
+                function calcWidth(index) {
+                    var iTitle = getTitle(index);
+                    var iWidth = btStyle.textWidth(btStyle.elideLeft(iTitle, tabBar2.elideWidth))
+                    return iWidth
+                }
+
+                function doLayout() {
+                    model = tabbedWindowsStack.children.length + 1;
+                    model = tabbedWindowsStack.children.length;
                 }
 
                 anchors.fill: parent
