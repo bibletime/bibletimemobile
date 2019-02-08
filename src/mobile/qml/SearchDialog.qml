@@ -32,7 +32,6 @@ Dialog {
         searchText = "";
         findChoice = "";
         appendModuleChoices(moduleNames);
-        title = qsTranslate("Search", "Search")
     }
 
     function appendModuleChoices(moduleNames) {
@@ -77,22 +76,51 @@ Dialog {
         searchDialog.open();
     }
 
-    spacing: btStyle.pixelsPerMillimeterX * 2.5
-    width: Math.min(root.width, root.height)
+    spacing: btStyle.pixelsPerMillimeterX * 2
+    width: root.width
+    height: root.height
+    x: 0
+    y: 0
     contentItem: Rectangle {
         id: item
 
         color: Material.background
+        border.width: 1
+        border.color: "white"
+
+        Rectangle {
+            id: aboutTitleBar
+            color: Material.primary
+            border.color: Material.foreground
+            border.width: 1
+            width: parent.width
+            height: btStyle.pixelsPerMillimeterY * 9
+
+            Back {
+                id: backTool
+
+                anchors.left: parent.left
+                anchors.top: parent.top
+                anchors.bottom: parent.bottom
+                text: qsTranslate("Navigation", "Main")
+                onClicked: {
+                    searchDialog.close();
+                }
+            }
+        }
 
         ColumnLayout {
 
-            anchors.horizontalCenter: parent.horizontalCenter
+            anchors.top: aboutTitleBar.bottom
+            anchors.topMargin: btStyle.pixelsPerMillimeterX * 3
+            anchors.left: parent.left
+            anchors.leftMargin: btStyle.pixelsPerMillimeterX *2
             width: parent.width
             spacing: searchDialog.spacing
 
             GridLayout {
 
-                columns: searchDialog.orientation === Qt.Vertical ? 1 : 2
+                columns: searchDialog.orientation === Qt.Vertical ? 1 : 1
                 columnSpacing: btStyle.pixelsPerMillimeterX * 10
                 rowSpacing: btStyle.pixelsPerMillimeterX * 3
 
@@ -100,7 +128,7 @@ Dialog {
 
                 RowLayout {
 
-                    spacing: btStyle.pixelsPerMillimeterX * 2
+                    spacing: btStyle.pixelsPerMillimeterX * 3
 
                     Text {
                         id: searchForLabel
@@ -119,6 +147,14 @@ Dialog {
                         inputMethodHints: Qt.ImhNoAutoUppercase
                         focus: true
                         text: ""
+                    }
+
+                    BtButton {
+                        id: searchButton
+                        text: qsTranslate("Search", "Search")
+                        onClicked: {
+                            searchDialog.setupSearch();
+                        }
                     }
                 }
 
@@ -171,14 +207,6 @@ Dialog {
                         text: qsTr("Regular Expression")
                         font.pointSize: btStyle.uiFontPointSize
                     }
-                }
-            }
-
-            BtButton {
-                id: searchButton
-                text: qsTranslate("Search", "Search")
-                onClicked: {
-                    searchDialog.setupSearch();
                 }
             }
         }
