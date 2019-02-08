@@ -71,9 +71,7 @@ Drawer {
 
     edge: Qt.RightEdge
     width: parent.width
-    height: parent.height - y
-    y: 1
-
+    height: parent.height
     contentItem: Rectangle {
         id: content
 
@@ -82,6 +80,7 @@ Drawer {
         Controls1.SplitView {
             id: searchResultsArea
 
+            anchors.fill: parent
             orientation: Qt.Vertical
             handleDelegate: Rectangle {
                 id: vHandle
