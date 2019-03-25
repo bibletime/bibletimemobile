@@ -389,6 +389,9 @@ Rectangle {
         }
     }
 
+
+
+
     Rectangle {
         id: mainTextView
 
@@ -556,10 +559,11 @@ Rectangle {
             property int factor: 20
             property real savedPosition: 0
             property bool firstPositionChanged: false
-            width: btStyle.pixelsPerMillimeterX * 7
+            width: btStyle.pixelsPerMillimeterX * 5
             anchors.top: listView.top
             anchors.bottom: listView.bottom
             anchors.right: listView.right
+            anchors.rightMargin: SearchDrawer.dragMargin
             position: 0.5
             size: 0.1
             onPositionChanged: {
