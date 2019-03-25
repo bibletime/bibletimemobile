@@ -17,6 +17,7 @@ import BibleTime 1.0
 Rectangle {
     id: menu
 
+    property int index: -1
     property alias model: menusRepeater.model
     property int fontPointSize: 15
     property int menuHeight: {
@@ -44,8 +45,14 @@ Rectangle {
             width: menu.width
             height: menuHeight
             color: Material.background
-            border.color: Material.foreground
-            border.width: 1
+            border.color: {
+                console.log("index: ", index, menu.index)
+                if (index === menu.index)
+                    return Material.accent
+                else
+                    return Material.foreground
+            }
+            border.width: 2
 
             Text {
                 text: qsTranslate("main",title)
