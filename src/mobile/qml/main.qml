@@ -122,6 +122,7 @@ Window {
             settingsMenus,
             bookmarkManagerMenus,
             colorThemeMenus,
+            scrollBarMenus,
             informationDialog,
             gridChooser,
             moduleChooser,
@@ -303,6 +304,7 @@ Window {
         visible: false
         z: 1
     }
+
     Menus {
         id: colorThemeMenus
 
@@ -788,6 +790,49 @@ Window {
         }
     }
 
+    Menus {
+        id: scrollBarMenus
+
+        function doAction(action) {
+            scrollBarMenus.visible = false;
+            if (action === "off") {
+                windowManager.setScrollBarPosition(0);
+            }
+            else if (action === "left") {
+                windowManager.setScrollBarPosition(1);
+            }
+            else if (action === "right") {
+                windowManager.setScrollBarPosition(2);
+            }
+        }
+        onVisibleChanged: {
+            if (visible === true) {
+                var pos = configInterface.intValue("ui/scrollBarPosition", 2);
+                scrollBarMenus.index = pos;
+            }
+        }
+
+        model: scrollBarModel
+        z: 1
+        Keys.onReleased: {
+            if ((event.key === Qt.Key_Back || event.key === Qt.Key_Escape)  && scrollBarMenus.visible === true) {
+                event.accepted = true;
+                scrollBarMenus.visible = false;
+            }
+        }
+
+
+        Component.onCompleted: menuSelected.connect(scrollBarMenus.doAction)
+    }
+
+    ListModel {
+        id: scrollBarModel
+
+        ListElement { title: QT_TR_NOOP("Off");             action: "off" }
+        ListElement { title: QT_TR_NOOP("Left");            action: "left" }
+        ListElement { title: QT_TR_NOOP("Right");           action: "right" }
+    }
+
     SearchDialog {
         id: searchDialog
 
@@ -916,6 +961,9 @@ Window {
             else if (action === "defaultDoc") {
                 defaultDoc.visible = true;
             }
+            else if (action === "scrollBarPosition") {
+                scrollBarMenus.visible = true;
+            }
         }
 
         model: settingsModel
@@ -936,6 +984,7 @@ Window {
         ListElement { title: QT_TR_NOOP("Window Arrangement");        action: "windowArrangement" }
         ListElement { title: QT_TR_NOOP("Color Theme");               action: "colortheme" }
         ListElement { title: QT_TR_NOOP("Default Documents");         action: "defaultDoc" }
+        ListElement { title: QT_TR_NOOP("ScrollBar Position");        action: "scrollBarPosition" }
     }
 
     TextEditor {

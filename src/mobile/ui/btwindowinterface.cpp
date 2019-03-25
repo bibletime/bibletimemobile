@@ -749,6 +749,27 @@ QVariant BtWindowInterface::getTextModel() {
     return var;
 }
 
+bool BtWindowInterface::getLeftScroll() const {
+    int position = btConfig().value<int>("ui/scrollBarPosition",ScrollBarPosition::RIGHT);
+    return position == ScrollBarPosition::LEFT;
+}
+
+bool BtWindowInterface::getRightScroll() const {
+    int position = btConfig().value<int>("ui/scrollBarPosition",ScrollBarPosition::RIGHT);
+    return position == ScrollBarPosition::RIGHT;
+}
+
+void BtWindowInterface::setScrollBarPosition(int pos ) {
+    btConfig().setValue("ui/scrollBarPosition", pos);
+    if (pos == ScrollBarPosition::RIGHT) {
+        leftScrollChanged();
+        rightScrollChanged();
+    } else {
+        rightScrollChanged();
+        leftScrollChanged();
+    }
+}
+
 void BtWindowInterface::updateKeyText(int index) {
     QString keyName = m_moduleTextModel->indexToKeyName(index);
     setReference(keyName);

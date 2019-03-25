@@ -46,7 +46,6 @@ Rectangle {
             height: menuHeight
             color: Material.background
             border.color: {
-                console.log("index: ", index, menu.index)
                 if (index === menu.index)
                     return Material.accent
                 else

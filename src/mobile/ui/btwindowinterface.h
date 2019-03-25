@@ -53,6 +53,12 @@ class BtWindowInterface : public QObject {
         Text
     };
 
+    enum ScrollBarPosition {
+        OFF = 0,
+        LEFT,
+        RIGHT
+    };
+
     Q_PROPERTY(QStringList  comboBoxEntries         READ getComboBoxEntries NOTIFY comboBoxEntriesChanged)
     Q_PROPERTY(QString      currentModelText        READ getCurrentModelText NOTIFY currentModelIndexChanged)
     Q_PROPERTY(int          currentModelIndex       READ getCurrentModelIndex NOTIFY currentModelIndexChanged)
@@ -76,6 +82,8 @@ class BtWindowInterface : public QObject {
     Q_PROPERTY(QStringList  references              READ getReferences NOTIFY referencesChanged)
     Q_PROPERTY(QString      referencesViewTitle     READ getReferencesViewTitle NOTIFY referencesViewTitleChanged)
     Q_PROPERTY(QVariant     textModel               READ getTextModel NOTIFY textModelChanged)
+    Q_PROPERTY(bool         leftScroll              READ getLeftScroll NOTIFY leftScrollChanged)
+    Q_PROPERTY(bool         rightScroll             READ getRightScroll NOTIFY rightScrollChanged)
 
 public:
     Q_INVOKABLE bool copy(const QString& moduleName, const QString& ref1, const QString& ref2);
@@ -102,6 +110,7 @@ public:
     Q_INVOKABLE QString getModelTextByIndex(int index) const;
     Q_INVOKABLE void lexiconReferenceChoosen(int index);
     Q_INVOKABLE void referenceChosen();
+    Q_INVOKABLE void setScrollBarPosition(int pos);
 
     BtWindowInterface(QObject *parent = nullptr);
     ~BtWindowInterface();
@@ -129,6 +138,8 @@ public:
     QStringList getReferences() const;
     QString getReferencesViewTitle() const;
     QVariant getTextModel();
+    bool getLeftScroll() const;
+    bool getRightScroll() const;
     bool isMagView() const;
     void moduleNameChanged(const QString& moduleName);
 
@@ -159,6 +170,8 @@ signals:
     void referencesViewTitleChanged();
     void textChanged();
     void textModelChanged();
+    void leftScrollChanged();
+    void rightScrollChanged();
 
 private slots:
     void referenceChanged();

@@ -44,6 +44,13 @@ Rectangle {
         }
     }
 
+    function setScrollBarPosition(pos) {
+        for (var i=0; i<windows.length; ++i) {
+            var window = windows[i];
+            window.setScrollBarPosition(pos);
+        }
+    }
+
     function getTopWindowIndex() {
         if (windowArrangement == single || windowArrangement == tabLayout)
             return tabbedWindows.current;

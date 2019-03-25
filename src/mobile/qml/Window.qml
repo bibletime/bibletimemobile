@@ -146,6 +146,10 @@ Rectangle {
         btWindowInterface.updateCurrentModelIndex();
     }
 
+    function setScrollBarPosition(pos) {
+        btWindowInterface.setScrollBarPosition(pos);
+    }
+
     function saveWindowStateToConfig (index) {
         btWindowInterface.saveWindowStateToConfig(index);
     }
@@ -555,17 +559,31 @@ Rectangle {
         }
 
         ScrollBar {
+            id: scrollBar
+
             property int savedY: 0
             property int factor: 20
             property real savedPosition: 0
             property bool firstPositionChanged: false
-            width: btStyle.pixelsPerMillimeterX * 5
+            width: btStyle.pixelsPerMillimeterX * 7
             anchors.top: listView.top
             anchors.bottom: listView.bottom
-            anchors.right: listView.right
+            anchors.left: {
+                if (btWindowInterface.leftScroll) {
+                    return listView.left
+                }
+                return undefined;
+            }
+            anchors.right: {
+                if (btWindowInterface.rightScroll) {
+                    return listView.right
+                }
+                return undefined;
+            }
             anchors.rightMargin: SearchDrawer.dragMargin
             position: 0.5
             size: 0.1
+            visible: btWindowInterface.leftScroll || btWindowInterface.rightScroll
             onPositionChanged: {
                 if (firstPositionChanged) {
                     savedPosition = position;
