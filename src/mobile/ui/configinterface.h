@@ -35,6 +35,7 @@ public:
 
     Q_INVOKABLE bool boolValue(const QString& configKey, bool defaultValue);
     Q_INVOKABLE void setBoolValue(const QString& configKey, bool value);
+    Q_INVOKABLE int  intValue(const QString& configKey, bool defaultValue);
 
 private:
 

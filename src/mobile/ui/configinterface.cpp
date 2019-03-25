@@ -41,4 +41,8 @@ QString ConfigInterface::getWritableTmpDir() {
     return QStandardPaths::writableLocation(QStandardPaths::TempLocation);
 }
 
+int ConfigInterface::intValue(const QString& configKey, bool defaultValue) {
+    return btConfig().value<int>(configKey, defaultValue);
+}
+
 }
