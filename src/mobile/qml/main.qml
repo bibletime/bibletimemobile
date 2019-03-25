@@ -593,7 +593,7 @@ Window {
         y: 1
         width: parent.width
         height: parent.height - y
-        dragMargin: Qt.styleHints.startDragDistance / 3
+        dragMargin: Qt.styleHints.startDragDistance
         onClosed: {
             keyReceiver.forceActiveFocus();
         }
@@ -813,7 +813,7 @@ Window {
     SearchDrawer {
         id: searchDrawer
 
-        dragMargin: Qt.styleHints.startDragDistance / 3
+        dragMargin: Qt.styleHints.startDragDistance
 
         function openSearchResults() {
             if (searchDialog.searchText === "")
