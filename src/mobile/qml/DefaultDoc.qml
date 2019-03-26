@@ -68,14 +68,14 @@ Rectangle {
             anchors.top: parent.top
             anchors.topMargin: btStyle.pixelsPerMillimeterX * 10
             width: btStyle.pixelsPerMillimeterX * 50
-            spacing: btStyle.pixelsPerMillimeterY * 2
+            //spacing: btStyle.pixelsPerMillimeterY * 1
 
             Rectangle {
                 id: spacer0
 
                 color: Material.background
                 width:1
-                height: btStyle.pixelsPerMillimeterY * 2
+                height: btStyle.pixelsPerMillimeterY * 3
             }
 
             Text {
@@ -85,7 +85,7 @@ Rectangle {
                 width: parent.width
                 horizontalAlignment: Text.AlignHCenter
                 font.pointSize: btStyle.uiFontPointSize + 4
-                color: Material.background
+                color: Material.foreground
             }
 
             Rectangle {
@@ -93,7 +93,7 @@ Rectangle {
 
                 color: Material.background
                 width:1
-                height: btStyle.pixelsPerMillimeterY * 4
+                height: btStyle.pixelsPerMillimeterY * 5
             }
 
             Text {
@@ -101,9 +101,9 @@ Rectangle {
 
                 text: qsTranslate("Default Documents", "Bible:")
                 width: parent.width
-                horizontalAlignment: Text.AlignHCenter
+                horizontalAlignment: Text.AlignLeft
                 font.pointSize: btStyle.uiFontPointSize
-                color: Material.background
+                color: Material.foreground
             }
 
             BtComboBox {
@@ -130,7 +130,7 @@ Rectangle {
 
                 color: Material.background
                 width:1
-                height: btStyle.pixelsPerMillimeterY * 4
+                height: btStyle.pixelsPerMillimeterY * 5
             }
 
             Text {
@@ -138,9 +138,9 @@ Rectangle {
 
                 text: qsTranslate("Default Documents", "Hebrew Strong's lexicon:")
                 width: parent.width
-                horizontalAlignment: Text.AlignHCenter
+                horizontalAlignment: Text.AlignLeft
                 font.pointSize: btStyle.uiFontPointSize
-                color: Material.background
+                color: Material.foreground
             }
 
             BtComboBox {
@@ -167,7 +167,7 @@ Rectangle {
 
                 color: Material.background
                 width:1
-                height: btStyle.pixelsPerMillimeterY * 4
+                height: btStyle.pixelsPerMillimeterY * 5
             }
 
             Text {
@@ -175,9 +175,9 @@ Rectangle {
 
                 text: qsTranslate("Default Documents", "Greek Strong's lexicon:")
                 width: parent.width
-                horizontalAlignment: Text.AlignHCenter
+                horizontalAlignment: Text.AlignLeft
                 font.pointSize: btStyle.uiFontPointSize
-                color: Material.background
+                color: Material.foreground
             }
 
             BtComboBox {
@@ -203,7 +203,7 @@ Rectangle {
 
                 color: Material.background
                 width:1
-                height: btStyle.pixelsPerMillimeterY * 4
+                height: btStyle.pixelsPerMillimeterY * 5
             }
 
             Text {
@@ -211,9 +211,9 @@ Rectangle {
 
                 text: qsTranslate("Default Documents", "Hebrew Morphological lexicon:")
                 width: parent.width
-                horizontalAlignment: Text.AlignHCenter
+                horizontalAlignment: Text.AlignLeft
                 font.pointSize: btStyle.uiFontPointSize
-                color: Material.background
+                color: Material.foreground
             }
 
             BtComboBox {
@@ -240,7 +240,7 @@ Rectangle {
 
                 color: Material.background
                 width:1
-                height: btStyle.pixelsPerMillimeterY * 4
+                height: btStyle.pixelsPerMillimeterY * 5
             }
 
             Text {
@@ -248,9 +248,9 @@ Rectangle {
 
                 text: qsTranslate("Default Documents", "Greek Morphological lexicon:")
                 width: parent.width
-                horizontalAlignment: Text.AlignHCenter
+                horizontalAlignment: Text.AlignLeft
                 font.pointSize: btStyle.uiFontPointSize
-                color: Material.background
+                color: Material.foreground
             }
 
             BtComboBox {
