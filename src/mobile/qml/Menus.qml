@@ -51,7 +51,12 @@ Rectangle {
                 else
                     return Material.foreground
             }
-            border.width: 2
+            border.width: {
+                if (index === menu.index)
+                    return 3;
+                else
+                    return 1;
+            }
 
             Text {
                 text: qsTranslate("main",title)
@@ -98,6 +103,7 @@ Rectangle {
         delegate: eachMenu
         width: parent.width
         anchors.fill: parent
+        spacing: 2
         anchors.topMargin: topMenuMargin
 
     }

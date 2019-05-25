@@ -313,14 +313,24 @@ Window {
             if (action === "dark") {
                 btStyle.setStyle(1);
                 root.setMaterialStyle(1);
+                sessionInterface.setColorTheme(1);
             }
             else if (action === "lightblue") {
                 btStyle.setStyle(2);
                 root.setMaterialStyle(3);
+                sessionInterface.setColorTheme(2);
             }
             else if (action === "crimson") {
                 btStyle.setStyle(3);
                 root.setMaterialStyle(3);
+                sessionInterface.setColorTheme(3);
+            }
+        }
+        onVisibleChanged: {
+            if (visible) {
+                var theme = sessionInterface.getColorTheme();
+                index = theme - 1;
+                console.log("theme: ",theme)
             }
         }
 
@@ -1103,6 +1113,22 @@ Window {
             }
             else if (action === "autoTileVer") {
                 windowManager.setWindowArrangement(windowManager.autoTileVer);
+            }
+        }
+        onVisibleChanged: {
+            if (visible) {
+                var arrangement = windowManager.getWindowArrangement();
+                if (arrangement === windowManager.single)
+                    index = 0;
+                else if (arrangement === windowManager.tabLayout)
+                    index = 1;
+                else if (arrangement === windowManager.autoTile)
+                    index = 2;
+                else if (arrangement === windowManager.autoTileHor)
+                    index = 3;
+                else if (arrangement === windowManager.autoTileVer)
+                    index = 4;
+                console.log("index: ",index, arrangement);
             }
         }
 

@@ -140,6 +140,10 @@ Rectangle {
         layoutWindows();
     }
 
+    function getWindowArrangement() {
+        return windowArrangement;
+    }
+
     function setWindowArrangement(arrangement) {
         if (arrangement < autoTileVer || arrangement > tabLayout)
             return;
