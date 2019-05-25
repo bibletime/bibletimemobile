@@ -68,6 +68,7 @@ class BtStyle : public QObject {
     Q_PROPERTY(QString gitBibleTimeVersion   READ getBibleTimeGitVersion NOTIFY versionChanged);
     Q_PROPERTY(QString qtVersion             READ getQtVersion         NOTIFY versionChanged);
     Q_PROPERTY(QString swordVersion          READ getSwordVersion      NOTIFY versionChanged);
+    Q_PROPERTY(QString buildArch             READ getBuildArch);
 
     Q_PROPERTY(QString systemLocale READ getSystemLocale NOTIFY systemLocaleChanged);
     Q_PROPERTY(QString systemLocaleCountry READ getSystemLocaleCountry NOTIFY systemLocaleCountryChanged);
@@ -188,6 +189,7 @@ public:
     QString getBibleTimeGitVersion() const;
     QString getQtVersion() const;
     QString getSwordVersion() const;
+    QString getBuildArch() const;
 
     QString getSystemLocale() const;
     QString getSystemLocaleCountry() const;

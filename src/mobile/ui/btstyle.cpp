@@ -555,6 +555,10 @@ QString BtStyle::getSwordVersion() const {
     return  version;
 }
 
+QString BtStyle::getBuildArch() const {
+    return  QSysInfo::buildCpuArchitecture();
+}
+
 QString BtStyle::getSystemLocale() const{
     return QLocale::system().name();
 }

@@ -107,6 +107,10 @@ Rectangle {
                     appstr += btStyle.appVersion;
                     appstr += "<br><br>";
 
+                    var cpustr = qsTranslate("About", "Cpu") + "<br>"
+                    cpustr += btStyle.buildArch;
+                    cpustr += "<br><br>";
+
                     var qtstr = qsTranslate("About", "Qt version") + "<br>"
                     qtstr += btStyle.qtVersion;
                     qtstr += "<br><br>";
@@ -139,7 +143,7 @@ Rectangle {
                         btgitstr += "<br><br>";
                     }
 
-                    return  btstr + appstr + qtstr + swordstr + gplstr + btmgitstr + btgitstr;
+                    return  btstr + appstr + cpustr + qtstr + swordstr + gplstr + btmgitstr + btgitstr;
                 }
             }
         }
