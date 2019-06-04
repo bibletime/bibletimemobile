@@ -16,6 +16,7 @@
 #include <memory>
 #include "backend/managers/cswordbackend.h"
 #include "backend/models/btmoduletextmodel.h"
+#include "backend/rendering/btinforendering.h"
 #include "backend/rendering/ctextrendering.h"
 #include "mobile/models/roleitemmodel.h"
 #include "mobile/ui/btmmoduletextfilter.h"
@@ -188,10 +189,14 @@ private:
     void displayText(const QString& text, const QString& lang);
     QString decodeLemma(const QString& value);
     QString decodeMorph(const QString& value);
+    QString getKeyFromUrl(const QString& url);
     QString getReferenceFromUrl(const QString& url);
     void lookupAvailableModules();
     const CSwordModuleInfo* module() const;
     RefIndexes normalizeReferences(const QString& ref1, const QString& ref2);
+    void setInfo(const QString & renderedData, const QString & lang = QString());
+    void setInfo(const Rendering::InfoType type, const QString & data);
+    void setInfo(const Rendering::ListInfoData & list);
     QString stripHtml(const QString& html);
 
     void updateModel();

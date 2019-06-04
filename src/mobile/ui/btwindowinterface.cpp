@@ -228,21 +228,52 @@ QString BtWindowInterface::getRawText(int row, int column) {
 
 QString BtWindowInterface::getReferenceFromUrl(const QString& url) {
     QString reference;
-    QStringList parts = url.split('/', QString::SkipEmptyParts);
-    if (parts.count() == 4 && parts.at(0) == "sword:" && parts.at(1) == "Bible") {
-        reference = parts.at(3);
-        if (reference.endsWith(';'))
-            reference.chop(1);
+    QRegExp rx("sword://(bible|lexicon)/(.*)/(.*)(\\|\\|)", Qt::CaseInsensitive);
+    rx.setMinimal(false);
+    int pos1 = rx.indexIn(url);
+    if (pos1 > -1) {
+        reference = "href=sword://" + rx.cap(1) + "/" + rx.cap(2) + "/" + rx.cap(3);
+    } else {
+        QRegExp rx0("sword://(bible|lexicon)/(.*)/(.*)", Qt::CaseInsensitive);
+        rx0.setMinimal(false);
+        int pos1 = rx0.indexIn(url);
+        if (pos1 > -1) {
+            reference = "href=sword://" + rx0.cap(1) + "/" + rx0.cap(2) + "/" + rx0.cap(3);
+
+        } else {
+            QRegExp rx1("sword://footnote/(.*)=(.*)", Qt::CaseInsensitive);
+            rx1.setMinimal(false);
+            int pos1 = rx1.indexIn(url);
+            if (pos1 > -1) {
+                reference = "note=" + rx1.cap(1);
+
+            } else {
+                QRegExp rx2("sword://lemmamorph/(.*)=(.*)/(.*)", Qt::CaseInsensitive);
+                rx2.setMinimal(false);
+                int pos1 = rx2.indexIn(url);
+                if (pos1 > -1) {
+                    reference = rx2.cap(1) + "=" + rx2.cap(2);
+                }
+            }
+        }
     }
-    if (parts.count() == 6 && parts.at(0) == "sword:" && parts.at(1) == "footnote") {
-        reference = parts.at(3) + "/" + parts.at(4);
-        QString title = tr("Footnote") + " " + parts.at(5);
-        setReferencesViewTitle(title);
-    }
-    if (parts.count() == 4 && parts.at(0) == "sword:" && parts.at(1) == "lemmamorph") {
-        reference = parts.at(2);
-        QString title = parts.at(3);
-        setReferencesViewTitle(title);
+    return reference;
+}
+
+QString BtWindowInterface::getKeyFromUrl(const QString& url) {
+    QString reference;
+    QRegExp rx("sword://(bible|lexicon)/(.*)/(.*)(\\|\\|)", Qt::CaseInsensitive);
+    rx.setMinimal(false);
+    int pos1 = rx.indexIn(url);
+    if (pos1 > -1) {
+        reference = rx.cap(3);
+    } else {
+        QRegExp rx0("sword://(bible|lexicon)/(.*)/(.*)", Qt::CaseInsensitive);
+        rx0.setMinimal(false);
+        int pos1 = rx0.indexIn(url);
+        if (pos1 > -1) {
+            reference = rx0.cap(3);
+        }
     }
     return reference;
 }
@@ -266,9 +297,49 @@ void BtWindowInterface::setRawText(int row, int column, const QString& text) {
 }
 
 void BtWindowInterface::setReferenceByUrl(const QString& url) {
-    QString reference = getReferenceFromUrl(url);
-    setReference(reference);
+    QString link = getReferenceFromUrl(url);
+    Rendering::ListInfoData infoList(Rendering::detectInfo(link));
+    if (!(infoList.isEmpty())) {
+        auto infoData = infoList.at(0);
+        if (infoData.first == Rendering::Reference) {
+            QString key = getKeyFromUrl(url);
+            setReference(key);
+
+        } else {
+            setReferencesViewTitle("");
+            if (infoData.first == Rendering::Footnote) {
+                QStringList footnote = url.split("=");
+                if (footnote.count() == 2)
+                    setReferencesViewTitle(footnote.at(1));
+            }
+            setInfo(infoList);
+        }
+    }
 }
+
+void BtWindowInterface::setInfo(const QString & renderedData, const QString & lang) {
+    QString text = Rendering::formatInfo(renderedData, lang);
+    text.replace("#CHAPTERTITLE#", "");
+//    m_textBrowser->setText(text);
+    displayText(text, lang);
+}
+
+void BtWindowInterface::setInfo(const Rendering::InfoType type, const QString & data) {
+    setInfo(Rendering::ListInfoData() << qMakePair(type, data));
+}
+
+void BtWindowInterface::setInfo(const Rendering::ListInfoData & list) {
+    if (list.isEmpty()) {
+        displayText("", "");
+        return;
+    }
+
+    BtConstModuleList l;
+    l.append(module());
+    setInfo(Rendering::formatInfo(list, l));
+    setFootnoteVisible(true);
+}
+
 
 void BtWindowInterface::setReference(const QString& key) {
     QString newKey = key;
@@ -278,10 +349,13 @@ void BtWindowInterface::setReference(const QString& key) {
     } else {
         QStringList parts = newKey.split("/");
         if (parts.count() == 2) {
-            m_footnoteNum = parts.at(1);
-            newKey = parts.at(0);
-            decodeFootnote(newKey, m_footnoteNum);
-            setFootnoteVisible(true);
+            QStringList tmp = parts.at(1).split("=");
+            if (tmp.count() == 2) {
+                m_footnoteNum = tmp.at(1);
+                newKey = parts.at(0) + "/" + tmp.at(0);
+                decodeFootnote(newKey, m_footnoteNum);
+                setFootnoteVisible(true);
+            }
         }
         else if (m_key && m_key->key() != newKey) {
             CSwordVerseKey* verseKey = dynamic_cast<CSwordVerseKey*>(m_key);
