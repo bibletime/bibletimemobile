@@ -5,10 +5,10 @@
     <qresource prefix="/share/bibletime/pics">
         <file>../../platforms/dummy/b</file>
     </qresource>
-    <qresource prefix="/share/bibletime/docs/handbook/en">
+    <qresource prefix="/share/doc/bibletime/handbook/en">
         <file>../../platforms/dummy/c</file>
     </qresource>
-    <qresource prefix="/share/bibletime/docs/howto/en">
+    <qresource prefix="/share/doc/bibletime/howto/en">
         <file>../../platforms/dummy/d</file>
     </qresource>
     <qresource prefix="/share/bibletime">
