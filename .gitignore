@@ -24,6 +24,8 @@
 /qtcreator-build
 .DS_Store
 /platforms/android/build*
+/platforms/android/mobile/android/arm32
+/platforms/android/mobile/android/arm64
 /platforms/src
 /platforms/ios/build*
 *.pro.user*
