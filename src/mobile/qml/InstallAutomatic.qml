@@ -40,7 +40,7 @@ Rectangle {
         if (localeMatches("Portuguese","Portugal")) {
             return ["PorCap"];
         } else {
-            return ["ESV2011", "StrongsGreek", "StrongsHebrew"]
+            return ["NETfree", "StrongsGreek", "StrongsHebrew"]
         }
     }
 
@@ -56,7 +56,7 @@ Rectangle {
         if (localeMatches("Portuguese","Portugal")) {
             return ["PorCap", "John 1:1"];
         } else {
-            return ["ESV2011", "John 1:1"]
+            return ["NETfree", "John 1:1"]
         }
     }
 
