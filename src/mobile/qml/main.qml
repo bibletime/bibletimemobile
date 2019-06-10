@@ -311,7 +311,7 @@ Window {
             }
             else if (action === "lightblue") {
                 btStyle.setStyle(2);
-                root.setMaterialStyle(3);
+                root.setMaterialStyle(2);
                 sessionInterface.setColorTheme(2);
             }
             else if (action === "crimson") {
