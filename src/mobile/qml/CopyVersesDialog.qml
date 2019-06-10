@@ -11,12 +11,10 @@
 **********/
 
 import QtQuick 2.11
-import QtQuick.Controls 2.4
 import QtQuick.Controls.Material 2.3
-import QtQuick.Layouts 1.3
 import BibleTime 1.0
 
-Dialog {
+Rectangle {
     id: copyVerses
 
     property variant theWindow
@@ -34,6 +32,14 @@ Dialog {
 
     signal loadReferences();
 
+    function open() {
+        copyVerses.visible = true;
+    }
+
+    function close() {
+        copyVerses.visible = false;
+    }
+
     function moduleChoosen() {
         moduleChooser.moduleSelected.disconnect(moduleChoosen);
         copyVerses.moduleName = moduleChooser.selectedModule;
@@ -46,7 +52,6 @@ Dialog {
         chooseReference.finished.connect(copyVerses.referenceChoosen);
         var module = btWinIfc.moduleName;
         var ref = btWinIfc.reference;
-        copyVerses.close();
         chooseReference.start(module, ref, qsTranslate("Navigation", "Main"));
     }
 
@@ -70,124 +75,164 @@ Dialog {
         open();
     }
 
-    onAccepted: {
-        btWinIfc.copy(moduleName, reference1, reference2);
-    }
-    title: qsTr("Copy")
-    standardButtons: Dialog.Ok
-    contentItem:
-        Item {
-        id: contentItem
+    anchors.left: parent.left
+    anchors.right: parent.right
+    anchors.bottom: parent.bottom
+    anchors.bottomMargin: btStyle.pixelsPerMillimeterX *6
+    color: Material.background
+    height: copyVerses.rowHeight * 7 + message.height
+    visible: false
 
-        implicitHeight: {
-            var h = copyVerses.rowHeight * 3 + message.height
-            return h
+    Text {
+        id: title
+
+        anchors.left: parent.left
+        anchors.leftMargin: btStyle.pixelsPerMillimeterX * 2
+        anchors.right: parent.right
+        anchors.top: parent.top
+        anchors.topMargin: btStyle.pixelsPerMillimeterX * 3
+        color: Material.foreground
+        font.pointSize: btStyle.uiFontPointSize
+        text: qsTranslate("copy", "Copy")
+
+    }
+
+    Grid {
+        id: grid
+
+        property real referenceWidth: {
+            //var w = grid.width * 0.5
+            var w = contentItem.width - widestText - btStyle.pixelsPerMillimeterX * 9 //-spacing;
+            return w;
+        }
+        property real widestText: {
+            var w1 = text1.contentWidth;
+            var w2 = text2.contentWidth;
+            var w3 = text3.contentWidth;
+            return Math.max(w1,w2,w3);
         }
 
-        Grid {
-            id: grid
+        anchors.left: parent.left
+        anchors.leftMargin: btStyle.pixelsPerMillimeterX * 2
+        anchors.right: parent.right
+        anchors.top: title.bottom
+        anchors.topMargin: btStyle.pixelsPerMillimeterX * 4
+        columns: 2
+        rowSpacing: btStyle.pixelsPerMillimeterX * 3
+        columnSpacing: btStyle.pixelsPerMillimeterX * 2
 
-            property real referenceWidth: {
-                //var w = grid.width * 0.5
-                var w = contentItem.width - widestText - btStyle.pixelsPerMillimeterX * 9 //-spacing;
-                return w;
+        Text {
+            id: text1
+
+            color: Material.foreground
+            font.pointSize: btStyle.uiFontPointSize
+            text: qsTranslate("copy", "Document") + ":"
+            verticalAlignment: Text.AlignVCenter
+        }
+
+        ModuleDisplay {
+            id: moduleDisplay
+
+            height: copyVerses.rowHeight
+            moduleText: copyVerses.moduleName
+            onActivated: {
+                moduleChooser.bibleCommentaryOnly = true;
+                moduleChooser.moduleSelected.connect(copyVerses.moduleChoosen);
+                moduleChooser.backText = qsTranslate("Navigation", "Main");
+                moduleChooser.visible = true;
             }
-            property real widestText: {
-                var w1 = text1.contentWidth;
-                var w2 = text2.contentWidth;
-                var w3 = text3.contentWidth;
-                return Math.max(w1,w2,w3);
-            }
+            width: grid.referenceWidth
+        }
 
-            anchors.fill: parent
-            columns: 2
-            rowSpacing: btStyle.pixelsPerMillimeterX * 3
-            columnSpacing: btStyle.pixelsPerMillimeterX * 2
+        Text {
+            id: text2
 
-            Text {
-                id: text1
+            text: qsTranslate("copy", "First") +":"
+            font.pointSize: btStyle.uiFontPointSize
+            color: Material.foreground
+            verticalAlignment: Text.AlignVCenter
+        }
 
-                color: Material.foreground
-                font.pointSize: btStyle.uiFontPointSize
-                text: qsTranslate("copy", "Document") + ":"
-                verticalAlignment: Text.AlignVCenter
-            }
+        ReferenceDisplay {
+            id: referenceDisplay1
 
-            ModuleDisplay {
-                id: moduleDisplay
-
-                height: copyVerses.rowHeight
-                moduleText: copyVerses.moduleName
-                onActivated: {
-                    moduleChooser.bibleCommentaryOnly = true;
-                    moduleChooser.moduleSelected.connect(copyVerses.moduleChoosen);
-                    moduleChooser.backText = qsTranslate("Navigation", "Main");
-                    moduleChooser.visible = true;
-                    copyVerses.close();
-                }
-                width: grid.referenceWidth
-            }
-
-            Text {
-                id: text2
-
-                text: qsTranslate("copy", "First") +":"
-                font.pointSize: btStyle.uiFontPointSize
-                color: Material.foreground
-                verticalAlignment: Text.AlignVCenter
-            }
-
-            ReferenceDisplay {
-                id: referenceDisplay1
-
-                reference: copyVerses.reference1
-                width: grid.referenceWidth
-                height: copyVerses.rowHeight
-                onClicked: {
-                    copyVerses.activeReference = 1;
-                    chooseRef();
-                }
-            }
-
-            Text {
-                id: text3
-
-                text: qsTranslate("copy", "Last") +":"
-                font.pointSize: btStyle.uiFontPointSize
-                color: Material.foreground
-                width: grid.widestText
-                height: copyVerses.rowHeight
-                verticalAlignment: Text.AlignVCenter
-            }
-
-            ReferenceDisplay {
-                id: referenceDisplay2
-
-                reference: copyVerses.reference2
-                width: grid.referenceWidth
-                height: copyVerses.rowHeight
-                onClicked: {
-                    copyVerses.activeReference = 2;
-                    chooseRef();
-                }
+            reference: copyVerses.reference1
+            width: grid.referenceWidth
+            height: copyVerses.rowHeight
+            onClicked: {
+                copyVerses.activeReference = 1;
+                chooseRef();
             }
         }
 
         Text {
-            id: message
+            id: text3
 
-            anchors.top: grid.bottom
-            anchors.horizontalCenter: parent.horizontalCenter
-            color: Material.foreground
-            height: 40
+            text: qsTranslate("copy", "Last") +":"
             font.pointSize: btStyle.uiFontPointSize
-            text: qsTranslate("Copy", "Copy size to large.")
-            visible: copyVerses.showError
+            color: Material.foreground
+            width: grid.widestText
+            height: copyVerses.rowHeight
+            verticalAlignment: Text.AlignVCenter
         }
 
-        BtWindowInterface {
-            id: btWinIfc
+        ReferenceDisplay {
+            id: referenceDisplay2
+
+            reference: copyVerses.reference2
+            width: grid.referenceWidth
+            height: copyVerses.rowHeight
+            onClicked: {
+                copyVerses.activeReference = 2;
+                chooseRef();
+            }
         }
     }
+
+    Text {
+        id: message
+
+        anchors.top: grid.bottom
+        anchors.topMargin: btStyle.pixelsPerMillimeterX * 2
+        anchors.horizontalCenter: parent.horizontalCenter
+        color: Material.foreground
+        height: 40
+        font.pointSize: btStyle.uiFontPointSize
+        text: qsTranslate("Copy", "Copy size to large.")
+        visible: copyVerses.showError
+    }
+
+    Text {
+        id: copyButton
+
+        text: qsTr("COPY")
+        color: Material.accent
+        font.pointSize: btStyle.uiFontPointSize
+        anchors.bottom: parent.bottom
+        anchors.right: parent.right
+        anchors.rightMargin: btStyle.pixelsPerMillimeterX * 10
+        anchors.bottomMargin: btStyle.pixelsPerMillimeterX * 4
+
+        MouseArea {
+            anchors.fill: parent
+
+            onClicked: {
+                copyVerses.visible = false;
+                btWinIfc.copy(moduleName, reference1, reference2);
+            }
+        }
+    }
+
+    BtWindowInterface {
+        id: btWinIfc
+    }
+
+    Keys.onReleased: {
+        if ((event.key === Qt.Key_Back || event.key === Qt.Key_Escape) && copyVersesDialog.visible === true) {
+            copyVersesDialog.visible = false;
+            event.accepted = true;
+        }
+    }
+
 }
 

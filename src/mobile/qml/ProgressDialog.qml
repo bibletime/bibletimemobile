@@ -13,10 +13,9 @@
 import QtQuick 2.11
 import QtQuick.Controls 2.4
 import QtQuick.Controls.Material 2.3
-import QtQuick.Layouts 1.3
 import BibleTime 1.0
 
-Dialog {
+Rectangle {
     id: progressDialog
 
     property alias minimumValue: progressBar.from
@@ -24,32 +23,55 @@ Dialog {
     property alias maximumValue: progressBar.to
     property alias text: label.text
 
-    standardButtons: Dialog.Cancel
-    contentItem: Item {
+    signal finish();
+    signal canceled();
 
-        BtStyle {
-            id: btStyle
-        }
+    anchors.left: parent.left
+    anchors.right: parent.right
+    anchors.verticalCenter: parent.verticalCenter
+    height: width * .4 + label.height
+    color: Material.background
+    visible: false
 
-        ColumnLayout {
-            id: columnLayout
+    BtStyle {
+        id: btStyle
+    }
 
-            spacing: btStyle.pixelsPerMillimeterX * 3
-            width: parent.width
+    Text {
+        id: label
 
-            Text {
-                id: label
+        font.pointSize: btStyle.uiFontPointSize
+        color: Material.foreground
+        anchors.bottom: progressBar.top
+        anchors.horizontalCenter: parent.horizontalCenter
+    }
 
-                font.pointSize: btStyle.uiFontPointSize
-                color: Material.foreground
-                Layout.preferredWidth: progressDialog.width * 0.9
-                horizontalAlignment: Text.AlignHCenter
-            }
+    ProgressBar {
+        id: progressBar
 
-            ProgressBar {
-                id: progressBar
+        width: parent.width * 0.9
+        height: btStyle.pixelsPerMillimeterX * 8
+        anchors.verticalCenter: parent.verticalCenter
+        anchors.horizontalCenter: parent.horizontalCenter
+    }
 
-                Layout.preferredWidth: progressDialog.width * 0.9
+    Text {
+        id: cancelButton
+
+        text: qsTr("CANCEL")
+        color: Material.accent
+        font.pointSize: btStyle.uiFontPointSize
+        anchors.right: parent.right
+        anchors.rightMargin: btStyle.pixelsPerMillimeterX * 6
+        anchors.bottom: parent.bottom
+        anchors.bottomMargin: btStyle.pixelsPerMillimeterX * 8
+
+        MouseArea {
+            anchors.fill: parent
+
+            onClicked: {
+                progressDialog.visible = false;
+                canceled();
             }
         }
     }

@@ -98,7 +98,6 @@ Window {
 
     Component.onCompleted: {
         setFontDialog.textFontChanged.connect(windowManager.updateTextFont)
-        //        setFontDialog.textFontChanged.connect(magView.updateTextFont)
         sessionInterface.loadDefaultSession();
         if (installInterface.installedModulesCount() === 0)
             installManagerStartup.visible = true;
@@ -108,8 +107,6 @@ Window {
 
     Item {
         id: keyReceiver
-
-        property bool ignoreOnce: false
 
         objectName: "keyReceiver"
         focus: true
@@ -137,6 +134,7 @@ Window {
             uiFontPointSize,
             setFontDialog,
             copyVersesDialog,
+            searchDialog,
             bookmarkFoldersParent,
             addFolder1,
             bookmarkFolders,
@@ -147,12 +145,8 @@ Window {
         Keys.onReleased: {
             if (event.key === Qt.Key_Back || event.key === Qt.Key_Escape) {
                 event.accepted = true;
-                if (ignoreOnce) {
-                    ignoreOnce = false;
-                } else {
-                    quitQuestion.visible = true;
-                    quitQuestion.open();
-                }
+                quitQuestion.visible = true;
+                quitQuestion.open();
             }
         }
 
@@ -373,12 +367,7 @@ Window {
         width: parent.width * 0.95
         x: (parent.width - width) / 2
         y: (parent.height - height) - btStyle.pixelsPerMillimeterX * 3
-        onOpened: {
-            keyReceiver.ignoreOnce = true
-        }
-        onClosed: {
-            keyReceiver.ignoreOnce = false
-        }
+        z: 2
     }
 
     DefaultDoc {
@@ -393,7 +382,7 @@ Window {
         width: parent.width
         height: parent.height
         visible: false
-        z: 2
+        z: 3
     }
 
     QuestionDialog {
@@ -430,7 +419,7 @@ Window {
                 searchDrawer.indexModules();
             }
         }
-        onRejected: {
+        onCanceled: {
             searchDrawer.cancel();
         }
     }
@@ -552,11 +541,8 @@ Window {
         id: continueDialog
 
         text: qsTr("The \"Manage Installed Documents\" window will now be opened. You can open it later from the menus at the upper right of the Main view.")
-        width: Math.min(parent.width, parent.height) * 0.9
-        x: (parent.width - width) / 2
-        y: (parent.height - height) / 2
-        visible: false
-        onClosed: {
+        z:4
+        onFinished: {
             installManagerChooser.refreshOnOpen = true;
             installModules();
         }
@@ -583,7 +569,7 @@ Window {
         implicitWidth:parent.width * 0.9
         text: installInterface.progressText
         visible: installInterface.progressVisible
-        onRejected: installManagerChooser.cancel();
+        onCanceled: installManagerChooser.cancel();
         x: (parent.width - width) / 2
         y: (parent.height - height) / 2
         z: 1
@@ -855,13 +841,6 @@ Window {
                 return;
             }
             searchDrawer.openSearchResults();
-        }
-        onOpened: {
-            keyReceiver.ignoreOnce = true;
-        }
-        onClosed: {
-            keyReceiver.ignoreOnce = false;
-            keyReceiver.forceActiveFocus();
         }
     }
 

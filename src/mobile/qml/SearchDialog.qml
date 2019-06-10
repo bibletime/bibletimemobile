@@ -16,7 +16,7 @@ import QtQuick.Controls.Material 2.3
 import QtQuick.Layouts 1.3
 import BibleTime 1.0
 
-Dialog {
+Rectangle {
     id: searchDialog
 
 
@@ -28,9 +28,18 @@ Dialog {
 
     signal searchRequest();
 
+    function open() {
+        searchDialog.visible = true
+    }
+
+    function close() {
+        searchDialog.visible = false
+    }
+
     function initialize(moduleNames) {
         searchText = "";
         findChoice = "";
+        console.log("xxxx")
         appendModuleChoices(moduleNames);
     }
 
@@ -56,8 +65,11 @@ Dialog {
     }
 
     function setupSearch() {
-        Qt.inputMethod.hide(); // hide keyboard
         searchText = textInput.displayText;
+        if (searchText === "")
+            return;
+        searchDialog.close();
+        Qt.inputMethod.hide(); // hide keyboard
         if (radioAny.checked)
             findChoice = "or";
         if (radioAll.checked)
@@ -66,149 +78,162 @@ Dialog {
             findChoice = "regexpr";
         moduleList = searchComboBox.currentText;
         searchRequest();
-        if (searchText === "")
-            reject();
-        else
-            accept();
     }
 
     function openSearchDialog() {
         searchDialog.open();
     }
 
-    spacing: btStyle.pixelsPerMillimeterX * 2
     width: root.width
     height: root.height
     x: 0
     y: 0
-    contentItem: Rectangle {
-        id: item
+    color: Material.background
 
-        color: Material.background
+    border.width: 1
+    border.color: "white"
+
+    Rectangle {
+        id: aboutTitleBar
+        color: Material.primary
+        border.color: Material.foreground
         border.width: 1
-        border.color: "white"
+        width: parent.width
+        height: btStyle.pixelsPerMillimeterY * 9
 
-        Rectangle {
-            id: aboutTitleBar
-            color: Material.primary
-            border.color: Material.foreground
-            border.width: 1
-            width: parent.width
-            height: btStyle.pixelsPerMillimeterY * 9
+        Back {
+            id: backTool
 
-            Back {
-                id: backTool
-
-                anchors.left: parent.left
-                anchors.top: parent.top
-                anchors.bottom: parent.bottom
-                text: qsTranslate("Navigation", "Main")
-                onClicked: {
-                    searchDialog.close();
-                }
+            anchors.left: parent.left
+            anchors.top: parent.top
+            anchors.bottom: parent.bottom
+            text: qsTranslate("Navigation", "Main")
+            onClicked: {
+                searchDialog.close();
             }
         }
+    }
 
-        ColumnLayout {
+    Rectangle {
+        id: inputRow
 
-            anchors.top: aboutTitleBar.bottom
-            anchors.topMargin: btStyle.pixelsPerMillimeterX * 3
+        width: parent.width
+        height: btStyle.pixelsPerMillimeterX * 8
+        color: Material.background
+        anchors.top: aboutTitleBar.bottom
+        anchors.topMargin: btStyle.pixelsPerMillimeterX * 3
+        anchors.left: parent.left
+        anchors.leftMargin: btStyle.pixelsPerMillimeterX * 3
+
+        Text {
+            id: searchForLabel
+
             anchors.left: parent.left
-            anchors.leftMargin: btStyle.pixelsPerMillimeterX *2
-            width: parent.width
-            spacing: searchDialog.spacing
+            anchors.verticalCenter: parent.verticalCenter
+            text: qsTranslate("Search", "Search for")
+            font.pointSize: btStyle.uiFontPointSize
+            color: Material.foreground
+        }
 
-            GridLayout {
+        TextField {
+            id: textInput
 
-                columns: searchDialog.orientation === Qt.Vertical ? 1 : 1
-                columnSpacing: btStyle.pixelsPerMillimeterX * 10
-                rowSpacing: btStyle.pixelsPerMillimeterX * 3
+            anchors.left: searchForLabel.right
+            anchors.leftMargin: btStyle.pixelsPerMillimeterX * 2
+            anchors.bottom: parent.bottom
+            bottomPadding: btStyle.pixelsPerMillimeterX * 1.5
+            font.pointSize: btStyle.uiFontPointSize
+            verticalAlignment: Text.AlignVCenter
+            inputMethodHints: Qt.ImhNoAutoUppercase
+            focus: true
+            text: ""
+            width: searchForLabel.width * 2
+        }
 
-                id: searchInput
+        BtButton {
+            id: searchButton
 
-                RowLayout {
+            anchors.left: textInput.right
+            anchors.leftMargin: btStyle.pixelsPerMillimeterX * 4
+            anchors.verticalCenter: parent.verticalCenter
+            text: qsTranslate("Search", "Search")
+            onClicked: {
+                searchDialog.setupSearch();
+            }
+        }
+    }
 
-                    spacing: btStyle.pixelsPerMillimeterX * 3
+    Rectangle {
+        id: searchInRow
 
-                    Text {
-                        id: searchForLabel
+        color: Material.background
+        anchors.left: parent.left
+        anchors.leftMargin: btStyle.pixelsPerMillimeterX * 3
+        anchors.top: inputRow.bottom
+        anchors.topMargin: btStyle.pixelsPerMillimeterX * 4
+        width: parent.width
+        height: btStyle.pixelsPerMillimeterY * 9
 
-                        text: qsTranslate("Search", "Search for")
-                        font.pointSize: btStyle.uiFontPointSize
-                        color: Material.foreground
-                    }
+        Text {
+            id: searchInLabel
 
-                    TextField {
-                        id: textInput
+            anchors.verticalCenter: parent.verticalCenter
+            text: qsTranslate("Search", "Search in")
+            font.pointSize: btStyle.uiFontPointSize
+            color: Material.foreground
+        }
 
-                        bottomPadding: btStyle.pixelsPerMillimeterX * 1.5
-                        font.pointSize: btStyle.uiFontPointSize
-                        verticalAlignment: Text.AlignVCenter
-                        inputMethodHints: Qt.ImhNoAutoUppercase
-                        focus: true
-                        text: ""
-                    }
+        BtComboBox {
+            id: searchComboBox
 
-                    BtButton {
-                        id: searchButton
-                        text: qsTranslate("Search", "Search")
-                        onClicked: {
-                            searchDialog.setupSearch();
-                        }
-                    }
-                }
+            anchors.left: searchInLabel.right
+            anchors.leftMargin: btStyle.pixelsPerMillimeterX * 2
+            anchors.verticalCenter: parent.verticalCenter
+            model: searchDialog.modules
+        }
+    }
 
-                RowLayout {
-                    id: searchIn
+    GroupBox {
+        id: findWords
+        title: qsTr("Find")
 
-                    Text {
-                        id: searchInLabel
+        anchors.left: parent.left
+        anchors.leftMargin: btStyle.pixelsPerMillimeterX * 3
+        anchors.top: searchInRow.bottom
+        anchors.topMargin: btStyle.pixelsPerMillimeterX * 4
 
-                        text: qsTranslate("Search", "Search in")
-                        font.pointSize: btStyle.uiFontPointSize
-                        color: Material.foreground
-                    }
+        GridLayout {
 
-                    BtComboBox {
-                        id: searchComboBox
+            columns: searchDialog.orientation === Qt.Vertical ? 1 : 3
 
-                        model: searchDialog.modules
-                    }
-                }
+            RadioButton {
+                id: radioAll
+
+                text: qsTr("All Words")
+                font.pointSize: btStyle.uiFontPointSize
+                checked: true
             }
 
-            GroupBox {
-                id: findWords
-                title: qsTr("Find")
+            RadioButton {
+                id: radioAny
 
-
-                GridLayout {
-
-                    columns: searchDialog.orientation === Qt.Vertical ? 1 : 3
-
-                    RadioButton {
-                        id: radioAll
-
-                        text: qsTr("All Words")
-                        font.pointSize: btStyle.uiFontPointSize
-                        checked: true
-                    }
-
-                    RadioButton {
-                        id: radioAny
-
-                        text: qsTr("Any Word")
-                        font.pointSize: btStyle.uiFontPointSize
-                    }
-
-                    RadioButton {
-                        id: radioPhrase
-
-                        text: qsTr("Regular Expression")
-                        font.pointSize: btStyle.uiFontPointSize
-                    }
-                }
+                text: qsTr("Any Word")
+                font.pointSize: btStyle.uiFontPointSize
             }
+
+            RadioButton {
+                id: radioPhrase
+
+                text: qsTr("Regular Expression")
+                font.pointSize: btStyle.uiFontPointSize
+            }
+        }
+    }
+
+    Keys.onReleased: {
+        if ((event.key === Qt.Key_Back || event.key === Qt.Key_Escape) && searchDialog.visible === true) {
+            searchDialog.visible = false;
+            event.accepted = true;
         }
     }
 
