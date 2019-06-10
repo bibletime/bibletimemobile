@@ -39,7 +39,6 @@ Rectangle {
     function initialize(moduleNames) {
         searchText = "";
         findChoice = "";
-        console.log("xxxx")
         appendModuleChoices(moduleNames);
     }
 
