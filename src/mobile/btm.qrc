@@ -18,7 +18,6 @@
         <file>qml/Back.qml</file>
         <file>qml/BookmarkFolders.qml</file>
         <file>qml/BookmarkManager.qml</file>
-        <file>qml/BtButton.qml</file>
         <file>qml/BtmButton.qml</file>
         <file>qml/BookIcon.qml</file>
         <file>qml/ChooseReference.qml</file>

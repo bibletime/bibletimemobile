@@ -72,7 +72,6 @@ OTHER_FILES += \
     ../../../src/mobile/qml/Back.qml \
     ../../../src/mobile/qml/BookmarkFolders.qml \
     ../../../src/mobile/qml/BookmarkManager.qml \
-    ../../../src/mobile/qml/BtButton.qml \
     ../../../src/mobile/qml/BtmButton.qml \
     ../../../src/mobile/qml/ContextMenu.qml \
     ../../../src/mobile/qml/ContinueDialog.qml \
