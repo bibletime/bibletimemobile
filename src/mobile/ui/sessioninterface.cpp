@@ -12,6 +12,7 @@
 
 #include "sessioninterface.h"
 
+#include "backend/managers/cswordbackend.h"
 #include "backend/config/btconfig.h"
 #include "mobile/ui/btstyle.h"
 
@@ -38,11 +39,23 @@ QStringList SessionInterface::getWindowList() {
     return w;
 }
 
+QStringList SessionInterface::getInstalledModuleList(const QStringList& names) {
+    QStringList installed;
+    for (int i=0; i < names.count(); ++i) {
+        QString moduleName = names.at(i);
+        CSwordModuleInfo * module = CSwordBackend::instance()->findModuleByName(moduleName);
+        if (module != nullptr)
+            installed.append(moduleName);
+    }
+    return installed;
+}
+
 QStringList SessionInterface::getWindowModuleList(const QString& win) {
     BtConfig & conf = btConfig();
     const QString windowGroup = "window/" + win + '/';
     QStringList moduleNames = conf.sessionValue<QStringList>(windowGroup + "modules");
-    return moduleNames;
+    QStringList installed = getInstalledModuleList(moduleNames);
+    return installed;
 }
 
 QString SessionInterface::getWindowKey(const QString& win) {

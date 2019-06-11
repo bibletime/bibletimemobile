@@ -706,6 +706,8 @@ Window {
                     for (var i=0; i < count; ++i) {
                         var window = windowList[i];
                         var modules = getWindowModuleList(window);
+                        if (modules.length === 0)
+                            continue;
                         var key = getWindowKey(window);
                         windowManager.openWindow("", modules, key);
                     }

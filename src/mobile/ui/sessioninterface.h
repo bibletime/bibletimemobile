@@ -48,6 +48,7 @@ private slots:
 //    void slotStopInstall();
 
 private:
+    QStringList getInstalledModuleList(const QStringList& names);
 
 };
 
