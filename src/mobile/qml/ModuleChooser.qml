@@ -109,12 +109,12 @@ Rectangle {
             font.pointSize: btStyle.uiFontPointSize
         }
 
-        BtButton {
+        BtmButton {
             id: unlockButton
             anchors.top: input.bottom
             anchors.horizontalCenter: parent.horizontalCenter
             anchors.topMargin: btStyle.pixelsPerMillimeterY * 3
-            text: QT_TR_NOOP("Unlock")
+            text: QT_TR_NOOP("UNLOCK")
             onClicked: {
                 unlockDlg.visible = false;
                 moduleInterface.unlock(selectedModule, input.text);

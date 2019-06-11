@@ -1,4 +1,4 @@
-/*********
+﻿/*********
 *
 * In the name of the Father, and of the Son, and of the Holy Spirit.
 *
@@ -47,46 +47,33 @@ Rectangle {
         color: Material.foreground
     }
 
-    Text {
+    BtmButton {
         id: yesButton
 
         text: qsTr("YES")
-        color: Material.accent
-        font.pointSize: btStyle.uiFontPointSize
         anchors.bottom: parent.bottom
         anchors.right: parent.right
         anchors.rightMargin: btStyle.pixelsPerMillimeterX * 8
         anchors.bottomMargin: btStyle.pixelsPerMillimeterX * 6
-
-        MouseArea {
-            anchors.fill: parent
-
-            onClicked: {
-                answer = true;
-                questionDialog.visible = false;
-                finished();
-            }
+        onClicked: {
+            answer = true;
+            questionDialog.visible = false;
+            finished();
         }
     }
 
-    Text {
+    BtmButton {
         id: noButton
 
         text: qsTr("NO")
-        color: Material.accent
-        font.pointSize: btStyle.uiFontPointSize
-        anchors.bottom: yesButton.bottom
+        anchors.bottom: parent.bottom
         anchors.right: yesButton.left
-        anchors.rightMargin: btStyle.pixelsPerMillimeterX * 6
-
-        MouseArea {
-            anchors.fill: parent
-
-            onClicked: {
-                answer = false;
-                questionDialog.visible = false;
-                finished();
-            }
+        anchors.rightMargin: btStyle.pixelsPerMillimeterX * 8
+        anchors.bottomMargin: btStyle.pixelsPerMillimeterX * 6
+        onClicked: {
+            answer = false;
+            questionDialog.visible = false;
+            finished();
         }
     }
 }

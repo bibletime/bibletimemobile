@@ -102,17 +102,17 @@ Rectangle {
         anchors.bottomMargin: btStyle.pixelsPerMillimeterX * 4
         anchors.topMargin: btStyle.pixelsPerMillimeterX * 3
 
-        BtButton {
+        BtmButton {
 
-            text: qsTr("Ok")
+            text: qsTr("OK")
             onClicked: {
                 fontPointSize.visible = false;
             }
         }
 
-        BtButton {
+        BtmButton {
 
-            text: qsTr("Cancel")
+            text: qsTr("CANCEL")
             onClicked: {
                 accepted(previous);
                 fontPointSize.visible = false;

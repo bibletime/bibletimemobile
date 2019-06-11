@@ -189,17 +189,17 @@ Rectangle {
         anchors.bottom: parent.bottom
         anchors.bottomMargin: btStyle.pixelsPerMillimeterX * 5
 
-        BtButton {
+        BtmButton {
             id: okButton
-            text: qsTr("Ok")
+            text: qsTr("OK")
             onClicked: {
                 setFont.visible = false;
             }
         }
 
-        BtButton {
+        BtmButton {
             id: cancelButton
-            text: qsTr("Cancel")
+            text: qsTr("CANCEL")
             onClicked: {
                 setFont.visible = false;
                 moduleInterface.restoreSavedFonts();

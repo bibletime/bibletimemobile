@@ -78,6 +78,7 @@ Rectangle {
         if (visible)
             treeView.expand(treeView.model.index(0,0));
         newFolderButton.visible = allowNewFolders;
+        console.log("new folder", newFolderButton.visible);
     }
 
     BtStyle {
@@ -228,7 +229,7 @@ Rectangle {
         }
     }
 
-    BtButton {
+    BtmButton {
         id: newFolderButton
 
         anchors.horizontalCenter: parent.horizontalCenter

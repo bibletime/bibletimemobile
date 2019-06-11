@@ -185,7 +185,7 @@ Rectangle {
                 width: debugDialog.width
                 height:btStyle.pixelsPerMillimeterX * 5
 
-                BtButton {
+                BtmButton {
                     anchors.left: parent.left
                     anchors.leftMargin: btStyle.pixelsPerMillimeterX * 2
                     anchors.verticalCenter: parent.verticalCenter

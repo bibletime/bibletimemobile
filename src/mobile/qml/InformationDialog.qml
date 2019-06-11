@@ -67,14 +67,14 @@ Rectangle {
         wrapMode: TextArea.WordWrap
     }
 
-    BtButton {
+    BtmButton {
         id: closeButton
 
         anchors.horizontalCenter: parent.horizontalCenter
         anchors.bottom: parent.bottom
         anchors.bottomMargin: btStyle.pixelsPerMillimeterX * 2
         anchors.topMargin: btStyle.pixelsPerMillimeterX * 2
-        text: qsTr("Close")
+        text: qsTr("CLOSE")
         onClicked: {
             informationDialog.visible = false;
         }

@@ -159,8 +159,8 @@ Rectangle {
         anchors.top: parentFolderRect.bottom
         anchors.topMargin: btStyle.pixelsPerMillimeterX * 12
 
-        BtButton {
-            text: qsTr("Ok")
+        BtmButton {
+            text: qsTr("OK")
             onClicked: {
                 addFolder.visible = false;
                 addFolder.folderAdd(textEdit.text);
@@ -168,8 +168,8 @@ Rectangle {
             }
         }
 
-        BtButton {
-            text: qsTr("Cancel")
+        BtmButton {
+            text: qsTr("CANCEL")
             onClicked: {
                 addFolder.visible = false;
             }

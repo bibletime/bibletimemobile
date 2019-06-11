@@ -240,14 +240,14 @@ Rectangle {
         spacing: (parent.width - refreshButton.width - installRemoveButton.width) / 3
         anchors.leftMargin: (parent.width - refreshButton.width - installRemoveButton.width) / 3
 
-        BtButton {
+        BtmButton {
             id: refreshButton
 
             text: qsTranslate("InstallManagerChooser", "Refresh Sources")
             onClicked: refreshSources();
         }
 
-        BtButton {
+        BtmButton {
             id: installRemoveButton
             text: qsTranslate("InstallManagerChooser", "Install / Remove")
             onClicked: {

@@ -53,8 +53,8 @@ Rectangle {
     }
 
 
-    BtButton {
-        text: qsTranslate("Progress", "Cancel")
+    BtmButton {
+        text: qsTranslate("Progress", "CANCEL")
         anchors.top: progressBar.bottom
         anchors.topMargin: parent.height / 10
         anchors.horizontalCenter: parent.horizontalCenter

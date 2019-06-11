@@ -40,14 +40,14 @@ Rectangle {
         Keys.forwardTo: [textEditor]
     }
 
-    BtButton {
+    BtmButton {
         id: okButton
 
         anchors.horizontalCenter: parent.horizontalCenter
         anchors.bottom: parent.bottom
         anchors.bottomMargin: btStyle.pixelsPerMillimeterX * 0.5
         anchors.topMargin: btStyle.pixelsPerMillimeterX
-        text: qsTr("Ok")
+        text: qsTr("OK")
         onClicked: {
             textEditor.visible = false;
             editFinished(textArea.text);

@@ -149,13 +149,13 @@ Rectangle {
             width: searchForLabel.width * 2
         }
 
-        BtButton {
+        BtmButton {
             id: searchButton
 
             anchors.left: textInput.right
             anchors.leftMargin: btStyle.pixelsPerMillimeterX * 4
             anchors.verticalCenter: parent.verticalCenter
-            text: qsTranslate("Search", "Search")
+            text: qsTranslate("Search", "SEARCH")
             onClicked: {
                 searchDialog.setupSearch();
             }

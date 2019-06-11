@@ -87,13 +87,20 @@ Rectangle {
             }
 
             Text {
-                id: dummyTextForHeight
+                id: dummyInstallText
                 text: qsTranslate("Install Documents", "Install")
                 font.pointSize: btStyle.uiFontPointSize
                 visible: false
             }
 
-            BtButton{
+            Text {
+                id: dummyRemoveText
+                text: qsTranslate("Install Documents", "Remove")
+                font.pointSize: btStyle.uiFontPointSize
+                visible: false
+            }
+
+            BtmButton{
                 id: manageButton
 
                 text: {
@@ -108,7 +115,7 @@ Rectangle {
                 anchors.verticalCenter: parent.verticalCenter
                 anchors.left: parent.left
                 anchors.leftMargin: btStyle.pixelsPerMillimeterX
-
+                width: Math.max(dummyInstallText.width, dummyRemoveText.width) + btStyle.pixelsPerMillimeterX * 3
                 checkable: true;
             }
 
