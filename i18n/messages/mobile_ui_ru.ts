@@ -58,40 +58,60 @@ This file is distributed under the same license as the Bibetime package.</transl
     </message>
     <message>
         <location filename="../../src/mobile/qml/AddBookmark.qml" line="181"/>
-        <source>Ok</source>
-        <translation>Ok</translation>
+        <source>OK</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../../src/mobile/qml/AddBookmark.qml" line="189"/>
+        <source>CANCEL</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Ok</source>
+        <translation type="vanished">Ok</translation>
+    </message>
+    <message>
         <source>Cancel</source>
-        <translation>Отмена</translation>
+        <translation type="vanished">Отмена</translation>
     </message>
 </context>
 <context>
     <name>AddFolder</name>
     <message>
-        <location filename="../../src/mobile/qml/AddFolder.qml" line="163"/>
         <source>Ok</source>
-        <translation>Ok</translation>
+        <translation type="vanished">Ok</translation>
+    </message>
+    <message>
+        <source>Cancel</source>
+        <translation type="vanished">Отмена</translation>
+    </message>
+    <message>
+        <location filename="../../src/mobile/qml/AddFolder.qml" line="163"/>
+        <source>OK</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../../src/mobile/qml/AddFolder.qml" line="172"/>
-        <source>Cancel</source>
-        <translation>Отмена</translation>
+        <source>CANCEL</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
     <name>BookmarkFolders</name>
     <message>
-        <location filename="../../src/mobile/qml/BookmarkFolders.qml" line="173"/>
         <source>New Folder</source>
-        <translation>Новая папка</translation>
+        <translation type="vanished">Новая папка</translation>
+    </message>
+    <message>
+        <location filename="../../src/mobile/qml/BookmarkFolders.qml" line="173"/>
+        <source>NEW FOLDER</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
     <name>BookmarkManager</name>
     <message>
-        <location filename="../../src/mobile/qml/BookmarkManager.qml" line="237"/>
+        <location filename="../../src/mobile/qml/BookmarkManager.qml" line="238"/>
         <source>New Folder</source>
         <translation>Новая папка</translation>
     </message>
@@ -134,7 +154,7 @@ This file is distributed under the same license as the Bibetime package.</transl
         <translation>Выберите Папку</translation>
     </message>
     <message>
-        <location filename="../../src/mobile/qml/BookmarkManager.qml" line="118"/>
+        <location filename="../../src/mobile/qml/BookmarkManager.qml" line="119"/>
         <source>Bookmark Manager</source>
         <translation>Менеджер закладок</translation>
     </message>
@@ -203,14 +223,22 @@ This file is distributed under the same license as the Bibetime package.</transl
 <context>
     <name>FontSizeSlider</name>
     <message>
-        <location filename="../../src/mobile/qml/FontSizeSlider.qml" line="107"/>
         <source>Ok</source>
-        <translation>Ok</translation>
+        <translation type="vanished">Ok</translation>
+    </message>
+    <message>
+        <source>Cancel</source>
+        <translation type="vanished">Отмена</translation>
+    </message>
+    <message>
+        <location filename="../../src/mobile/qml/FontSizeSlider.qml" line="107"/>
+        <source>OK</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../../src/mobile/qml/FontSizeSlider.qml" line="115"/>
-        <source>Cancel</source>
-        <translation>Отмена</translation>
+        <source>CANCEL</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -224,21 +252,26 @@ This file is distributed under the same license as the Bibetime package.</transl
 <context>
     <name>InformationDialog</name>
     <message>
-        <location filename="../../src/mobile/qml/InformationDialog.qml" line="77"/>
         <source>Close</source>
-        <translation>Закрыть</translation>
+        <translation type="vanished">Закрыть</translation>
+    </message>
+    <message>
+        <location filename="../../src/mobile/qml/InformationDialog.qml" line="77"/>
+        <source>CLOSE</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
     <name>Install Documents</name>
     <message>
-        <location filename="../../src/mobile/qml/ListWorksView.qml" line="101"/>
+        <location filename="../../src/mobile/qml/ListWorksView.qml" line="98"/>
+        <location filename="../../src/mobile/qml/ListWorksView.qml" line="108"/>
         <source>Remove</source>
         <translation>Удалить</translation>
     </message>
     <message>
         <location filename="../../src/mobile/qml/ListWorksView.qml" line="91"/>
-        <location filename="../../src/mobile/qml/ListWorksView.qml" line="103"/>
+        <location filename="../../src/mobile/qml/ListWorksView.qml" line="110"/>
         <source>Install</source>
         <translation>Установить</translation>
     </message>
@@ -305,9 +338,13 @@ This file is distributed under the same license as the Bibetime package.</transl
 <context>
     <name>ModuleChooser</name>
     <message>
-        <location filename="../../src/mobile/qml/ModuleChooser.qml" line="117"/>
         <source>Unlock</source>
-        <translation>Разблокировать</translation>
+        <translation type="vanished">Разблокировать</translation>
+    </message>
+    <message>
+        <location filename="../../src/mobile/qml/ModuleChooser.qml" line="117"/>
+        <source>UNLOCK</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../../src/mobile/qml/ModuleChooser.qml" line="195"/>
@@ -330,7 +367,7 @@ This file is distributed under the same license as the Bibetime package.</transl
     <message>
         <location filename="../../src/mobile/qml/About.qml" line="41"/>
         <location filename="../../src/mobile/qml/AddBookmark.qml" line="69"/>
-        <location filename="../../src/mobile/qml/BookmarkManager.qml" line="103"/>
+        <location filename="../../src/mobile/qml/BookmarkManager.qml" line="104"/>
         <location filename="../../src/mobile/qml/CopyVersesDialog.qml" line="55"/>
         <location filename="../../src/mobile/qml/CopyVersesDialog.qml" line="141"/>
         <location filename="../../src/mobile/qml/DebugDialog.qml" line="40"/>
@@ -352,9 +389,13 @@ This file is distributed under the same license as the Bibetime package.</transl
 <context>
     <name>Progress</name>
     <message>
-        <location filename="../../src/mobile/qml/Progress.qml" line="57"/>
         <source>Cancel</source>
-        <translation>Отмена</translation>
+        <translation type="vanished">Отмена</translation>
+    </message>
+    <message>
+        <location filename="../../src/mobile/qml/Progress.qml" line="57"/>
+        <source>CANCEL</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -373,7 +414,7 @@ This file is distributed under the same license as the Bibetime package.</transl
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../src/mobile/qml/QuestionDialog.qml" line="75"/>
+        <location filename="../../src/mobile/qml/QuestionDialog.qml" line="68"/>
         <source>NO</source>
         <translation type="unfinished"></translation>
     </message>
@@ -381,7 +422,7 @@ This file is distributed under the same license as the Bibetime package.</transl
 <context>
     <name>Quit</name>
     <message>
-        <location filename="../../src/mobile/qml/main.qml" line="777"/>
+        <location filename="../../src/mobile/qml/main.qml" line="779"/>
         <source>Are you sure you want to quit?</source>
         <translation>Вы уверены, что хотите выйти?</translation>
     </message>
@@ -395,8 +436,12 @@ This file is distributed under the same license as the Bibetime package.</transl
     </message>
     <message>
         <location filename="../../src/mobile/qml/SearchDialog.qml" line="158"/>
+        <source>SEARCH</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <source>Search</source>
-        <translation>Поиск</translation>
+        <translation type="vanished">Поиск</translation>
     </message>
     <message>
         <location filename="../../src/mobile/qml/SearchDialog.qml" line="180"/>
@@ -475,21 +520,33 @@ This file is distributed under the same license as the Bibetime package.</transl
     </message>
     <message>
         <location filename="../../src/mobile/qml/SetFont.qml" line="194"/>
-        <source>Ok</source>
-        <translation>Ok</translation>
+        <source>OK</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../../src/mobile/qml/SetFont.qml" line="202"/>
+        <source>CANCEL</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Ok</source>
+        <translation type="vanished">Ok</translation>
+    </message>
+    <message>
         <source>Cancel</source>
-        <translation>Отмена</translation>
+        <translation type="vanished">Отмена</translation>
     </message>
 </context>
 <context>
     <name>TextEditor</name>
     <message>
-        <location filename="../../src/mobile/qml/TextEditor.qml" line="50"/>
         <source>Ok</source>
-        <translation>Ok</translation>
+        <translation type="vanished">Ok</translation>
+    </message>
+    <message>
+        <location filename="../../src/mobile/qml/TextEditor.qml" line="50"/>
+        <source>OK</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -693,7 +750,7 @@ This file is distributed under the same license as the Bibetime package.</transl
     </message>
     <message>
         <location filename="../../src/mobile/qml/main.qml" line="613"/>
-        <location filename="../../src/mobile/qml/main.qml" line="913"/>
+        <location filename="../../src/mobile/qml/main.qml" line="915"/>
         <source>New Window</source>
         <translation>Новое окно</translation>
     </message>
@@ -703,13 +760,13 @@ This file is distributed under the same license as the Bibetime package.</transl
         <translation>Список окон</translation>
     </message>
     <message>
-        <location filename="../../src/mobile/qml/main.qml" line="972"/>
-        <location filename="../../src/mobile/qml/main.qml" line="1021"/>
+        <location filename="../../src/mobile/qml/main.qml" line="974"/>
+        <location filename="../../src/mobile/qml/main.qml" line="1023"/>
         <source>User Interface Font Size</source>
         <translation>Размер шрифта интерфейса</translation>
     </message>
     <message>
-        <location filename="../../src/mobile/qml/main.qml" line="973"/>
+        <location filename="../../src/mobile/qml/main.qml" line="975"/>
         <source>Window Arrangement</source>
         <translation>Расположение окон</translation>
     </message>
@@ -744,12 +801,12 @@ This file is distributed under the same license as the Bibetime package.</transl
         <translation>Малиновый</translation>
     </message>
     <message>
-        <location filename="../../src/mobile/qml/main.qml" line="975"/>
+        <location filename="../../src/mobile/qml/main.qml" line="977"/>
         <source>Default Documents</source>
         <translation>Модули по умолчанию</translation>
     </message>
     <message>
-        <location filename="../../src/mobile/qml/main.qml" line="1129"/>
+        <location filename="../../src/mobile/qml/main.qml" line="1131"/>
         <source>Single</source>
         <translation>Одно окно</translation>
     </message>
@@ -794,57 +851,57 @@ This file is distributed under the same license as the Bibetime package.</transl
         <translation>Новые функции</translation>
     </message>
     <message>
-        <location filename="../../src/mobile/qml/main.qml" line="827"/>
+        <location filename="../../src/mobile/qml/main.qml" line="829"/>
         <source>Off</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../src/mobile/qml/main.qml" line="828"/>
+        <location filename="../../src/mobile/qml/main.qml" line="830"/>
         <source>Left</source>
         <translation>По левому краю</translation>
     </message>
     <message>
-        <location filename="../../src/mobile/qml/main.qml" line="829"/>
+        <location filename="../../src/mobile/qml/main.qml" line="831"/>
         <source>Right</source>
         <translation>По правому краю</translation>
     </message>
     <message>
-        <location filename="../../src/mobile/qml/main.qml" line="914"/>
+        <location filename="../../src/mobile/qml/main.qml" line="916"/>
         <source>View References</source>
         <translation>Просмотр ссылок</translation>
     </message>
     <message>
-        <location filename="../../src/mobile/qml/main.qml" line="971"/>
+        <location filename="../../src/mobile/qml/main.qml" line="973"/>
         <source>Text Font</source>
         <translation>Шрифт текста</translation>
     </message>
     <message>
-        <location filename="../../src/mobile/qml/main.qml" line="974"/>
+        <location filename="../../src/mobile/qml/main.qml" line="976"/>
         <source>Color Theme</source>
         <translation>Цвет темы</translation>
     </message>
     <message>
-        <location filename="../../src/mobile/qml/main.qml" line="976"/>
+        <location filename="../../src/mobile/qml/main.qml" line="978"/>
         <source>ScrollBar Position</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../src/mobile/qml/main.qml" line="1130"/>
+        <location filename="../../src/mobile/qml/main.qml" line="1132"/>
         <source>Tabbed</source>
         <translation>Во вкладках</translation>
     </message>
     <message>
-        <location filename="../../src/mobile/qml/main.qml" line="1131"/>
+        <location filename="../../src/mobile/qml/main.qml" line="1133"/>
         <source>Auto-tile</source>
         <translation>Плиткой</translation>
     </message>
     <message>
-        <location filename="../../src/mobile/qml/main.qml" line="1132"/>
+        <location filename="../../src/mobile/qml/main.qml" line="1134"/>
         <source>Auto-tile horizontally</source>
         <translation>Плиткой по горизонтали</translation>
     </message>
     <message>
-        <location filename="../../src/mobile/qml/main.qml" line="1133"/>
+        <location filename="../../src/mobile/qml/main.qml" line="1135"/>
         <source>Auto-tile vertically</source>
         <translation>Плиткой по вертикали</translation>
     </message>
