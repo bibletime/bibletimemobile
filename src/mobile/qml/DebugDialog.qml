@@ -196,6 +196,22 @@ Rectangle {
                     }
                 }
             }
+
+            Rectangle {
+                color: Material.background
+                width: debugDialog.width
+                height:btStyle.pixelsPerMillimeterX * 5
+
+                BtmButton {
+                    anchors.left: parent.left
+                    anchors.leftMargin: btStyle.pixelsPerMillimeterX * 2
+                    anchors.verticalCenter: parent.verticalCenter
+                    text: "Add Source"
+                    onClicked: {
+                        installInterface.addSource("holmlund.info");
+                    }
+                }
+            }
         }
     }
 

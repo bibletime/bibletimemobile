@@ -354,6 +354,16 @@ void InstallInterface::runThread() {
     thread->start();
 }
 
+void InstallInterface::addSource(const QString& sourceName) {
+    sword::InstallSource newSource(""); //empty, invalid Source
+    newSource.type = "FTP";
+    newSource.source = sourceName.toUtf8();
+    newSource.caption = sourceName.toUtf8();
+    newSource.directory = "/pub/sword";
+    newSource.uid = "20191111111111";
+    BtInstallBackend::addSource(newSource);
+}
+
 void InstallInterface::cancel() {
     m_wasCanceled = true;
     emit wasCanceledChanged();

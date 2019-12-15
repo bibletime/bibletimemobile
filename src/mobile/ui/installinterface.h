@@ -88,6 +88,8 @@ public:
     Q_INVOKABLE void workSelected(int index);
     Q_INVOKABLE void cancel();
 
+    Q_INVOKABLE void addSource(const QString& sourceName);
+
     QVariant sourceModel();
     QVariant categoryModel();
     QVariant languageModel();
