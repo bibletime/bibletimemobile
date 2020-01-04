@@ -26,7 +26,6 @@ SOURCES += \
     $${BIBLETIME_PATH}/src/backend/btinstallbackend.cpp \
     $${BIBLETIME_PATH}/src/backend/btinstallmgr.cpp \
     $${BIBLETIME_PATH}/src/backend/btinstallthread.cpp \
-    $${BIBLETIME_PATH}/src/backend/btmoduletreeitem.cpp \
     $${BIBLETIME_PATH}/src/backend/config/btconfig.cpp \
     $${BIBLETIME_PATH}/src/backend/config/btconfigcore.cpp \
     $${BIBLETIME_PATH}/src/backend/cswordmodulesearch.cpp \
@@ -80,7 +79,6 @@ HEADERS += \
     $${BIBLETIME_PATH}/src/backend/btinstallbackend.h \
     $${BIBLETIME_PATH}/src/backend/btinstallmgr.h \
     $${BIBLETIME_PATH}/src/backend/btinstallthread.h \
-    $${BIBLETIME_PATH}/src/backend/btmoduletreeitem.h \
     $${BIBLETIME_PATH}/src/backend/btsignal.h \
     $${BIBLETIME_PATH}/src/backend/config/btconfig.h \
     $${BIBLETIME_PATH}/src/backend/config/btconfigcore.h \

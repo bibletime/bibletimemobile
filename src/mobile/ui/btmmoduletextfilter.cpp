@@ -20,7 +20,7 @@ BtmModuleTextFilter::BtmModuleTextFilter() :
 BtmModuleTextFilter::~BtmModuleTextFilter() {
 }
 
-QString BtmModuleTextFilter::processText(const QString &text) {
+QString BtmModuleTextFilter::processText(const QString &text, bool selected) {
     if (text.isEmpty())
         return text;
     QString localText = fixNonRichText(text);

@@ -127,10 +127,6 @@ bool getStoragePermission() {
 void registerMetaTypes() {
     qRegisterMetaType<FilterOptions>("FilterOptions");
     qRegisterMetaType<DisplayOptions>("DisplayOptions");
-    qRegisterMetaTypeStreamOperators<BtBookshelfTreeModel::Grouping>("BtBookshelfTreeModel::Grouping");
-
-    qRegisterMetaType<BTModuleTreeItem::Grouping>("Grouping");
-    qRegisterMetaTypeStreamOperators<BTModuleTreeItem::Grouping>("Grouping");
 
     qRegisterMetaType<BtConfig::StringMap>("StringMap");
     qRegisterMetaTypeStreamOperators<BtConfig::StringMap>("StringMap");
