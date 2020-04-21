@@ -333,9 +333,10 @@ int main(int argc, char *argv[]) {
     qDebug() << "BibleTime initialized";
 
     QQmlApplicationEngine engine;
+    engine.addImportPath("qrc:/share/bibletime/qml/bookshelfmanager");
+    engine.addImportPath("qrc:/share/bibletime/qml");
     engine.load(QUrl(QStringLiteral("qrc:/share/bibletime/qml/main.qml")));
     s_rootObject = engine.rootObjects().at(0);
-    qDebug() << "QML loaded";
 
     int rtn = app.exec();
     saveSession();

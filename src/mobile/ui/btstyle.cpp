@@ -70,6 +70,7 @@ static QColor toolbarColor            = QColor();
 static QColor toolbarTextColor        = QColor();
 static QColor toolbarButtonText       = QColor();
 static double toolbarTextPointSize    = 6;
+static QFont m_uiFont;
 
 int currentStyle = BtStyle::darkTheme;
 
@@ -465,12 +466,16 @@ void BtStyle::setToolbarTextPointSize(double pointSize) {
     emitChanged();
 }
 
+QFont BtStyle::getUiFont() {
+    return m_uiFont;
+}
 double BtStyle::getUiFontPointSize() {
     return btConfig().value<int>("ui/uiFontSize",16);
 }
 
 void BtStyle::setUiFontPointSize(double pointSize) {
     btConfig().setValue<int>("ui/uiFontSize", static_cast<int>(pointSize));
+    m_uiFont.setPointSizeF(pointSize);
     emitChanged();
 }
 

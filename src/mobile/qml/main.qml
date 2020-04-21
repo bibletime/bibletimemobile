@@ -16,6 +16,7 @@ import QtQuick.Controls 2.4
 import QtQuick.Controls.Material 2.3
 import QtQuick.Window 2.11
 import BibleTime 1.0
+import "bookshelfmanager"
 
 Window {
     id: root
@@ -33,7 +34,13 @@ Window {
         }
     }
 
+    function installModules2() {
+        bookshelfManager.open();
+//        installManagerChooser.open();
+    }
+
     function installModules() {
+//        bookshelfManager.open();
         installManagerChooser.open();
     }
 
@@ -284,6 +291,12 @@ Window {
         Component.onCompleted: menuSelected.connect(bookmarkManagerMenus.doAction)
     }
 
+    BookshelfManager {
+        id: bookshelfManager
+        visible: false;
+        font: btStyle.uiFont
+    }
+
     BtStyle {
         id: btStyle
     }
@@ -324,7 +337,6 @@ Window {
             if (visible) {
                 var theme = sessionInterface.getColorTheme();
                 index = theme - 1;
-                console.log("theme: ",theme)
             }
         }
 
@@ -612,6 +624,7 @@ Window {
 
         ListElement { title: QT_TR_NOOP("New Window");                action: "newWindow" }
         ListElement { title: QT_TR_NOOP("View Window");               action: "view window" }
+        ListElement { title: QT_TR_NOOP("Manage Installed Documents2");action: "install2" }
         ListElement { title: QT_TR_NOOP("Manage Installed Documents");action: "install" }
         ListElement { title: QT_TR_NOOP("Settings");                  action: "settings" }
         ListElement { title: QT_TR_NOOP("New Features");              action: "new features" }
@@ -631,6 +644,9 @@ Window {
             else if (action === "view window") {
                 windowManager.createWindowMenus(viewWindowsModel);
                 viewWindowsMenus.visible = true;
+            }
+            else if (action === "install2") {
+                installModules2();
             }
             else if (action === "install") {
                 installModules();
@@ -1109,7 +1125,6 @@ Window {
                     index = 3;
                 else if (arrangement === windowManager.autoTileVer)
                     index = 4;
-                console.log("index: ",index, arrangement);
             }
         }
 

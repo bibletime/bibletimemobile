@@ -15,6 +15,7 @@
 
 #include <QObject>
 #include <QColor>
+#include <QFont>
 
 namespace btm {
 
@@ -55,7 +56,8 @@ class BtStyle : public QObject {
     Q_PROPERTY(QColor toolbarButtonText     READ getToolbarButtonText NOTIFY changed)
     Q_PROPERTY(double toolbarTextPointSize  READ getToolbarTextPointSize NOTIFY changed);
 
-    Q_PROPERTY(double uiFontPointSize       READ getUiFontPointSize   WRITE setUiFontPointSize   NOTIFY changed);
+    Q_PROPERTY(QFont  uiFont                READ getUiFont  NOTIFY changed);
+    Q_PROPERTY(double uiFontPointSize       READ getUiFontPointSize WRITE setUiFontPointSize NOTIFY changed);
 
     Q_PROPERTY(int width READ width WRITE setWidth NOTIFY widthChanged);
     Q_PROPERTY(int height READ height WRITE setHeight NOTIFY heightChanged);
@@ -172,6 +174,7 @@ public:
     static double getToolbarTextPointSize();
     static void setToolbarTextPointSize(double pointSize);
 
+    static QFont getUiFont();
     static double getUiFontPointSize();
     static void setUiFontPointSize(double pointSize);
 

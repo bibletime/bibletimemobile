@@ -1,5 +1,4 @@
 CONFIG += clucene  mobile c++11 qml_debug
-QT += svg xml qml quick quickcontrols2
 
 QML_ROOT_PATH = ../../../src/mobile/qml
 
@@ -21,8 +20,11 @@ SOURCES += \
     ../../../src/mobile/bookshelfmanager/installsources.cpp \
     ../../../src/mobile/btmmain.cpp \
     ../../../src/mobile/config/btmconfig.cpp \
-    ../../../src/mobile/models/roleitemmodel.cpp \
     ../../../src/mobile/models/searchmodel.cpp \
+    ../../../src/mobile/models/documentmodel.cpp \
+    ../../../src/mobile/models/roleitemmodel.cpp \
+    ../../../src/mobile/models/worksmodel.cpp \
+    ../../../src/mobile/models/workssortfiltermodel.cpp \
     ../../../src/mobile/ui/btbookmarkinterface.cpp \
     ../../../src/mobile/ui/btsearchinterface.cpp \
     ../../../src/mobile/ui/btstyle.cpp \
@@ -50,6 +52,10 @@ HEADERS += \
     ../../../src/mobile/ui/indexthread.h \
     ../../../src/mobile/models/roleitemmodel.h \
     ../../../src/mobile/models/searchmodel.h \
+    ../../../src/mobile/models/documentmodel.h \
+    ../../../src/mobile/models/worksmodel.h \
+    ../../../src/mobile/models/workssortfiltermodel.h \
+    ../../../src/mobile/models/worksmodel.h \
     ../../../src/mobile/ui/btbookmarkinterface.h \
     ../../../src/mobile/ui/btsearchinterface.h \
     ../../../src/mobile/ui/btstyle.h \
@@ -81,6 +87,7 @@ OTHER_FILES += \
     ../../../src/mobile/qml/CopyVersesDialog.qml \
     ../../../src/mobile/qml/DebugDialog.qml \
     ../../../src/mobile/qml/DefaultDoc.qml \
+    ../../../src/mobile/qml/ExpandArrow.qml \
     ../../../src/mobile/qml/Folder.qml \
     ../../../src/mobile/qml/FontSizeSlider.qml \
     ../../../src/mobile/qml/GridChooser.qml \
@@ -121,6 +128,18 @@ OTHER_FILES += \
     ../../../src/mobile/qml/ViewFile.qml \
     ../../../src/mobile/qml/Window.qml \
     ../../../src/mobile/qml/WindowManager.qml \
+    ../../../src/mobile/qml/bookshelfmanager/BookshelfManager.qml
+    ../../../src/mobile/qml/bookshelfmanager/BookshelfManagerPages.qml
+    ../../../src/mobile/qml/bookshelfmanager/ChooseDocumentsPage.qml
+    ../../../src/mobile/qml/bookshelfmanager/ChooseLanguagePage.qml
+    ../../../src/mobile/qml/bookshelfmanager/ChooseLibraryPage.qml
+    ../../../src/mobile/qml/bookshelfmanager/InstallPage.qml
+    ../../../src/mobile/qml/bookshelfmanager/RemoveDocumentsPage.qml
+    ../../../src/mobile/qml/bookshelfmanager/TaskMenu.qml
+    ../../../src/mobile/qml/bookshelfmanager/TaskPage.qml
+    ../../../src/mobile/qml/bookshelfmanager/UpdateLibrariesPage.qml
+    ../../../src/mobile/qml/bookshelfmanager/UpdatingDocumentsPage.qml
+    ../../../src/mobile/qml/bookshelfmanager/UpdatingLibrariesPage.qml
 
 lupdate_only {
     SOURCES  = ../../../src/mobile/qml/*.qml
