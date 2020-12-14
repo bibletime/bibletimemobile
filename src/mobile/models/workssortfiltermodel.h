@@ -24,6 +24,7 @@ public:
     WorksSortFilterModel(QObject * parent = nullptr);
 
     void setCategoryFilter(const QString& category);
+    void setTextFilter(const QString& text);
 
 protected:
 
@@ -33,6 +34,7 @@ protected:
 private:
 
     QString m_categoryFilter;
+    QString m_textFilter;
 
 };
 

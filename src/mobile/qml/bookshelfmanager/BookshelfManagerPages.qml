@@ -3,136 +3,153 @@ import QtQuick.Layouts 1.3
 import QtQuick.Controls.Material 2.3
 
 Item {
-    id: shelfPages
+    id: bookshelfPages
 
     property alias index: pages.currentIndex
     property font font: Qt.font({ family: "Helvetica", pointSize: 10, weight: Font.Normal })
 
-    signal finishPage
-    signal beginPage
-    signal normalPage
-    signal installPage
-
     enum PageName {
         Task=0,
-        Update=1,
-        Updating=2,
-        Libraries=3,
-        Languages=4,
-        Documents=5,
-        Install=6,
-        UpdatingDoc=7,
-        RemovingDoc=8
+        UpdateSourcesQuestion=1,
+        UpdateSources=2,
+        ChooseSources=3,
+        ChooseLanguages=4,
+        ChooseDocuments=5,
+        InstallDocuments=6,
+        UpdateDocuments=7,
+        RemoveDocuments=8
     }
 
     function initialize() {
-        setCurrentPage(0);
-        updatePage.update = false;
-    }
-
-    function setCurrentPage(page) {
-        if (page >= pages.count)
-            return;
-        if (page < 0)
-            return;
-        pages.currentIndex = page;
-        setButtons();
+        pages.currentIndex = BookshelfManagerPages.PageName.Task
+        initPage();
+        updateSourcesQuestionPage.update = false;
+        taskPage.install = true;
     }
 
     function nextPage() {
         donePage();
-        if (index === BookshelfManagerPages.PageName.Task) {
-            if (taskPage.remove)
-                index = BookshelfManagerPages.PageName.RemovingDoc
-            else
-                index = BookshelfManagerPages.PageName.Update;
-        }
-        else if (index === BookshelfManagerPages.PageName.Update) {
-            if (updatePage.update)
-                index = BookshelfManagerPages.PageName.Updating;
-            else if (taskPage.update)
-                index=BookshelfManagerPages.PageName.UpdatingDoc
-            else
-                index = BookshelfManagerPages.PageName.Libraries;
-        }
-        else if (index === BookshelfManagerPages.PageName.Updating) {
-            if (taskPage.update)
-                index = BookshelfManagerPages.PageName.UpdatingDoc;
-            else
-                index = BookshelfManagerPages.PageName.Libraries;
-        }
-        else if (index === BookshelfManagerPages.PageName.Libraries)
-            index = BookshelfManagerPages.PageName.Languages;
-
-        else if (index === BookshelfManagerPages.PageName.Languages)
-            index = BookshelfManagerPages.PageName.Documents;
-        setButtons();
+        if (taskPage.remove)
+            nextRemovePage();
+        else if (taskPage.update)
+            nextUpdatePage();
+        else
+            nextInstallPage();
         initPage();
     }
 
-    function installButtonPressed() {
-        index = BookshelfManagerPages.PageName.Install;
-        initPage();
+    function nextInstallPage() {
+        if (index === BookshelfManagerPages.PageName.Task) {
+            index = BookshelfManagerPages.PageName.UpdateSourcesQuestion
+        } else if (index === BookshelfManagerPages.PageName.UpdateSourcesQuestion) {
+            if (updateSourcesQuestionPage.update)
+                index = BookshelfManagerPages.PageName.UpdateSources;
+            else
+                index = BookshelfManagerPages.PageName.ChooseSources;
+        } else if (index === BookshelfManagerPages.PageName.UpdateSources) {
+            index = BookshelfManagerPages.PageName.ChooseSources;
+        } else if (index === BookshelfManagerPages.PageName.ChooseSources) {
+            index = BookshelfManagerPages.PageName.ChooseLanguages;
+        } else if (index === BookshelfManagerPages.PageName.ChooseLanguages) {
+            index = BookshelfManagerPages.PageName.ChooseDocuments;
+        } else if (index === BookshelfManagerPages.PageName.ChooseDocuments)
+            index = BookshelfManagerPages.PageName.InstallDocuments;
+    }
+
+    function nextUpdatePage() {
+        if (index === BookshelfManagerPages.PageName.Task) {
+            index = BookshelfManagerPages.PageName.UpdateSources;
+        } else if (index === BookshelfManagerPages.PageName.UpdateSources) {
+            index = BookshelfManagerPages.PageName.UpdateDocuments;
+        } else if (index === BookshelfManagerPages.PageName.UpdateDocuments) {
+        index = BookshelfManagerPages.PageName.InstallDocuments;
+        }
+    }
+
+    function nextRemovePage() {
+        if (index === BookshelfManagerPages.PageName.Task) {
+            index = BookshelfManagerPages.PageName.RemoveDocuments
+        }
     }
 
     function prevPage() {
-        if (index === BookshelfManagerPages.PageName.Documents)
-            index = BookshelfManagerPages.PageName.Languages;
-        else if (index === BookshelfManagerPages.PageName.Languages)
-            index = BookshelfManagerPages.PageName.Libraries;
-        else if (index === BookshelfManagerPages.PageName.Libraries)
-            index = BookshelfManagerPages.PageName.Update;
-        else if (index === BookshelfManagerPages.PageName.Updating)
-            index = BookshelfManagerPages.PageName.Update;
-        else if (index === BookshelfManagerPages.PageName.Update)
-            index = BookshelfManagerPages.PageName.Task;
-        else if (index === BookshelfManagerPages.PageName.UpdatingDoc)
-            index = BookshelfManagerPages.PageName.Task;
-        else if (index === BookshelfManagerPages.PageName.RemovingDoc)
-            index = BookshelfManagerPages.PageName.Task;
-        else if (index === BookshelfManagerPages.PageName.Install)
-            index = BookshelfManagerPages.PageName.Documents;
-        setButtons();
+        if (taskPage.remove)
+            prevRemovePage();
+        else if (taskPage.update)
+            prevUpdatePage();
+        else
+            prevInstallPage();
+        initPage();
     }
 
-    function setButtons() {
-        if (index === 0)
-            beginPage();
-        else if (index === BookshelfManagerPages.PageName.Install ||
-                 index === BookshelfManagerPages.PageName.UpdatingDoc ||
-                 index === BookshelfManagerPages.PageName.RemovingDoc)
-            finishPage();
-        else if (index === BookshelfManagerPages.Documents)
-            installPage();
-        else
-            normalPage();
+    function prevInstallPage() {
+        if (index === BookshelfManagerPages.PageName.InstallDocuments)
+            index = BookshelfManagerPages.PageName.ChooseDocuments;
+        else if (index === BookshelfManagerPages.PageName.ChooseDocuments)
+            index = BookshelfManagerPages.PageName.ChooseLanguages;
+        else if (index === BookshelfManagerPages.PageName.ChooseLanguages)
+            index = BookshelfManagerPages.PageName.ChooseSources;
+        else if (index === BookshelfManagerPages.PageName.ChooseSources)
+            index = BookshelfManagerPages.PageName.UpdateSourcesQuestion;
+        else if (index === BookshelfManagerPages.PageName.UpdateSources)
+            index = BookshelfManagerPages.PageName.UpdateSourcesQuestion;
+        else if (index === BookshelfManagerPages.PageName.UpdateSourcesQuestion)
+            index = BookshelfManagerPages.PageName.Task;
+    }
+
+    function prevUpdatePage() {
+        if (index === BookshelfManagerPages.PageName.InstallDocuments)
+            index = BookshelfManagerPages.PageName.Task;
+        else if (index === BookshelfManagerPages.PageName.UpdateDocuments)
+            index = BookshelfManagerPages.PageName.Task;
+    }
+
+    function prevRemovePage() {
+        if (index === BookshelfManagerPages.PageName.RemoveDocuments)
+            index = BookshelfManagerPages.PageName.Task;
     }
 
     function initPage() {
-        if (pages.currentIndex === BookshelfManagerPages.PageName.Libraries) {
-            libraryPage.initPage();
-        }
-        else if (pages.currentIndex === BookshelfManagerPages.PageName.Languages) {
-            languagePage.initPage();
-        }
-        else if (pages.currentIndex === BookshelfManagerPages.PageName.Documents) {
-            documentPage.initPage();
-        }
-        else if (pages.currentIndex === BookshelfManagerPages.PageName.Install) {
-            installDocumentsPage.initPage();
-        }
+        var page = currentItem(pages.currentIndex);
+        console.log(pages.currentIndex, page);
+        page.initPage();
     }
 
     function donePage() {
-        if (pages.currentIndex === BookshelfManagerPages.PageName.Libraries) {
-            libraryPage.donePage();
+        var page = currentItem(pages.currentIndex);
+        page.donePage();
+    }
+
+    function currentItem(index) {
+        if (index === BookshelfManagerPages.PageName.Task) {
+            return taskPage;
         }
-        else if (pages.currentIndex === BookshelfManagerPages.PageName.Languages) {
-            languagePage.donePage();
+        else if (index === BookshelfManagerPages.PageName.UpdateSourcesQuestion) {
+            return updateSourcesQuestionPage;
         }
-        else if (pages.currentIndex === BookshelfManagerPages.PageName.Documents) {
-            documentPage.donePage();
+        else if (index === BookshelfManagerPages.PageName.UpdateSources) {
+            console.log("xxx")
+            return updateSourcesPage;
         }
+        else if (index === BookshelfManagerPages.PageName.ChooseSources) {
+            return chooseSourcesPage;
+        }
+        else if (index === BookshelfManagerPages.PageName.ChooseLanguages) {
+            return chooseLanguagesPage;
+        }
+        else if (index === BookshelfManagerPages.PageName.ChooseDocuments) {
+            return chooseDocumentPage;
+        }
+        else if (index === BookshelfManagerPages.PageName.InstallDocuments) {
+            return installDocumentsPage;
+        }
+        else if (index === BookshelfManagerPages.PageName.UpdateDocuments) {
+            return updateDocumentsPage;
+        }
+        else if (index === BookshelfManagerPages.PageName.RemoveDocuments) {
+            return removeDocumentsPage;
+        }
+        console.log("currentItem error");
     }
 
     StackLayout {
@@ -145,47 +162,53 @@ Item {
         TaskPage {
             id: taskPage
 
-            font: shelfPages.font
+            font: bookshelfPages.font
         }
 
-        UpdateLibrariesPage {
-            id: updatePage
+        UpdateSourcesQuestionPage {
+            id: updateSourcesQuestionPage
 
-            font: shelfPages.font
+            font: bookshelfPages.font
         }
 
-        UpdatingLibrariesPage {
-            font: shelfPages.font
+        UpdateSourcesPage {
+            id: updateSourcesPage
+
+            font: bookshelfPages.font
         }
 
-        ChooseLibraryPage {
-            id: libraryPage
+        ChooseSourcesPage {
+            id: chooseSourcesPage
 
-            font: shelfPages.font
+            font: bookshelfPages.font
         }
 
-        ChooseLanguagePage {
-            id: languagePage
+        ChooseLanguagesPage {
+            id: chooseLanguagesPage
 
-            font: shelfPages.font
+            font: bookshelfPages.font
         }
 
         ChooseDocumentsPage {
-            id: documentPage
-            font: shelfPages.font
+            id: chooseDocumentPage
+            font: bookshelfPages.font
         }
 
-        InstallPage {
+        InstallDocumentsPage {
             id: installDocumentsPage
-            font: shelfPages.font
+            font: bookshelfPages.font
         }
 
-        UpdatingDocumentsPage {
-            font: shelfPages.font
+        UpdateDocumentsPage {
+            id: updateDocumentsPage
+
+            font: bookshelfPages.font
         }
 
         RemoveDocumentsPage {
-            font: shelfPages.font
+            id: removeDocumentsPage
+
+            font: bookshelfPages.font
         }
     }
 
@@ -193,5 +216,4 @@ Item {
         anchors.fill: parent
         color: Material.background
     }
-
 }

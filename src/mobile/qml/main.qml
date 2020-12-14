@@ -36,12 +36,6 @@ Window {
 
     function installModules2() {
         bookshelfManager.open();
-//        installManagerChooser.open();
-    }
-
-    function installModules() {
-//        bookshelfManager.open();
-        installManagerChooser.open();
     }
 
     function startSearch() {
@@ -132,7 +126,6 @@ Window {
             moduleChooser,
             textEditor,
             defaultDoc,
-            installManagerChooser,
             keyNameChooser,
             treeChooser,
             viewFile,
@@ -473,27 +466,6 @@ Window {
 
     InstallInterface {
         id: installInterface
-
-        onUpdateCurrentViews: {
-            var sIndex = installInterface.searchSource(source);
-            installManagerChooser.sourceIndex = sIndex;
-            var cIndex = installInterface.searchCategory(category);
-            installManagerChooser.categoryIndex = cIndex;
-            var lIndex = installInterface.searchLanguage(language);
-            installManagerChooser.languageIndex = lIndex;
-        }
-    }
-
-    InstallManagerChooser {
-        id: installManagerChooser
-
-        width: parent.width;
-        height: parent.height
-        anchors.centerIn: parent
-        anchors.top: parent.top
-        visible: false
-        z: 1
-        onCanceled: installManagerChooser.visible = false;
     }
 
     QuestionDialog {
@@ -555,8 +527,7 @@ Window {
         text: qsTr("The \"Manage Installed Documents\" window will now be opened. You can open it later from the menus at the upper right of the Main view.")
         z:4
         onFinished: {
-            installManagerChooser.refreshOnOpen = true;
-            installModules();
+            installModules2();
         }
     }
 
@@ -581,7 +552,7 @@ Window {
         implicitWidth:parent.width * 0.9
         text: installInterface.progressText
         visible: installInterface.progressVisible
-        onCanceled: installManagerChooser.cancel();
+//        onCanceled: installManagerChooser.cancel();
         x: (parent.width - width) / 2
         y: (parent.height - height) / 2
         z: 1
@@ -624,7 +595,6 @@ Window {
 
         ListElement { title: QT_TR_NOOP("New Window");                action: "newWindow" }
         ListElement { title: QT_TR_NOOP("View Window");               action: "view window" }
-        ListElement { title: QT_TR_NOOP("Manage Installed Documents2");action: "install2" }
         ListElement { title: QT_TR_NOOP("Manage Installed Documents");action: "install" }
         ListElement { title: QT_TR_NOOP("Settings");                  action: "settings" }
         ListElement { title: QT_TR_NOOP("New Features");              action: "new features" }
@@ -645,11 +615,8 @@ Window {
                 windowManager.createWindowMenus(viewWindowsModel);
                 viewWindowsMenus.visible = true;
             }
-            else if (action === "install2") {
-                installModules2();
-            }
             else if (action === "install") {
-                installModules();
+                installModules2();
             }
             else if (action === "about") {
                 aboutDialog.visible = true;

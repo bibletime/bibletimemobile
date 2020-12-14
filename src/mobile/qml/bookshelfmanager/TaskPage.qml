@@ -11,6 +11,19 @@ Item {
     property alias update: updateRadioButton.checked
     property alias remove: removeRadioButton.checked
 
+    function initPage() {
+        bookshelfManager.changeButton("back", false);
+        bookshelfManager.changeButton("next", true);
+        bookshelfManager.changeButton("install", false);
+        bookshelfManager.changeButton("finish", false);
+        bookshelfManager.changeButton("close", false);
+        bookshelfManager.changeButton("cancel", true);
+    }
+
+    function donePage() {
+
+    }
+
     ButtonGroup {
         buttons: column.children
     }

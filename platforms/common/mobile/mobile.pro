@@ -94,7 +94,6 @@ OTHER_FILES += \
     ../../../src/mobile/qml/GridChooserButton.qml \
     ../../../src/mobile/qml/InformationDialog.qml \
     ../../../src/mobile/qml/InstallAutomatic.qml \
-    ../../../src/mobile/qml/InstallManagerChooser.qml \
     ../../../src/mobile/qml/KeyNameChooser.qml \
     ../../../src/mobile/qml/Left.qml \
     ../../../src/mobile/qml/LeftArrow.qml \
@@ -131,15 +130,14 @@ OTHER_FILES += \
     ../../../src/mobile/qml/bookshelfmanager/BookshelfManager.qml
     ../../../src/mobile/qml/bookshelfmanager/BookshelfManagerPages.qml
     ../../../src/mobile/qml/bookshelfmanager/ChooseDocumentsPage.qml
-    ../../../src/mobile/qml/bookshelfmanager/ChooseLanguagePage.qml
-    ../../../src/mobile/qml/bookshelfmanager/ChooseLibraryPage.qml
-    ../../../src/mobile/qml/bookshelfmanager/InstallPage.qml
+    ../../../src/mobile/qml/bookshelfmanager/ChooseLanguagesPage.qml
+    ../../../src/mobile/qml/bookshelfmanager/ChooseSourcesPage.qml
+    ../../../src/mobile/qml/bookshelfmanager/InstallDocumentsPage.qml
     ../../../src/mobile/qml/bookshelfmanager/RemoveDocumentsPage.qml
-    ../../../src/mobile/qml/bookshelfmanager/TaskMenu.qml
     ../../../src/mobile/qml/bookshelfmanager/TaskPage.qml
-    ../../../src/mobile/qml/bookshelfmanager/UpdateLibrariesPage.qml
-    ../../../src/mobile/qml/bookshelfmanager/UpdatingDocumentsPage.qml
-    ../../../src/mobile/qml/bookshelfmanager/UpdatingLibrariesPage.qml
+    ../../../src/mobile/qml/bookshelfmanager/UpdateDocumentsPage.qml
+    ../../../src/mobile/qml/bookshelfmanager/UpdateSourcesQuestionPage.qml
+    ../../../src/mobile/qml/bookshelfmanager/UpdateSourcesPage.qml
 
 lupdate_only {
     SOURCES  = ../../../src/mobile/qml/*.qml

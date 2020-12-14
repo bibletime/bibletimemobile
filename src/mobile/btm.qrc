@@ -33,7 +33,6 @@
         <file>qml/GridChooser.qml</file>
         <file>qml/InformationDialog.qml</file>
         <file>qml/InstallAutomatic.qml</file>
-        <file>qml/InstallManagerChooser.qml</file>
         <file>qml/KeyNameChooser.qml</file>
         <file>qml/Left.qml</file>
         <file>qml/LeftArrow.qml</file>
@@ -71,15 +70,14 @@
         <file>qml/bookshelfmanager/BookshelfManager.qml</file>
         <file>qml/bookshelfmanager/BookshelfManagerPages.qml</file>
         <file>qml/bookshelfmanager/ChooseDocumentsPage.qml</file>
-        <file>qml/bookshelfmanager/ChooseLanguagePage.qml</file>
-        <file>qml/bookshelfmanager/ChooseLibraryPage.qml</file>
-        <file>qml/bookshelfmanager/InstallPage.qml</file>
+        <file>qml/bookshelfmanager/ChooseLanguagesPage.qml</file>
+        <file>qml/bookshelfmanager/ChooseSourcesPage.qml</file>
+        <file>qml/bookshelfmanager/InstallDocumentsPage.qml</file>
         <file>qml/bookshelfmanager/RemoveDocumentsPage.qml</file>
-        <file>qml/bookshelfmanager/TaskMenu.qml</file>
         <file>qml/bookshelfmanager/TaskPage.qml</file>
-        <file>qml/bookshelfmanager/UpdateLibrariesPage.qml</file>
-        <file>qml/bookshelfmanager/UpdatingDocumentsPage.qml</file>
-        <file>qml/bookshelfmanager/UpdatingLibrariesPage.qml</file>
+        <file>qml/bookshelfmanager/UpdateSourcesQuestionPage.qml</file>
+        <file>qml/bookshelfmanager/UpdateDocumentsPage.qml</file>
+        <file>qml/bookshelfmanager/UpdateSourcesPage.qml</file>
     </qresource>
     <qresource prefix="/share/bibletime/icons">
         <file alias="folder-open.svg">../../pics/icons/folder-open.svg</file>

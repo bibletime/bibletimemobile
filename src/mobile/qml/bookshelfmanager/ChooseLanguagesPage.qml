@@ -9,8 +9,14 @@ Item {
     property font font: Qt.font({ family: "Helvetica", pointSize: 10, weight: Font.Normal })
 
     function initPage() {
-        installInterface.setupLanguageModel2();
+        installInterface.initializeLanguagesModel();
         listView.positionViewAtIndex(installInterface.indexOfFirstLanguageChecked,ListView.Beginning)
+        bookshelfManager.changeButton("back", true);
+        bookshelfManager.changeButton("next", true);
+        bookshelfManager.changeButton("install", false);
+        bookshelfManager.changeButton("finish", false);
+        bookshelfManager.changeButton("close", false);
+        bookshelfManager.changeButton("cancel", true);
     }
 
     function donePage() {

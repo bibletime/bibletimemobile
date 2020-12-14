@@ -10,6 +10,19 @@ Item {
     property alias update: checkBox.checked
     property font font: Qt.font({ family: "Helvetica", pointSize: 10, weight: Font.Normal })
 
+    function initPage() {
+        bookshelfManager.changeButton("back", true);
+        bookshelfManager.changeButton("next", true);
+        bookshelfManager.changeButton("install", false);
+        bookshelfManager.changeButton("finish", false);
+        bookshelfManager.changeButton("close", false);
+        bookshelfManager.changeButton("cancel", true);
+    }
+
+    function donePage() {
+
+    }
+
     Text {
         id: text1
 

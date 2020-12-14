@@ -24,8 +24,6 @@ namespace btm {
 class SessionInterface : public QObject {
     Q_OBJECT
 
-//    Q_PROPERTY(QVariant sourceModel   READ sourceModel   NOTIFY sourceModelChanged)
-
 public:
     SessionInterface();
 

@@ -9,10 +9,24 @@ Item {
     property font font: Qt.font({ family: "Helvetica", pointSize: 10, weight: Font.Normal })
 
     function initPage() {
-        installInterface.getSelectedDocumentsList();
+        bookshelfManager.changeButton("back", false, false);
+        installInterface.installDocuments();
+        bookshelfManager.changeButton("back", false);
+        bookshelfManager.changeButton("next", false);
+        bookshelfManager.changeButton("install", false);
+        bookshelfManager.changeButton("finish", false);
+        bookshelfManager.changeButton("close", false);
+        bookshelfManager.changeButton("cancel", false);
+        installInterface.modulesDownloadFinished.disconnect(finishedDownload);
+        installInterface.modulesDownloadFinished.connect(finishedDownload);
     }
 
     function donePage() {
+    }
+
+    function finishedDownload() {
+        bookshelfManager.changeButton("back", true);
+        bookshelfManager.changeButton("close", true);
     }
 
     Text {
@@ -101,4 +115,6 @@ Item {
             horizontalAlignment: Text.AlignHCenter
         }
     }
+    //    Component.onCompleted: {
+    //    }
 }

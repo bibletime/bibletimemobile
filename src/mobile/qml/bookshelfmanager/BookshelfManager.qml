@@ -7,7 +7,28 @@ import QtQuick.Window 2.12
 Dialog {
     id: bookshelfManager
 
-    //property font font: Qt.font({ family: "Helvetica", pointSize: 10, weight: Font.Normal })
+    function changeButton(buttonName, visible) {
+        var button;
+        if (buttonName === "back")
+            button = backButton;
+
+        else if (buttonName === "next")
+            button = nextButton;
+
+        else if (buttonName === "install")
+            button = installButton;
+
+        else if (buttonName === "finish")
+            button = finishButton;
+
+        else if (buttonName === "close")
+            button = closeButton;
+
+        else if (buttonName === "cancel")
+            button = cancelButton;
+
+        button.visible = visible
+    }
 
     modal: true
     width: parent.width
@@ -61,32 +82,6 @@ Dialog {
         anchors.top: bookshelfHeader.bottom
         anchors.bottom: bookshelfFooter.top
         font: bookshelfManager.font
-        onBeginPage: {
-            backButton.visible = false;
-            nextButton.visible = true;
-            finishButton.visible = false;
-            finishButton.width = 0;
-            installButton.visible = false;
-            installButton.width = 0;
-        }
-        onNormalPage: {
-            backButton.visible = true;
-            nextButton.visible = true;
-            finishButton.visible = false;
-            installButton.visible = false;
-        }
-        onFinishPage: {
-            backButton.visible = true;
-            nextButton.visible = false;
-            finishButton.visible = true;
-            installButton.visible = false;
-        }
-        onInstallPage: {
-            backButton.visible = true;
-            nextButton.visible = false;
-            finishButton.visible = false;
-            installButton.visible = true;
-        }
     }
 
     Rectangle {
@@ -137,7 +132,7 @@ Dialog {
 
                 text: qsTr("Install")
                 font: bookshelfManager.font
-                onClicked: pages.installButtonPressed()
+                onClicked: pages.nextPage()
             }
 
             Button {
@@ -145,7 +140,19 @@ Dialog {
 
                 text: qsTr("Finish") + " >"
                 font: bookshelfManager.font
-                onClicked: pages.finishPage()
+                onClicked: {
+                    pages.nextPage();
+                    bookshelfManager.close();
+                }
+            }
+
+            Button {
+                id: closeButton
+
+                text: qsTr("Close")
+                font: bookshelfManager.font
+                onClicked: bookshelfManager.done(Dialog.Accepted)
+
             }
 
             Button {

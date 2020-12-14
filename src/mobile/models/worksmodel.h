@@ -22,7 +22,8 @@ enum WorksRoles3 {
     DescriptionRole = Qt::UserRole + 23,
     CheckedRole = Qt::UserRole + 24,
     SourceNameRole = Qt::UserRole + 25,
-    CategoryRole = Qt::UserRole + 26
+    CategoryRole = Qt::UserRole + 26,
+    ModuleRole = Qt::UserRole + 27
 };
 
 

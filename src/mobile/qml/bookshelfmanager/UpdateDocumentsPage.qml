@@ -5,26 +5,34 @@ import QtQuick.Window 2.12
 import QtQuick.Controls 1.4
 
 Item {
-    id: removeDocumentsPage
+    id: updateDocumentsPage
 
     property font font: Qt.font({ family: "Helvetica", pointSize: 10, weight: Font.Normal })
 
     function initPage() {
-        installInterface.initializeRemoveDocumentsModel();
-        console.log(removeWorksListView.height, removeWorksListView.width)
-        installInterface.filterWorksByCategory("");
+        console.log(" updateDocumentsPage init")
+        installInterface.initializeUpdateDocumentsModel();
         bookshelfManager.changeButton("back", false);
         bookshelfManager.changeButton("next", false);
         bookshelfManager.changeButton("install", false);
-        bookshelfManager.changeButton("finish", true);
+        bookshelfManager.changeButton("finish", false);
         bookshelfManager.changeButton("close", false);
-        bookshelfManager.changeButton("cancel", true);
+        bookshelfManager.changeButton("cancel", false);
+        installInterface.modulesDownloadFinished.disconnect(finishedDownload);
+        installInterface.modulesDownloadFinished.connect(finishedDownload);
     }
 
     function donePage() {
-        installInterface.finishRemovingDocuments();
+        console.log(" updateDocumentsPage done")
+        installInterface.finishChoosingDocuments();
     }
 
+
+    function finishedDownload() {
+        console.log(" updateDocumentsPage finish")
+        bookshelfManager.changeButton("back", true);
+        bookshelfManager.changeButton("next", true);
+    }
 
     Text {
         id: text1
@@ -35,14 +43,14 @@ Item {
         anchors.rightMargin: Screen.pixelDensity * 4
         anchors.top: parent.top
         anchors.topMargin: Screen.pixelDensity * 1
-        text: qsTr("Choose documents to remove")
+        text: qsTr("Choose documents to update")
         wrapMode: Text.Wrap
         color: Material.foreground
         font: removeDocumentsPage.font
     }
 
     ListView {
-        id: removeWorksListView
+        id: updateWorksListView
 
         anchors.left: parent.left
         anchors.right: parent.right
@@ -56,7 +64,7 @@ Item {
             id: iDelegate
 
             height: Screen.pixelDensity * 12
-            width: removeWorksListView.width
+            width: updateWorksListView.width
 
             CheckDelegate {
                 id: checkDelegate
@@ -91,7 +99,7 @@ Item {
             Text {
                 id: versionText
                 anchors.left:  parent.left
-                anchors.leftMargin: removeWorksListView.width * 0.65
+                anchors.leftMargin: updateWorksListView.width * 0.65
                 anchors.right: parent.right
                 anchors.rightMargin: Screen.pixelDensity * 3
                 anchors.verticalCenter: checkDelegate.verticalCenter
@@ -103,4 +111,5 @@ Item {
             }
         }
     }
+
 }

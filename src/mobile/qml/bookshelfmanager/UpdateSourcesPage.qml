@@ -8,6 +8,28 @@ Item {
 
     property font font: Qt.font({ family: "Helvetica", pointSize: 10, weight: Font.Normal })
 
+    function initPage() {
+        bookshelfManager.changeButton("back", false);
+        bookshelfManager.changeButton("next", false);
+        bookshelfManager.changeButton("install", false);
+        bookshelfManager.changeButton("finish", false);
+        bookshelfManager.changeButton("close", false);
+        bookshelfManager.changeButton("cancel", false);
+        installInterface.modulesDownloadFinished.disconnect(finishedDownload);
+        installInterface.modulesDownloadFinished.connect(finishedDownload);
+    }
+
+    function donePage() {
+
+    }
+
+    function finishedDownload() {
+        console.log(" updateDocumentsPage finish")
+        bookshelfManager.changeButton("back", true);
+        bookshelfManager.changeButton("next", true);
+        bookshelfManager.changeButton("cancel", true);
+    }
+
     Text {
         id: text1
 
@@ -80,7 +102,10 @@ Item {
         width: Screen.pixelDensity * 14
         text: qsTr("Stop")
         font: updatingLibraries.font
-        onClicked: installInterface.cancel()
+        onClicked: {
+            finishedDownload();
+            installInterface.cancel();
+        }
         background: Rectangle {
             color: {
                 if (Material.theme == Material.Light)
