@@ -30,5 +30,4 @@ DISTFILES += \
     ../../../../../../../../../mnt/data/shared/sw/btm/bibletimemobile/platforms/android/mobile/android/arm32/gradlew.bat \
     ../../../../../../../../../mnt/data/shared/sw/btm/bibletimemobile/platforms/android/mobile/android/arm32/res/values/libs.xml
 
-ANDROID_ABIS = armeabi-v7a arm64-v8a
 
