@@ -59,7 +59,6 @@ SOURCES += \
     $${BIBLETIME_PATH}/src/backend/rendering/ctextrendering.cpp \
     $${BIBLETIME_PATH}/src/backend/btsignal.cpp \
     $${BIBLETIME_PATH}/src/util/cresmgr.cpp \
-    $${BIBLETIME_PATH}/src/util/directory.cpp \
     $${BIBLETIME_PATH}/src/util/bticons.cpp \
     $${BIBLETIME_PATH}/src/util/btmodules.cpp \
     $${BIBLETIME_PATH}/src/util/tool.cpp \

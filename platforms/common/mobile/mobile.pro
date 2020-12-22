@@ -37,6 +37,7 @@ SOURCES += \
     ../../../src/mobile/ui/chooserinterface.cpp \
     ../../../src/mobile/ui/treechoosermodel.cpp \
     ../../../src/mobile/util/btmlog.cpp \
+    ../../../src/mobile/util/directory.cpp \
     ../../../src/mobile/util/messagedialog.cpp
 
 HEADERS += \
