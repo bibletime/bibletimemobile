@@ -18,6 +18,7 @@
 #include <QQuickStyle>
 #include <QMessageLogContext>
 #include <QMetaType>
+#include <QOperatingSystemVersion>
 #include <QStandardPaths>
 #include <QStyleHints>
 #if defined Q_OS_ANDROID
@@ -75,6 +76,75 @@ void saveSession() {
 
 QFont getDefaultFont() {
     return *defaultFont;
+}
+
+static bool copyRecursively(const QString &srcFilePath,
+                            const QString &tgtFilePath)
+{
+    QFileInfo srcFileInfo(srcFilePath);
+    if (srcFileInfo.isDir()) {
+        QDir targetDir(tgtFilePath);
+        targetDir.cdUp();
+        if (! targetDir.exists(QFileInfo(tgtFilePath).fileName()))
+            if (!targetDir.mkdir(QFileInfo(tgtFilePath).fileName()))
+                return false;
+        QDir sourceDir(srcFilePath);
+        bool sourceExists = sourceDir.exists();
+        QStringList fileNames = sourceDir.entryList(QDir::Files | QDir::Dirs | QDir::NoDotAndDotDot | QDir::Hidden);
+        foreach (const QString &fileName, fileNames) {
+            const QString newSrcFilePath
+                    = srcFilePath + QLatin1Char('/') + fileName;
+            const QString newTgtFilePath
+                    = tgtFilePath + QLatin1Char('/') + fileName;
+            if (!copyRecursively(newSrcFilePath, newTgtFilePath))
+                return false;
+        }
+    } else {
+        if (! QFile::exists(tgtFilePath)) {
+            if (!QFile::copy(srcFilePath, tgtFilePath))
+                return false;
+        }
+    }
+    return true;
+}
+
+void migrateAndBibleToHome() {
+    QString src("/sdcard/Android/data/net.bible.android.activity/files");
+    QString directory = src + "/mods.d";
+    QDir srcDir(src);
+    bool srcExists = srcDir.exists(directory);
+    if (! srcExists)
+        return;
+    QFileInfo srcInfo(srcDir, directory);
+    QString srcPath = srcInfo.absoluteFilePath();
+
+    QString dst(QDir::homePath());
+    dst += "/.sword";
+    QDir dstDir(dst);
+    bool dstExists = dstDir.exists(directory);
+    QFileInfo dstInfo(dstDir, directory);
+    QString dstPath = dstInfo.filePath();
+
+    copyRecursively(srcPath, dstPath);
+}
+
+void migrateDataExternalToHome(const QString& directory) {
+    QString src(qgetenv("EXTERNAL_STORAGE"));
+    QDir srcDir(src);
+    bool srcExists = srcDir.exists(directory);
+    if (! srcExists)
+        return;
+    QFileInfo srcInfo(srcDir, directory);
+    QString srcPath = srcInfo.absoluteFilePath();
+
+    QString dst(QDir::homePath());
+    QDir dstDir(dst);
+    QFileInfo dstInfo(dstDir, directory);
+    QString dstPath = dstInfo.filePath();
+
+    if (srcExists) {
+        copyRecursively(srcPath, dstPath);
+    }
 }
 
 #if defined(Q_OS_WIN) || defined(Q_OS_ANDROID) || defined(Q_OS_IOS)
@@ -189,10 +259,6 @@ int main(int argc, char *argv[]) {
 
     QQuickStyle::setStyle("Material");
 
-//    // Adjust start scrolling drag distance
-//    QStyleHints * sh = app.styleHints();
-//    sh->setStartDragDistance(30);
-
     btm::BtStyle::setCurrentStyle(btm::BtStyle::darkTheme);
 
     registerMetaTypes();
@@ -205,19 +271,16 @@ int main(int argc, char *argv[]) {
         return EXIT_FAILURE;
 #endif
 
+    if (QOperatingSystemVersion::current().majorVersion() < 10) {
+        migrateDataExternalToHome(".bibletime");
+        migrateDataExternalToHome(".sword");
+        migrateAndBibleToHome();
+    }
+
     if (!DU::initDirectoryCache()) {
         qFatal("Error initializing directory cache!");
         return EXIT_FAILURE;
     }
-
-//#if defined(Q_OS_WIN) || defined(Q_OS_ANDROID)  || defined(Q_OS_IOS)
-    // change directory to the Sword or .sword directory in the $HOME dir so that
-    // the sword.conf is found. It points to the sword/locales.d directory
-    // This is also needed for the AugmentPath or DataPath to work
-    QString homeSwordDir = util::directory::getUserHomeSwordDir().absolutePath();
-    QDir dir;
-    dir.setCurrent(homeSwordDir);
-//#endif
 
     app.startInit();
     if (!app.initBtConfig()) {
@@ -227,15 +290,18 @@ int main(int argc, char *argv[]) {
     setupMessageLog();
     setupSwordLog();
 
-    qDebug() << "LocaleDir:        " << util::directory::getLocaleDir().absolutePath();
+    qDebug() << "UserHomeDir: " << util::directory::getUserHomeDir().absolutePath();
     qDebug() << "UserBaseDir:      " << util::directory::getUserBaseDir().absolutePath();
     qDebug() << "UserHomeSwordDir: " << util::directory::getUserHomeSwordDir().absolutePath();
 
 #if defined(Q_OS_WIN) || defined(Q_OS_ANDROID) || defined(Q_OS_IOS)
+    QDir dir(util::directory::getUserHomeSwordDir().absolutePath());
     if (btm::BtStyle::getAppVersion() > btConfig().value<QString>("btm/version")) {
         installSwordLocales(dir);
         btConfig().setValue<QString>("btm/version", btm::BtStyle::getAppVersion());
     }
+    if (! dir.exists("locales.d"))
+        installSwordLocales(dir);
 #endif
 
     //first install QT's own translations

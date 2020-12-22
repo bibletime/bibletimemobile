@@ -10,7 +10,7 @@
 *
 **********/
 
-#include "directory.h"
+#include "../../../../bibletime/src/util/directory.h"
 
 #include <memory>
 #include <QCoreApplication>
@@ -21,7 +21,7 @@
 #include <QFileInfoList>
 #include <QLocale>
 #include <QStandardPaths>
-#include "btassert.h"
+#include "../../../../bibletime/src/util/btassert.h"
 #ifdef Q_OS_WIN32
 #include <windows.h>
 #endif
@@ -194,12 +194,7 @@ bool initDirectoryCache() {
 #elif defined (Q_OS_WIN) && !defined(Q_OS_WIN32)
     cachedUserHomeDir.reset(new QDir(QCoreApplication::applicationDirPath()));
 #elif defined(ANDROID)
-    cachedUserHomeDir.reset(new QDir(qgetenv("EXTERNAL_STORAGE")));
-    if(!cachedUserHomeDir->exists() || !cachedUserHomeDir->isReadable())
-    {
-        qWarning() << "No external storage found, use application home.";
-        cachedUserHomeDir->setPath(QDir::homePath());
-    }
+    cachedUserHomeDir.reset(new QDir(QDir::homePath()));
 #elif defined Q_OS_SYMBIAN
     cachedUserHomeDir.reset(new QDir(QCoreApplication::applicationDirPath()[0] + ":\\"));
     if (!cachedUserHomeDir->cd("data")) {
@@ -235,11 +230,6 @@ bool initDirectoryCache() {
             return false;
         }
     }
-#endif
-
-#if defined Q_OS_ANDROID || defined Q_OS_SYMBIAN
-    // help for SWMgr to find the right place
-    qputenv(SWORD_PATH, cachedUserHomeSwordDir->absolutePath().toLocal8Bit());
 #endif
 
     cachedUserHomeSwordModsDir.reset(new QDir(*cachedUserHomeSwordDir));

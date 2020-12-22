@@ -80,7 +80,14 @@ void BibleTime::initSwordConfigFile() {
 #endif
 
 #ifdef Q_OS_ANDROID
-    QString configFile = util::directory::getUserHomeSwordDir().filePath("sword.conf");
+
+    // Remove sword.config from sword home because it is now created in user home.
+    QString removeStr = util::directory::getUserHomeSwordDir().filePath("sword.conf");
+    QFile removeFile(removeStr);
+    if (removeFile.exists())
+        removeFile.remove();
+
+    QString configFile = util::directory::getUserHomeDir().filePath("sword.conf");
     QFile file(configFile);
     if (!file.open(QIODevice::WriteOnly | QIODevice::Text)) {
         return;
@@ -88,10 +95,12 @@ void BibleTime::initSwordConfigFile() {
     QTextStream out(&file);
     out << "\n";
     out << "[Install]\n";
-    out << "DataPath="   << util::directory::convertDirSeparators( util::directory::getUserHomeSwordDir().absolutePath()) << "\n";
+    out << "DataPath="   << util::directory::convertDirSeparators( util::directory::getUserHomeDir().absolutePath()) << "\n";
+    out << "LocalePath="   << util::directory::convertDirSeparators( util::directory::getUserHomeSwordDir().absolutePath()) << "\n";
     out << "AugmentPath="   << util::directory::convertDirSeparators( util::directory::getSharedSwordDir().absolutePath()) << "\n";
     out << "\n";
     file.close();
+
 #endif
 
 #ifdef Q_OS_MAC
