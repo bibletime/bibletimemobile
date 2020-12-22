@@ -1,3 +1,6 @@
+2020-12-22
+Version 3.23 Android 11 compatibility, migrate android < 10 to user home
+
 2020-12-16
 Update to Qt 5.15.2
 
