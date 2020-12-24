@@ -198,38 +198,6 @@ Rectangle {
             }
 
             Rectangle {
-                id: sharedSwordDirRect
-
-                Layout.maximumWidth: flick.contentWidth
-                Layout.preferredWidth: flick.contentWidth
-                Layout.preferredHeight: sharedSwordDirLabel.contentHeight + sharedSwordDir.contentHeight
-                color: Material.background
-                height:btStyle.pixelsPerMillimeterX * 12
-
-                Text {
-                    id: sharedSwordDirLabel
-
-                    anchors.left: parent.left
-                    anchors.top: parent.top
-                    color: Material.foreground
-                    text: "Shared Sword Dir: "
-                    font.pointSize: btStyle.uiFontPointSize
-                }
-
-                Text {
-                    id: sharedSwordDir
-
-                    anchors.left: parent.left
-                    anchors.top: sharedSwordDirLabel.bottom
-                    width: sharedSwordDirRect.width
-                    color: Material.foreground
-                    text: configInterface.getSharedSwordDir()
-                    font.pointSize: btStyle.uiFontPointSize
-                    wrapMode: Text.Wrap
-                }
-            }
-
-            Rectangle {
                 id: writeableTmpDirRect
 
                 Layout.maximumWidth: flick.contentWidth

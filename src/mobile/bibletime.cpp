@@ -57,29 +57,6 @@ void BibleTime::initBackends() {
 }
 
 void BibleTime::initSwordConfigFile() {
-// On Windows the sword.conf must be created before the initialization of sword
-// It will contain the LocalePath which is used for sword locales
-// It also contains a DataPath to the %ProgramData%\Sword directory
-// If this is not done here, the sword locales.d won't be found
-#ifdef Q_OS_WIN
-    QString configFile = util::directory::getUserHomeSwordDir().filePath("sword.conf");
-    QFile file(configFile);
-    if (file.exists()) {
-        return;
-    }
-    if (!file.open(QIODevice::WriteOnly | QIODevice::Text)) {
-        return;
-    }
-    QTextStream out(&file);
-    out << "\n";
-    out << "[Install]\n";
-    out << "DataPath="   << util::directory::convertDirSeparators( util::directory::getSharedSwordDir().absolutePath()) << "\n";
-    out << "LocalePath=" << util::directory::convertDirSeparators(util::directory::getApplicationSwordDir().absolutePath()) << "\n";
-    out << "\n";
-    file.close();
-#endif
-
-#ifdef Q_OS_ANDROID
 
     // Remove sword.config from sword home because it is now created in user home.
     QString removeStr = util::directory::getUserHomeSwordDir().filePath("sword.conf");
@@ -100,24 +77,6 @@ void BibleTime::initSwordConfigFile() {
     out << "\n";
     file.close();
 
-#endif
-
-#ifdef Q_OS_MAC
-    QString configFile = util::directory::getUserHomeSwordDir().filePath("sword.conf");
-    QFile file(configFile);
-    if (file.exists()) {
-        return;
-    }
-    if (!file.open(QIODevice::WriteOnly | QIODevice::Text)) {
-        return;
-    }
-    QTextStream out(&file);
-    out << "\n";
-    out << "[Install]\n";
-    out << "DataPath="   << util::directory::convertDirSeparators( util::directory::getUserHomeSwordDir().absolutePath()) << "\n";
-    out << "\n";
-    file.close();
-#endif
 }
 
 }
