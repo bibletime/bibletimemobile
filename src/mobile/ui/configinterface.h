@@ -31,6 +31,7 @@ public:
 
     Q_INVOKABLE QString getUserBaseDir();
     Q_INVOKABLE QString getUserHomeSwordDir();
+    Q_INVOKABLE QString getSharedSwordDir();
     Q_INVOKABLE QString getWritableTmpDir();
 
     Q_INVOKABLE bool boolValue(const QString& configKey, bool defaultValue);

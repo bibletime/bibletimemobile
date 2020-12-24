@@ -13,6 +13,7 @@
 import QtQuick 2.11
 import QtQuick.Controls 2.4
 import QtQuick.Controls.Material 2.3
+import QtQuick.Layouts 1.12
 import BibleTime 1.0
 
 Rectangle {
@@ -45,19 +46,21 @@ Rectangle {
     }
 
     Flickable {
+        id: flick
+
         anchors.left: parent.left
+        anchors.leftMargin: btStyle.pixelsPerMillimeterX * 2
         anchors.right: parent.right
+        anchors.rightMargin: btStyle.pixelsPerMillimeterX * 2
         anchors.top: aboutTitleBar.bottom
         anchors.bottom: parent.bottom
         anchors.topMargin: btStyle.pixelsPerMillimeterY * 2
         contentWidth: width
         contentHeight: column.height * 1.1
 
-        Column {
+        ColumnLayout {
             id: column
-            anchors.horizontalCenter: parent.horizontalCenter
-            anchors.top: parent.top
-            anchors.margins: btStyle.pixelsPerMillimeterX
+
             spacing: btStyle.pixelsPerMillimeterY * 2
 
             Image {
@@ -65,15 +68,15 @@ Rectangle {
 
                 width:  debugDialog.width/12
                 height: width
-                anchors.horizontalCenter: parent.horizontalCenter
                 source: "qrc:/share/bibletime/icons/bibletime.svg"
             }
 
             Rectangle {
                 id: bibletimeDebugMode
 
+                Layout.maximumWidth: flick.contentWidth
+                Layout.preferredWidth: flick.contentWidth
                 color: Material.background
-                width: debugDialog.width
                 height:btStyle.pixelsPerMillimeterX * 5
 
                 Text {
@@ -102,8 +105,9 @@ Rectangle {
             Rectangle {
                 id: swordDebugMode
 
+                Layout.maximumWidth: flick.contentWidth
+                Layout.preferredWidth: flick.contentWidth
                 color: Material.background
-                width: debugDialog.width
                 height:btStyle.pixelsPerMillimeterX * 5
 
                 Text {
@@ -130,64 +134,142 @@ Rectangle {
             }
 
             Rectangle {
+                id: usrBaseDirRect
+
+                Layout.maximumWidth: flick.contentWidth
+                Layout.preferredWidth: flick.contentWidth
+                Layout.preferredHeight: usrBaseDirLabel.contentHeight + usrBaseDir.contentHeight
                 color: Material.background
-                width: debugDialog.width
-                height:btStyle.pixelsPerMillimeterX * 5
+                height:btStyle.pixelsPerMillimeterX * 12
 
                 Text {
+                    id: usrBaseDirLabel
+
                     anchors.left: parent.left
-                    anchors.leftMargin: btStyle.pixelsPerMillimeterX * 2
-                    anchors.verticalCenter: parent.verticalCenter
+                    anchors.top: parent.top
                     color: Material.foreground
-                    text: {
-                        var path = "UserBaseDir: " + configInterface.getUserBaseDir();
-                        return path;
-                    }
+                    text: "UserBaseDir:"
+                    font.pointSize: btStyle.uiFontPointSize
+                }
+
+                Text {
+                    id: usrBaseDir
+
+                    anchors.left: parent.left
+                    anchors.top: usrBaseDirLabel.bottom
+                    width: usrBaseDirRect.width
+                    color: Material.foreground
+                    text: configInterface.getUserBaseDir();
+                    font.pointSize: btStyle.uiFontPointSize
+                    wrapMode: Text.Wrap
                 }
             }
 
             Rectangle {
+                id: homeSwordDirRect
+
+                Layout.maximumWidth: flick.contentWidth
+                Layout.preferredWidth: flick.contentWidth
+                Layout.preferredHeight: homeSwordDirLabel.contentHeight + homeSwordDir.contentHeight
                 color: Material.background
-                width: debugDialog.width
-                height:btStyle.pixelsPerMillimeterX * 5
+                height:btStyle.pixelsPerMillimeterX * 12
 
                 Text {
+                    id: homeSwordDirLabel
+
                     anchors.left: parent.left
-                    anchors.leftMargin: btStyle.pixelsPerMillimeterX * 2
-                    anchors.verticalCenter: parent.verticalCenter
+                    anchors.top: parent.top
                     color: Material.foreground
-                    text: {
-                        var path = "Home Sword Dir: " + configInterface.getUserHomeSwordDir();
-                        return path;
-                    }
+                    text: "Home Sword Dir: "
+                    font.pointSize: btStyle.uiFontPointSize
+                }
+
+                Text {
+                    id: homeSwordDir
+
+                    anchors.left: parent.left
+                    anchors.top: homeSwordDirLabel.bottom
+                    width: homeSwordDirRect.width
+                    color: Material.foreground
+                    text: configInterface.getUserHomeSwordDir()
+                    font.pointSize: btStyle.uiFontPointSize
+                    wrapMode: Text.Wrap
                 }
             }
 
             Rectangle {
+                id: sharedSwordDirRect
+
+                Layout.maximumWidth: flick.contentWidth
+                Layout.preferredWidth: flick.contentWidth
+                Layout.preferredHeight: sharedSwordDirLabel.contentHeight + sharedSwordDir.contentHeight
                 color: Material.background
-                width: debugDialog.width
-                height:btStyle.pixelsPerMillimeterX * 5
+                height:btStyle.pixelsPerMillimeterX * 12
 
                 Text {
+                    id: sharedSwordDirLabel
+
                     anchors.left: parent.left
-                    anchors.leftMargin: btStyle.pixelsPerMillimeterX * 2
-                    anchors.verticalCenter: parent.verticalCenter
+                    anchors.top: parent.top
                     color: Material.foreground
-                    text: {
-                        var path = "Writable Tmp Dir: " + configInterface.getWritableTmpDir();
-                        return path;
-                    }
+                    text: "Shared Sword Dir: "
+                    font.pointSize: btStyle.uiFontPointSize
+                }
+
+                Text {
+                    id: sharedSwordDir
+
+                    anchors.left: parent.left
+                    anchors.top: sharedSwordDirLabel.bottom
+                    width: sharedSwordDirRect.width
+                    color: Material.foreground
+                    text: configInterface.getSharedSwordDir()
+                    font.pointSize: btStyle.uiFontPointSize
+                    wrapMode: Text.Wrap
                 }
             }
 
             Rectangle {
+                id: writeableTmpDirRect
+
+                Layout.maximumWidth: flick.contentWidth
+                Layout.preferredWidth: flick.contentWidth
+                Layout.preferredHeight: writableTmpDirLabel.contentHeight + writableTempDir.contentHeight
+                color: Material.background
+                height:btStyle.pixelsPerMillimeterX * 12
+
+                Text {
+                    id: writableTmpDirLabel
+
+                    anchors.left: parent.left
+                    anchors.top: parent.top
+                    color: Material.foreground
+                    text: "Writable Tmp Dir: "
+                    font.pointSize: btStyle.uiFontPointSize
+                }
+
+                Text {
+                    id: writableTempDir
+
+                    anchors.left: parent.left
+                    anchors.top: writableTmpDirLabel.bottom
+                    width: writeableTmpDirRect.width
+                    color: Material.foreground
+                    text: configInterface.getWritableTmpDir();
+                    font.pointSize: btStyle.uiFontPointSize
+                    wrapMode: Text.Wrap
+                }
+            }
+
+            Rectangle {
+                id: fileBrowserRect
+
                 color: Material.background
                 width: debugDialog.width
                 height:btStyle.pixelsPerMillimeterX * 5
 
                 BtmButton {
                     anchors.left: parent.left
-                    anchors.leftMargin: btStyle.pixelsPerMillimeterX * 2
                     anchors.verticalCenter: parent.verticalCenter
                     text: "File Browser"
                     onClicked: {
@@ -204,7 +286,6 @@ Rectangle {
 
                 BtmButton {
                     anchors.left: parent.left
-                    anchors.leftMargin: btStyle.pixelsPerMillimeterX * 2
                     anchors.verticalCenter: parent.verticalCenter
                     text: "Add Source"
                     onClicked: {
@@ -216,7 +297,7 @@ Rectangle {
     }
 
     Keys.onReleased: {
-        if ((event.key == Qt.Key_Back || event.key == Qt.Key_Escape) && debugDialog.visible == true) {
+        if ((event.key === Qt.Key_Back || event.key === Qt.Key_Escape) && debugDialog.visible == true) {
             debugDialog.visible = false;
             event.accepted = true;
         }

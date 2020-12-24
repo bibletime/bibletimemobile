@@ -37,6 +37,10 @@ QString ConfigInterface::getUserHomeSwordDir() {
     return util::directory::getUserHomeSwordDir().absolutePath();
 }
 
+QString ConfigInterface::getSharedSwordDir() {
+    return util::directory::getSharedSwordDir().absolutePath();
+}
+
 QString ConfigInterface::getWritableTmpDir() {
     return QStandardPaths::writableLocation(QStandardPaths::TempLocation);
 }
