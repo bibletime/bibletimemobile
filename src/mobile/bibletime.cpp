@@ -97,7 +97,6 @@ void BibleTime::initSwordConfigFile() {
     out << "[Install]\n";
     out << "DataPath="   << util::directory::convertDirSeparators( util::directory::getUserHomeDir().absolutePath()) << "\n";
     out << "LocalePath="   << util::directory::convertDirSeparators( util::directory::getUserHomeSwordDir().absolutePath()) << "\n";
-    out << "AugmentPath="   << util::directory::convertDirSeparators( util::directory::getSharedSwordDir().absolutePath()) << "\n";
     out << "\n";
     file.close();
 
