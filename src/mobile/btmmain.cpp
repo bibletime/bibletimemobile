@@ -108,9 +108,9 @@ static bool copyRecursively(const QString &srcFilePath,
     return true;
 }
 
-void migrateAndBibleToHome() {
+void migrateAndBibleToHome(const QString& finalDir) {
     QString src("/sdcard/Android/data/net.bible.android.activity/files");
-    QString directory = src + "/mods.d";
+    QString directory = src + "/" + finalDir;
     QDir srcDir(src);
     bool srcExists = srcDir.exists(directory);
     if (! srcExists)
@@ -121,8 +121,7 @@ void migrateAndBibleToHome() {
     QString dst(QDir::homePath());
     dst += "/.sword";
     QDir dstDir(dst);
-    bool dstExists = dstDir.exists(directory);
-    QFileInfo dstInfo(dstDir, directory);
+    QFileInfo dstInfo(dstDir, finalDir);
     QString dstPath = dstInfo.filePath();
 
     copyRecursively(srcPath, dstPath);
@@ -274,7 +273,8 @@ int main(int argc, char *argv[]) {
     if (QOperatingSystemVersion::current().majorVersion() < 10) {
         migrateDataExternalToHome(".bibletime");
         migrateDataExternalToHome(".sword");
-        migrateAndBibleToHome();
+        migrateAndBibleToHome("mods.d");
+        migrateAndBibleToHome("modules");
     }
 
     if (!DU::initDirectoryCache()) {
