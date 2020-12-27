@@ -143,9 +143,6 @@ Item {
 
                     property bool selected: ListView.isCurrentItem ? true : false
 
-                    anchors.left: parent.left
-                    anchors.right: parent.right
-                    anchors.leftMargin: 50
                     text: modelText
                     color: (entry.selected) ? Material.accent : Material.foreground
                     font: chooseDocumentsPage.font

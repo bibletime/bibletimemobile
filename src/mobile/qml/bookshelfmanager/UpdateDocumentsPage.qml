@@ -12,12 +12,12 @@ Item {
     function initPage() {
         console.log(" updateDocumentsPage init")
         installInterface.initializeUpdateDocumentsModel();
-        bookshelfManager.changeButton("back", false);
+        bookshelfManager.changeButton("back", true);
         bookshelfManager.changeButton("next", false);
-        bookshelfManager.changeButton("install", false);
+        bookshelfManager.changeButton("install", true);
         bookshelfManager.changeButton("finish", false);
         bookshelfManager.changeButton("close", false);
-        bookshelfManager.changeButton("cancel", false);
+        bookshelfManager.changeButton("cancel", true);
         installInterface.modulesDownloadFinished.disconnect(finishedDownload);
         installInterface.modulesDownloadFinished.connect(finishedDownload);
     }

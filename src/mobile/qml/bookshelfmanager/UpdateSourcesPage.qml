@@ -15,8 +15,8 @@ Item {
         bookshelfManager.changeButton("finish", false);
         bookshelfManager.changeButton("close", false);
         bookshelfManager.changeButton("cancel", false);
-        installInterface.modulesDownloadFinished.disconnect(finishedDownload);
-        installInterface.modulesDownloadFinished.connect(finishedDownload);
+        installInterface.finishedDownload.disconnect(finishedDownload);
+        installInterface.finishedDownload.connect(finishedDownload);
     }
 
     function donePage() {
@@ -24,10 +24,11 @@ Item {
     }
 
     function finishedDownload() {
-        console.log(" updateDocumentsPage finish")
+        console.log(" updateSources finish")
         bookshelfManager.changeButton("back", true);
         bookshelfManager.changeButton("next", true);
         bookshelfManager.changeButton("cancel", true);
+        console.log("dkdkdkdkd")
     }
 
     Text {

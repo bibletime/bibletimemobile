@@ -62,7 +62,7 @@ Rectangle {
 
     function install() {
         installInterface.progressFinished.connect(autoModuleInstall);
-        installInterface.refreshLists("","","");
+        installInterface.refreshListsAutomatic("","","");
     }
 
     function autoModuleInstall() {

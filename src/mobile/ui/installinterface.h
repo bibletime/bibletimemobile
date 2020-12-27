@@ -64,6 +64,7 @@ signals:
     void progressMinChanged();
     void progressTextChanged();
     void progressValueChanged();
+    void finishedDownload();
 
 
 
@@ -158,7 +159,7 @@ public:
     Q_INVOKABLE void addModule(const QString& sourceName, const QString& moduleName);
     Q_INVOKABLE void addSource(const QString& sourceName);
     Q_INVOKABLE void installModulesAuto();
-    Q_INVOKABLE void refreshLists(
+    Q_INVOKABLE void refreshListsAutomatic(
             const QString& source,
             const QString& category,
             const QString& language);

@@ -705,9 +705,7 @@ void InstallInterface::slotPercentComplete2(int percent, const QString& title) {
         setupSourceModel();
         updateSwordBackend(m_tempSource);
         updateCategoryModel();
-        //        updateLanguageModel("");
-        //        updateWorksModel(m_tempSource, "", "");
-        //        updateCurrentViews(m_tempSource, m_tempCategory, m_tempLanguage);
+        emit finishedDownload();
     }
 }
 
@@ -768,7 +766,7 @@ QVariant InstallInterface::worksModel() {
     return var;
 }
 
-void InstallInterface::refreshLists(
+void InstallInterface::refreshListsAutomatic(
         const QString& source,
         const QString& category,
         const QString& language) {
@@ -811,7 +809,7 @@ void InstallInterface::slotPercentComplete(int percent, const QString& title) {
         updateCategoryModel();        // TODO
         updateLanguageModel("");
         updateWorksModel(m_tempSource, "", "");
-        updateCurrentViews(m_tempSource, m_tempCategory, m_tempLanguage);
+        emit updateCurrentViews(m_tempSource, m_tempCategory, m_tempLanguage);
     }
 }
 
