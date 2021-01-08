@@ -270,7 +270,7 @@ int main(int argc, char *argv[]) {
         return EXIT_FAILURE;
 #endif
 
-    if (QOperatingSystemVersion::current().majorVersion() < 10) {
+    if (QOperatingSystemVersion::current().majorVersion() <= 10) {
         migrateDataExternalToHome(".bibletime");
         migrateDataExternalToHome(".sword");
         migrateAndBibleToHome("mods.d");
