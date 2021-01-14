@@ -111,12 +111,13 @@ Item {
 
     function initPage() {
         var page = currentItem(pages.currentIndex);
-        console.log(pages.currentIndex, page);
+//        console.log("BookshelfManagerPages: initPage", pages.currentIndex, page);
         page.initPage();
     }
 
     function donePage() {
         var page = currentItem(pages.currentIndex);
+//        console.log("BookshelfManagerPages: donePage", pages.currentIndex, page);
         page.donePage();
     }
 
@@ -128,7 +129,6 @@ Item {
             return updateSourcesQuestionPage;
         }
         else if (index === BookshelfManagerPages.PageName.UpdateSources) {
-            console.log("xxx")
             return updateSourcesPage;
         }
         else if (index === BookshelfManagerPages.PageName.ChooseSources) {
@@ -149,7 +149,6 @@ Item {
         else if (index === BookshelfManagerPages.PageName.RemoveDocuments) {
             return removeDocumentsPage;
         }
-        console.log("currentItem error");
     }
 
     StackLayout {

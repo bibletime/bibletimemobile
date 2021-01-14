@@ -40,12 +40,7 @@ Item {
         handleDelegate: Item {
 
             width: 100;
-            height: {
-                var pixel = Screen.pixelDensity * 9;
-                var uiFont = btStyle.uiFontPointSize * 3;
-                var mix = pixel * 0.7 + uiFont * 0.3;
-                return Math.max(pixel, mix);
-            }
+            height: Screen.pixelDensity * 3
 
             Rectangle {
                 id: vHandle
@@ -58,32 +53,6 @@ Item {
                 anchors.bottom: parent.bottom
 
                 color: Material.background
-                border.color: Material.accent
-                border.width: 1
-            }
-
-            Text {
-                id: filterText
-                anchors.left: vHandle.left
-                anchors.leftMargin: Screen.pixelDensity * 2.0
-                anchors.verticalCenter: vHandle.verticalCenter
-                text: qsTr("Search" + ": ")
-                color: Material.foreground
-                font: chooseDocumentsPage.font
-            }
-
-            TextField {
-                id: filterInput
-
-                anchors.left: filterText.right
-                anchors.leftMargin: Screen.pixelDensity * 2.0
-                anchors.right: vHandle.right
-                anchors.rightMargin: Screen.pixelDensity * 4.0
-                verticalAlignment: Text.AlignVCenter
-                font: chooseDocumentsPage.font
-                onTextChanged: {
-                    installInterface.filterWorksByText(text);
-                }
             }
         }
 
@@ -93,14 +62,25 @@ Item {
             height: chooseDocumentsPage.height * 0.3
             width: categoryListView.width
 
+            Rectangle {
+                id: topRect
+                anchors.fill: parent
+                anchors.topMargin: Screen.pixelDensity * 2.0
+                anchors.leftMargin: Screen.pixelDensity * 2.0
+                anchors.rightMargin: Screen.pixelDensity * 2.0
+                border.color: Material.accent
+                border.width: 1
+                color: Material.background
+            }
+
             Text {
                 id: text1
 
-                anchors.left: parent.left
+                anchors.left: topRect.left
                 anchors.leftMargin: Screen.pixelDensity * 3.0
-                anchors.right: parent.right
+                anchors.right: topRect.right
                 anchors.rightMargin: Screen.pixelDensity * 2.0
-                anchors.top: parent.top
+                anchors.top: topRect.top
                 anchors.topMargin: Screen.pixelDensity * 1
                 text: qsTr("Choose a document category")
                 wrapMode: Text.Wrap
@@ -130,9 +110,11 @@ Item {
                     installInterface.filterWorksByCategory(category);
                 }
 
+                anchors.left: topRect.left
+                anchors.leftMargin: Screen.pixelDensity * 1.0
                 anchors.top: spacer1.bottom
                 anchors.topMargin: Screen.pixelDensity * 1.0
-                anchors.bottom: parent.bottom
+                anchors.bottom: topRect.bottom
                 anchors.bottomMargin: Screen.pixelDensity * 1.0
                 width: topItem.width
                 clip: true
@@ -171,14 +153,25 @@ Item {
 
             width: categoryListView.width
 
+            Rectangle {
+                id: bottomRect
+                anchors.fill: parent
+                anchors.bottomMargin: Screen.pixelDensity * 2.0
+                anchors.leftMargin: Screen.pixelDensity * 2.0
+                anchors.rightMargin: Screen.pixelDensity * 2.0
+                border.color: Material.accent
+                border.width: 1
+                color: Material.background
+            }
+
             Text {
                 id: text2
 
-                anchors.left: parent.left
+                anchors.left: bottomRect.left
                 anchors.leftMargin: Screen.pixelDensity * 3.0
-                anchors.right: parent.right
+                anchors.right: bottomRect.right
                 anchors.rightMargin: Screen.pixelDensity * 2
-                anchors.top: parent.top
+                anchors.top: bottomRect.top
                 anchors.topMargin: Screen.pixelDensity * 1
                 text: qsTr("Choose documents to install")
                 wrapMode: Text.Wrap
@@ -205,7 +198,7 @@ Item {
                 anchors.right: parent.right
                 anchors.top: spacer2.bottom
                 anchors.topMargin: Screen.pixelDensity * 1.0
-                anchors.bottom: parent.bottom
+                anchors.bottom: searchFilter.top
                 anchors.bottomMargin: Screen.pixelDensity * 1.0
                 clip: true
                 model: installInterface.documentsSortFilterModel
@@ -260,6 +253,52 @@ Item {
                     }
                 }
             }
+
+            Rectangle {
+                id: searchFilter
+
+                anchors.left: bottomRect.left
+                anchors.leftMargin: Screen.pixelDensity * 2.0
+                anchors.right: bottomRect.right
+                anchors.rightMargin: Screen.pixelDensity * 2.0
+                anchors.bottom: bottomRect.bottom
+                anchors.bottomMargin: Screen.pixelDensity * 2.0
+
+                color: Material.background
+                border.color: Material.foreground
+                border.width: 1
+                height: {
+                    var pixel = Screen.pixelDensity * 9;
+                    var uiFont = btStyle.uiFontPointSize * 3;
+                    var mix = pixel * 0.7 + uiFont * 0.3;
+                    return Math.max(pixel, mix);
+                }
+
+                Text {
+                    id: filterText
+                    anchors.left: parent.left
+                    anchors.leftMargin: Screen.pixelDensity * 2.0
+                    anchors.verticalCenter: parent.verticalCenter
+                    text: qsTr("Search" + ": ")
+                    color: Material.foreground
+                    font: chooseDocumentsPage.font
+                }
+
+                TextField {
+                    id: filterInput
+
+                    anchors.left: filterText.right
+                    anchors.leftMargin: Screen.pixelDensity * 2.0
+                    anchors.right: searchFilter.right
+                    anchors.rightMargin: Screen.pixelDensity * 4.0
+                    verticalAlignment: Text.AlignVCenter
+                    font: chooseDocumentsPage.font
+                    onTextChanged: {
+                        installInterface.filterWorksByText(text);
+                    }
+                }
+            }
+
         }
     }
 }

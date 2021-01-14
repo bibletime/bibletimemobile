@@ -27,6 +27,9 @@ Dialog {
         else if (buttonName === "cancel")
             button = cancelButton;
 
+//        if (button.visible !== visible)
+//            console.log ("    BookshelfManager: changeButton", buttonName, visible);
+
         button.visible = visible
     }
 

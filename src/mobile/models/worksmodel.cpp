@@ -29,33 +29,6 @@ WorksModel::WorksModel(QObject * parent)
 }
 
 QVariant WorksModel::data(QModelIndex const & i, int role) const {
-
-//    QString sourceName = QStandardItemModel::data(i, WorksRoles3::SourceNameRole).toString();
-//    QString moduleName = QStandardItemModel::data(i, WorksRoles3::ModuleNameRole).toString();
-//    CSwordModuleInfo * module = CSwordBackend::instance()->findModuleByName(moduleName);
-
-//    switch (role) {
-//    case WorksRoles3::ModuleNameRole:
-//        return moduleName;
-
-//    case WorksRoles3::VersionRole:
-//        if (module)
-//            return module->config(CSwordModuleInfo::ModuleVersion);
-//        return "";
-
-//    case WorksRoles3::DescriptionRole:
-//        if (module)
-//            return module->config(CSwordModuleInfo::Description);
-//        return "";
-
-//    case WorksRoles3::CheckedRole:
-//        return "4";
-
-//    default:
-//        return "";
-//    }
-
-//    return QVariant();
     return QStandardItemModel::data(i,role);
 }
 

@@ -10,7 +10,6 @@ Item {
     property font font: Qt.font({ family: "Helvetica", pointSize: 10, weight: Font.Normal })
 
     function initPage() {
-        console.log(" updateDocumentsPage init")
         installInterface.initializeUpdateDocumentsModel();
         bookshelfManager.changeButton("back", true);
         bookshelfManager.changeButton("next", false);
@@ -23,15 +22,14 @@ Item {
     }
 
     function donePage() {
-        console.log(" updateDocumentsPage done")
         installInterface.finishChoosingDocuments();
     }
 
 
     function finishedDownload() {
-        console.log(" updateDocumentsPage finish")
+//        console.log("  UpdateDocumentsPage: finishedDownload")
         bookshelfManager.changeButton("back", true);
-        bookshelfManager.changeButton("next", true);
+        bookshelfManager.changeButton("close", true);
     }
 
     Text {

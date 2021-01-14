@@ -24,11 +24,10 @@ Item {
     }
 
     function finishedDownload() {
-        console.log(" updateSources finish")
+//        console.log("  UpdateSourcesPage finishedDownload")
         bookshelfManager.changeButton("back", true);
         bookshelfManager.changeButton("next", true);
         bookshelfManager.changeButton("cancel", true);
-        console.log("dkdkdkdkd")
     }
 
     Text {

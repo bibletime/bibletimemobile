@@ -11,11 +11,11 @@ Item {
     function initPage() {
         bookshelfManager.changeButton("back", false, false);
         installInterface.installDocuments();
-        bookshelfManager.changeButton("back", false);
+        bookshelfManager.changeButton("back", true);
         bookshelfManager.changeButton("next", false);
         bookshelfManager.changeButton("install", false);
         bookshelfManager.changeButton("finish", false);
-        bookshelfManager.changeButton("close", false);
+        bookshelfManager.changeButton("close", true);
         bookshelfManager.changeButton("cancel", false);
         installInterface.modulesDownloadFinished.disconnect(finishedDownload);
         installInterface.modulesDownloadFinished.connect(finishedDownload);
@@ -25,6 +25,7 @@ Item {
     }
 
     function finishedDownload() {
+//        console.log("installDocumentsPage finishedDownload");
         bookshelfManager.changeButton("back", true);
         bookshelfManager.changeButton("close", true);
     }
@@ -115,6 +116,4 @@ Item {
             horizontalAlignment: Text.AlignHCenter
         }
     }
-    //    Component.onCompleted: {
-    //    }
 }

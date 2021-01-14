@@ -118,24 +118,24 @@ QString InstallInterface::progressText() const {
 
 void InstallInterface::setProgressMin(qreal value) {
     m_progressMin = value;
-    progressMinChanged();
+    emit progressMinChanged();
 }
 
 void InstallInterface::setProgressMax(qreal value) {
     m_progressMax = value;
-    progressMaxChanged();
+    emit progressMaxChanged();
 }
 
 void InstallInterface::setProgressValue(qreal value) {
     if (m_progressValue != value) {
         m_progressValue = value;
-        progressValueChanged();
+        emit progressValueChanged();
     }
 }
 
 void InstallInterface::setProgressText(const QString& value) {
     m_progressText = value;
-    progressTextChanged();
+    emit progressTextChanged();
 }
 
 // ****************************************************
@@ -169,7 +169,7 @@ void InstallInterface::initializeSourcesModel() {
     m_sourceList = BtInstallBackend::sourceNameList();
     m_selectedSources = btConfig().value<QStringList>(SourcesKey, QStringList{});
     setupCheckedModel2(m_sourceList, m_selectedSources, &m_sourceModel2);
-    sourceModel2Changed();
+    emit sourceModel2Changed();
 }
 
 void InstallInterface::finishChoosingLibraries() {
@@ -206,8 +206,8 @@ void InstallInterface::initializeLanguagesModel() {
     languages.sort(Qt::CaseInsensitive);
     m_selectedLanguages = btConfig().value<QStringList>(LanguagesKey, QStringList{});
     m_indexOfFirstLanguageChecked = setupCheckedModel2(languages, m_selectedLanguages, &m_languageModel2);
-    languageModel2Changed();
-    indexOfFirstLanguageCheckedChanged();
+    emit languageModel2Changed();
+    emit indexOfFirstLanguageCheckedChanged();
 }
 
 void InstallInterface::finishChoosingLanguages() {
@@ -294,7 +294,6 @@ void InstallInterface::initializeDocumentsItem(
     item->setData(categoryName, WorksRoles3::CategoryRole);
     item->setCheckable(true);
     item->setCheckState(Qt::Unchecked);
-
 }
 
 void InstallInterface::initializeDocumentsModel() {
@@ -453,48 +452,7 @@ void InstallInterface::initializeUpdateDocumentsModel() {
         }
     }
     m_documentsSortFilterModel.sort(0);
-
-    //    m_worksModel3.clear();
-
-    //    auto moduleList = CSwordBackend::instance()->moduleList();
-    //    for (auto module : moduleList) {
-
-    //        using CSMI = CSwordModuleInfo;
-    //        using CSV = sword::SWVersion const;
-
-    //        CSMI const * const installedModule =
-    //                CSwordBackend::instance()->findModuleByName(module->name());
-
-    //        CSV remoteVersion = CSV(installedModule->config(CSMI::ModuleVersion).toLatin1());
-    //        CSV localVersion = CSV(module->config(CSMI::ModuleVersion).toLatin1());
-    //        bool update = localVersion < remoteVersion;
-    //        if (update) {
-    //            QStandardItem * item = new QStandardItem();
-    //            initializeDocumentsItem(module, item, "");
-    //            m_worksModel3.appendRow(item);
-    //        }
-    //    }
-    //    m_documentsSortFilterModel.sort(0);
 }
-
-void InstallInterface::finishUpdatingDocuments() {
-
-    //    m_modulesToRemove.clear();
-    //    for (int row=0; row<m_worksModel3.rowCount(); ++row) {
-    //        QModelIndex index = m_worksModel3.index(row,0);
-    //        QStandardItem * item = m_worksModel3.itemFromIndex(index);
-    //        bool checked = item->data(WorksRoles3::CheckedRole).toBool();
-    //        if (checked) {
-    //            QString moduleName = item->data(WorksRoles3::ModuleNameRole).toString();
-    //            CSwordModuleInfo * module = CSwordBackend::instance()->findModuleByName(moduleName);
-    //            if (module)
-    //                m_modulesToRemove.append(module);
-    //        }
-    //    }
-    //    QSet<CSwordModuleInfo*> modulesSet(m_modulesToRemove.begin(), m_modulesToRemove.end());
-    //    CSwordBackend::instance()->uninstallModules(modulesSet);
-}
-
 
 
 
@@ -506,8 +464,10 @@ void InstallInterface::installDocuments() {
 }
 
 void InstallInterface::installModules() {
-    if (m_modulesToInstall.count() == 0)
+    if (m_modulesToInstall.count() == 0) {
+        emit modulesDownloadFinished();
         return;
+    }
     m_nextInstallIndex = 0;
     QString destination = getSourcePath();
     if (destination.isEmpty())
@@ -656,7 +616,7 @@ bool InstallInterface::progressVisible() const {
 
 void InstallInterface::setProgressVisible(bool value) {
     m_progressVisible = value;
-    progressVisibleChanged();
+    emit progressVisibleChanged();
 }
 
 bool InstallInterface::getWasCanceled() {
@@ -787,8 +747,6 @@ void InstallInterface::runThread() {
     QThread* thread = new QThread;
     m_worker = new InstallSources();
     m_worker->moveToThread(thread);
-    //    BT_CONNECT(m_worker, SIGNAL(error(QString)),
-    //               this,     SLOT(errorString(QString)));
     BT_CONNECT(thread, SIGNAL(started()), m_worker, SLOT(process()));
     BT_CONNECT(m_worker, SIGNAL(finished()), thread, SLOT(quit()));
     BT_CONNECT(m_worker, SIGNAL(finished()), m_worker, SLOT(deleteLater()));
@@ -853,232 +811,6 @@ void InstallInterface::updateLanguageModel(const QString& currentCategory) {
     m_languageList.sort();
     setupTextModel(m_languageList, &m_languageModel);
 }
-
-
-
-
-
-
-
-
-
-
-
-// ---------------------------------------------------------------------------------------
-
-//void InstallInterface::setup() {
-//    m_modulesToInstallRemove.clear();
-//    setupSourceModel();
-//    if (m_sourceModel.rowCount() > 0) {
-//        QModelIndex index = m_sourceModel.index(0,0);
-//        QString newSource = m_sourceModel.data(index, TextRole).toString();
-//        updateSwordBackend(newSource);
-//    }
-//}
-
-//bool filter(WizardTaskType const taskType,
-//            QStringList const & languages,
-//            CSwordModuleInfo const * const mInfo)
-//{
-//    if (taskType == WizardTaskType::installWorks) {
-//        return !CSwordBackend::instance()->findModuleByName(mInfo->name())
-//                && languages.contains(mInfo->language()->translatedName());
-//    } else if (taskType == WizardTaskType::updateWorks) {
-//        using CSMI = CSwordModuleInfo;
-//        using CSV = sword::SWVersion const;
-//        CSMI const * const installedModule =
-//                CSwordBackend::instance()->findModuleByName(mInfo->name());
-//        return installedModule
-//                && (CSV(installedModule->config(CSMI::ModuleVersion).toLatin1())
-//                    < CSV(mInfo->config(CSMI::ModuleVersion).toLatin1()));
-//    } else {
-//        BT_ASSERT(taskType == WizardTaskType::removeWorks);
-//        return CSwordBackend::instance()->findModuleByName(mInfo->name());
-//    }
-//}
-
-//void InstallInterface::setupDocumentModel2() {
-//    QSet<QString> addedModuleNames;
-//    m_bookshelfModel->clear();
-//    for (auto const & sourceName : m_selectedSources) {
-//        sword::InstallSource const source = BtInstallBackend::source(sourceName);
-//        CSwordBackend * const backend = BtInstallBackend::backend(source);
-//        for (auto * const module : backend->moduleList()) {
-//            if (filter(WizardTaskType::installWorks, m_selectedLanguages, module)) {
-//                QString const & moduleName = module->name();
-//                if (addedModuleNames.contains(moduleName))
-//                    continue;
-//                addedModuleNames.insert(moduleName);
-//                m_bookshelfModel->addModule(module);
-//                module->setProperty("installSourceName",
-//                                    QString(source.caption.c_str()));
-//            }
-//        }
-//    }
-
-//    QStringList sl;
-//    for (int i=0; i<m_filterModel->rowCount(); ++i) {
-//        QModelIndex index = m_filterModel->index(i, 0);
-//        QVariant v = index.data();
-//        QString s = v.toString();
-//        sl.append(s);
-//    }
-//}
-
-
-//QString InstallInterface::moduleVersionFromIndex(const QModelIndex& index) {
-//    QModelIndex index2 = index.siblingAtColumn(1);
-//    if (! index2.isValid())
-//        return "";
-//    QString version = index2.data(Qt::DisplayRole).toString();
-//    return version;
-//}
-
-//void InstallInterface::checkChildren(const QModelIndex& parent, Qt::CheckState state) {
-//    m_filterModel->setData(parent, state, Qt::CheckStateRole);
-//}
-
-//QString InstallInterface::moduleDescriptionFromIndex(const QModelIndex& index) {
-//    QModelIndex index2 = index.siblingAtColumn(2);
-//    QString version = index2.data(Qt::DisplayRole).toString();
-//    return version;
-//}
-
-
-//QString InstallInterface::getSource(int index) {
-//    if (m_sourceModel.rowCount() == 0)
-//        return QString();
-//    QModelIndex mIndex = m_sourceModel.index(index, 0);
-//    return mIndex.data(TextRole).toString();
-//}
-
-//QString InstallInterface::getCategory(int index) {
-//    if (m_categoryModel.rowCount() == 0)
-//        return QString();
-//    QModelIndex mIndex = m_categoryModel.index(index, 0);
-//    return mIndex.data(TextRole).toString();
-//}
-
-//QString InstallInterface::getLanguage(int index) {
-//    if (m_languageModel.rowCount() == 0)
-//        return QString();
-//    QModelIndex mIndex = m_languageModel.index(index, 0);
-//    return mIndex.data(TextRole).toString();
-//}
-
-//QString InstallInterface::getSourceSetting() {
-//    return btConfig().value<QString>(SourceKey, QString());
-//}
-
-//QString InstallInterface::getCategorySetting() {
-//    return btConfig().value<QString>(CategoryKey, QString());
-//}
-
-//QString InstallInterface::getLanguageSetting() {
-//    return btConfig().value<QString>(LanguageKey, QString());
-//}
-
-//void InstallInterface::setSourceSetting(const QString& source) {
-//    btConfig().setValue(SourceKey, source);
-//}
-
-//void InstallInterface::setCategorySetting(const QString& category) {
-//    btConfig().setValue(CategoryKey, category);
-//}
-
-//void InstallInterface::setLanguageSetting(const QString& language) {
-//    btConfig().setValue(LanguageKey, language);
-//}
-
-//static int findModelIndex(RoleItemModel* model, const QString& value) {
-//    if (value.isEmpty())
-//        return -1;
-//    int count = model->rowCount();
-//    for (int row=0; row<count; ++row) {
-//        QModelIndex index = model->index(row, 0);
-//        QString text = index.data(TextRole).toString();
-//        if (text == value)
-//            return row;
-//    }
-//    return -1;
-//}
-
-//int InstallInterface::searchSource(const QString& value) {
-//    return findModelIndex(&m_sourceModel, value);
-//}
-
-//int InstallInterface::searchCategory(const QString& value) {
-//    return findModelIndex(&m_categoryModel, value);
-//}
-
-//int InstallInterface::searchLanguage(const QString& value) {
-//    return findModelIndex(&m_languageModel, value);
-//}
-
-//void InstallInterface::installRemove() {
-//    m_modulesToRemove.clear();
-//    m_modulesToInstall.clear();
-//    QMap<CSwordModuleInfo*, bool>::const_iterator it;
-//    for(it=m_modulesToInstallRemove.constBegin();
-//        it!=m_modulesToInstallRemove.constEnd();
-//        ++it) {
-//        CSwordModuleInfo* moduleInfo = it.key();
-//        bool selected = it.value();
-//        if ( ! selected)
-//            continue;
-//        CSwordModuleInfo* installedModule = moduleInstalled(*moduleInfo);
-//        if (installedModule) {
-//            m_modulesToRemove.append(installedModule);
-//        }
-//        else if ( ! moduleInstalled(*moduleInfo)) {
-//            m_modulesToInstall.append(moduleInfo);
-//        }
-//    }
-//    installModules();
-//    removeModules();
-//}
-
-
-//void InstallInterface::workSelected(int index) {
-//    QStandardItem* item = m_worksModel.item(index,0);
-//    QVariant vSelected = item->data(SelectedRole);
-//    int selected = vSelected.toInt();
-//    selected = selected == 0 ? 1 : 0;
-//    item->setData(selected, SelectedRole);
-
-//    CSwordModuleInfo* moduleInfo = m_worksList.at(index);
-//    m_modulesToInstallRemove[moduleInfo] = selected == 1;
-//}
-
-
-//void InstallInterface::slotStopInstall() {
-//    m_thread->stopInstall();
-//}
-
-
-
-
-
-
-// *************************************************************
-
-//QVariant InstallInterface::worksModel3() {
-//    QVariant var;
-//    var.setValue(&m_worksModel3);
-//    return var;
-//}
-
-//QVariant InstallInterface::filterModel() {
-//    QVariant var;
-//    var.setValue(m_filterModel);
-//    return var;
-//}
-
-//QVariant InstallInterface::installPageModel() {
-//    QVariant var;
-//    var.setValue(m_installPageModel);
-//    return var;
-//}
 
 }
 

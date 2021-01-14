@@ -131,7 +131,6 @@ public:
     // UpdateDocumentsPage.qml   **************************
 public:
     Q_INVOKABLE void initializeUpdateDocumentsModel();
-    Q_INVOKABLE void finishUpdatingDocuments();
 
 
 
@@ -199,46 +198,6 @@ private:
     void runThread();
     void setupSourceModel();
 
-
-//public:
-//    Q_PROPERTY(QVariant worksModel3    READ worksModel3    NOTIFY worksModel3Changed)
-//    Q_PROPERTY(QVariant filterModel   READ filterModel   NOTIFY filterModelChanged)
-//    Q_PROPERTY(QVariant installPageModel   READ installPageModel   NOTIFY installPageModelChanged)
-
-//    Q_INVOKABLE void setup();
-//    Q_INVOKABLE QString getSource(int index);
-//    Q_INVOKABLE QString getCategory(int index);
-//    Q_INVOKABLE QString getLanguage(int index);
-//    Q_INVOKABLE QString getSourceSetting();
-//    Q_INVOKABLE QString getCategorySetting();
-//    Q_INVOKABLE QString getLanguageSetting();
-//    Q_INVOKABLE void setSourceSetting(const QString& source);
-//    Q_INVOKABLE void setCategorySetting(const QString& category);
-//    Q_INVOKABLE void setLanguageSetting(const QString& language);
-//    Q_INVOKABLE int searchSource(const QString& value);
-//    Q_INVOKABLE int searchCategory(const QString& value);
-//    Q_INVOKABLE int searchLanguage(const QString& value);
-//    Q_INVOKABLE void installRemove();
-//    Q_INVOKABLE void workSelected(int index);
-//    Q_INVOKABLE void setupDocumentModel2();
-//    Q_INVOKABLE void checkChildren(const QModelIndex& index, Qt::CheckState state);
-//    Q_INVOKABLE QString moduleVersionFromIndex(const QModelIndex& index);
-//    Q_INVOKABLE QString moduleDescriptionFromIndex(const QModelIndex& index);
-//    QVariant worksModel3();
-//    QVariant filterModel();
-//    QVariant installPageModel();
-//signals:
-//    void worksModel3Changed();
-//    void filterModelChanged();
-//    void installPageModelChanged();
-//private slots:
-//    void slotStopInstall();
-private:
-
-
-
-
-
     CSwordBackend* m_backend;
     BtInstallThread* m_thread;
     InstallSources* m_worker;
@@ -278,8 +237,6 @@ private:
     QMap<CSwordModuleInfo*, bool> m_modulesToInstallRemove;
     QList<CSwordModuleInfo*> m_modulesToRemove;
     QList<CSwordModuleInfo*> m_modulesToInstall;
-//    QList<QPair<QString, QString> > m_selectedWorks;
-//    QList<CSwordModuleInfo*> m_selectedModules;
 };
 
 }
