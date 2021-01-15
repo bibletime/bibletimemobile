@@ -67,17 +67,17 @@
         <file>qml/ViewFile.qml</file>
         <file>qml/WindowManager.qml</file>
         <file>qml/Window.qml</file>
-        <file>qml/bookshelfmanager/BookshelfManager.qml</file>
-        <file>qml/bookshelfmanager/BookshelfManagerPages.qml</file>
-        <file>qml/bookshelfmanager/ChooseDocumentsPage.qml</file>
-        <file>qml/bookshelfmanager/ChooseLanguagesPage.qml</file>
-        <file>qml/bookshelfmanager/ChooseSourcesPage.qml</file>
-        <file>qml/bookshelfmanager/InstallDocumentsPage.qml</file>
-        <file>qml/bookshelfmanager/RemoveDocumentsPage.qml</file>
-        <file>qml/bookshelfmanager/TaskPage.qml</file>
-        <file>qml/bookshelfmanager/UpdateSourcesQuestionPage.qml</file>
-        <file>qml/bookshelfmanager/UpdateDocumentsPage.qml</file>
-        <file>qml/bookshelfmanager/UpdateSourcesPage.qml</file>
+        <file>qml/BookshelfManager.qml</file>
+        <file>qml/BookshelfManagerPages.qml</file>
+        <file>qml/ChooseDocumentsPage.qml</file>
+        <file>qml/ChooseLanguagesPage.qml</file>
+        <file>qml/ChooseSourcesPage.qml</file>
+        <file>qml/InstallDocumentsPage.qml</file>
+        <file>qml/RemoveDocumentsPage.qml</file>
+        <file>qml/TaskPage.qml</file>
+        <file>qml/UpdateSourcesQuestionPage.qml</file>
+        <file>qml/UpdateDocumentsPage.qml</file>
+        <file>qml/UpdateSourcesPage.qml</file>
     </qresource>
     <qresource prefix="/share/bibletime/icons">
         <file alias="folder-open.svg">../../pics/icons/folder-open.svg</file>
