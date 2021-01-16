@@ -4,9 +4,9 @@ import QtQuick.Controls 2.5
 import QtQuick.Window 2.12
 
 Item {
-    id: updatingLibraries
+    id: chooseSourcesPage
 
-    property font font: Qt.font({ family: "Helvetica", pointSize: 10, weight: Font.Normal })
+    property real fontPointSize: btStyle.uiFontPointSize
 
     function initPage() {
         installInterface.initializeSourcesModel();
@@ -34,7 +34,7 @@ Item {
         text: qsTr("Choose one or more remote libraries to install documents from.")
         wrapMode: Text.Wrap
         color: Material.foreground
-        font: updatingLibraries.font
+        font.pointSize: chooseSourcesPage.fontPointSize
     }
 
     ListView {
@@ -62,7 +62,7 @@ Item {
                 anchors.verticalCenter: d.verticalCenter
                 text: modelText
                 checked: checked2
-                font: updatingLibraries.font
+                font.pointSize: chooseSourcesPage.fontPointSize
                 onToggled: {
                     checked2 = checked;
                 }

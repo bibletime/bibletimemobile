@@ -7,11 +7,10 @@ import QtQuick.Controls 1.4
 Item {
     id: removeDocumentsPage
 
-    property font font: Qt.font({ family: "Helvetica", pointSize: 10, weight: Font.Normal })
+    property real fontPointSize: btStyle.uiFontPointSize
 
     function initPage() {
         installInterface.initializeRemoveDocumentsModel();
-        console.log(removeWorksListView.height, removeWorksListView.width)
         installInterface.filterWorksByCategory("");
         bookshelfManager.changeButton("back", false);
         bookshelfManager.changeButton("next", false);
@@ -38,7 +37,7 @@ Item {
         text: qsTr("Choose documents to remove")
         wrapMode: Text.Wrap
         color: Material.foreground
-        font: removeDocumentsPage.font
+        font.pointSize: removeDocumentsPage.fontPointSize
     }
 
     ListView {
@@ -67,7 +66,7 @@ Item {
                 anchors.right: parent.right
                 anchors.rightMargin: Screen.pixelDensity * 1
                 anchors.top: parent.top
-                font: removeDocumentsPage.font
+                font.pointSize: removeDocumentsPage.fontPointSize
                 checked: installChecked
                 onCheckedChanged: {
                     installChecked = checked;
@@ -84,7 +83,7 @@ Item {
                 anchors.topMargin: -Screen.pixelDensity * 2
                 color: Material.foreground
                 text: description
-                font: removeDocumentsPage.font
+                font.pointSize: removeDocumentsPage.fontPointSize
                 elide: Text.ElideRight
             }
 
@@ -98,7 +97,7 @@ Item {
                 anchors.topMargin: -Screen.pixelDensity * 2
                 color: Material.foreground
                 text: version
-                font: removeDocumentsPage.font
+                font.pointSize: removeDocumentsPage.fontPointSize
                 elide: Text.ElideRight
             }
         }

@@ -8,7 +8,7 @@ Item {
     id: updatingLibraries
 
     property alias update: checkBox.checked
-    property font font: Qt.font({ family: "Helvetica", pointSize: 10, weight: Font.Normal })
+    property real fontPointSize: btStyle.uiFontPointSize
 
     function initPage() {
         bookshelfManager.changeButton("back", true);
@@ -35,7 +35,7 @@ Item {
         text: qsTr("Do you want to update the list of documents from remote libraries?")
         wrapMode: Text.Wrap
         color: Material.foreground
-        font: updatingLibraries.font
+        font.pointSize: updateSourcesQuestionPage.fontPointSize
     }
 
     CheckBox {
@@ -45,8 +45,7 @@ Item {
         anchors.left: parent.left
         anchors.leftMargin: Screen.pixelDensity * 4
         text: qsTr("Update from remote libraries")
-
-
+        font.pointSize: updateSourcesQuestionPage.fontPointSize
     }
 
 

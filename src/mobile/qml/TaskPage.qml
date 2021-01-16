@@ -5,7 +5,7 @@ import QtQuick.Controls 2.5
 Item {
     id: taskPage
 
-    property font font: Qt.font({ family: "Helvetica", pointSize: 10, weight: Font.Normal })
+    property real fontPointSize: btStyle.uiFontPointSize
 
     property alias install: installRadioButton.checked
     property alias update: updateRadioButton.checked
@@ -38,21 +38,21 @@ Item {
 
             checked: true
             text: qsTr("Install additional documents (uses internet)")
-            font: taskPage.font
+            font.pointSize: taskPage.fontPointSize
         }
 
         RadioButton {
             id: updateRadioButton
 
             text: qsTr("Update installed documents (uses internet)")
-            font: taskPage.font
+            font.pointSize: taskPage.fontPointSize
         }
 
         RadioButton {
             id: removeRadioButton
 
             text: qsTr("Remove installed documents")
-            font: taskPage.font
+            font.pointSize: taskPage.fontPointSize
         }
     }
 

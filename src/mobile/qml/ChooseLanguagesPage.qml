@@ -4,9 +4,9 @@ import QtQuick.Controls 2.5
 import QtQuick.Window 2.12
 
 Item {
-    id: updatingLibraries
+    id: chooseLanguagesPage
 
-    property font font: Qt.font({ family: "Helvetica", pointSize: 10, weight: Font.Normal })
+    property real fontPointSize: btStyle.uiFontPointSize
 
     function initPage() {
         installInterface.initializeLanguagesModel();
@@ -35,7 +35,7 @@ Item {
         text: qsTr("Choose one or more languages to install documents from.")
         wrapMode: Text.Wrap
         color: Material.foreground
-        font: updatingLibraries.font
+        font.pointSize: chooseLanguagesPage.fontPointSize
     }
 
     ListView {
@@ -63,7 +63,7 @@ Item {
                 anchors.verticalCenter: d.verticalCenter
                 text: modelText
                 checked: checked2
-                font: updatingLibraries.font
+                font.pointSize: chooseLanguagesPage.fontPointSize
                 onToggled: {
                     checked2 = checked;
                 }

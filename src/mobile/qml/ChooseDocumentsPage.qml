@@ -4,12 +4,11 @@ import QtQuick 2.0
 import QtQuick.Controls.Material 2.3
 import QtQuick.Controls 2.5
 import QtQuick.Window 2.12
-import ".."
 
 Item {
     id: chooseDocumentsPage
 
-    property font font: Qt.font({ family: "Helvetica", pointSize: 10, weight: Font.Normal })
+    property real fontPointSize: btStyle.uiFontPointSize
 
     function initPage() {
         installInterface.initializeCategoriesModel();
@@ -85,14 +84,14 @@ Item {
                 text: qsTr("Choose a document category")
                 wrapMode: Text.Wrap
                 color: Material.foreground
-                font: chooseDocumentsPage.font
+                font.pointSize: chooseDocumentsPage.fontPointSize
             }
 
             Rectangle {
                 id: spacer1
 
                 anchors.left: topItem.left
-                anchors.leftMargin: Screen.pixelDensity * 3.0
+                anchors.leftMargin: Screen.pixelDensity * 5.0
                 anchors.top: text1.bottom
                 anchors.topMargin: Screen.pixelDensity * 1.0
                 width: topItem.width / 6.0
@@ -111,9 +110,9 @@ Item {
                 }
 
                 anchors.left: topRect.left
-                anchors.leftMargin: Screen.pixelDensity * 1.0
+                anchors.leftMargin: Screen.pixelDensity * 3.0
                 anchors.top: spacer1.bottom
-                anchors.topMargin: Screen.pixelDensity * 1.0
+                anchors.topMargin: Screen.pixelDensity * 3.0
                 anchors.bottom: topRect.bottom
                 anchors.bottomMargin: Screen.pixelDensity * 1.0
                 width: topItem.width
@@ -127,10 +126,10 @@ Item {
 
                     text: modelText
                     color: (entry.selected) ? Material.accent : Material.foreground
-                    font: chooseDocumentsPage.font
+                    font.pointSize: chooseDocumentsPage.fontPointSize
                     height: {
                         var pixel = btStyle.pixelsPerMillimeterY * 7;
-                        var uiFont = btStyle.uiFontPointSize * 2;
+                        var uiFont = chooseDocumentPage.fontPointSize * 2;
                         return Math.max(pixel, uiFont);
                     }
                 }
@@ -176,14 +175,14 @@ Item {
                 text: qsTr("Choose documents to install")
                 wrapMode: Text.Wrap
                 color: Material.foreground
-                font: chooseDocumentsPage.font
+                font.pointSize: chooseDocumentsPage.fontPointSize
             }
 
             Rectangle {
                 id: spacer2
 
                 anchors.left: bottomItem.left
-                anchors.leftMargin: Screen.pixelDensity * 3.0
+                anchors.leftMargin: Screen.pixelDensity * 5.0
                 anchors.top: text2.bottom
                 anchors.topMargin: Screen.pixelDensity * 1.0
                 width: bottomItem.width / 6.0
@@ -205,7 +204,12 @@ Item {
                 delegate: Item {
                     id: iDelegate
 
-                    height: Screen.pixelDensity * 12
+                    height: {
+                        var pixel = btStyle.pixelsPerMillimeterY * 11;
+                        var uiFont = chooseDocumentPage.fontPointSize * 3;
+                        var uiText = checkDelegate.height + info.contentHeight;
+                        return Math.max(pixel, uiFont, uiText);
+                    }
                     width: worksListView.width
 
                     CheckDelegate {
@@ -217,7 +221,7 @@ Item {
                         anchors.right: parent.right
                         anchors.rightMargin: Screen.pixelDensity * 1
                         anchors.top: parent.top
-                        font: chooseDocumentsPage.font
+                        font.pointSize: chooseDocumentPage.fontPointSize
                         checked: installChecked
                         onCheckedChanged: {
                             installChecked = checked;
@@ -234,8 +238,10 @@ Item {
                         anchors.topMargin: -Screen.pixelDensity * 2
                         color: Material.foreground
                         text: description
-                        font: chooseDocumentsPage.font
-                        elide: Text.ElideRight
+                        wrapMode: Text.Wrap
+                        width: checkDelegate.width
+                        font.pointSize: chooseDocumentPage.fontPointSize
+                        //elide: Text.ElideRight
                     }
 
                     Text {
@@ -248,7 +254,7 @@ Item {
                         anchors.topMargin: -Screen.pixelDensity * 2
                         color: Material.foreground
                         text: version
-                        font: chooseDocumentsPage.font
+                        font.pointSize: chooseDocumentPage.fontPointSize
                         elide: Text.ElideRight
                     }
                 }
@@ -269,7 +275,7 @@ Item {
                 border.width: 1
                 height: {
                     var pixel = Screen.pixelDensity * 9;
-                    var uiFont = btStyle.uiFontPointSize * 3;
+                    var uiFont = chooseDocumentPage.fontPointSize * 3;
                     var mix = pixel * 0.7 + uiFont * 0.3;
                     return Math.max(pixel, mix);
                 }
@@ -281,7 +287,7 @@ Item {
                     anchors.verticalCenter: parent.verticalCenter
                     text: qsTr("Search" + ": ")
                     color: Material.foreground
-                    font: chooseDocumentsPage.font
+                    font.pointSize: chooseDocumentPage.fontPointSize
                 }
 
                 TextField {
@@ -292,7 +298,7 @@ Item {
                     anchors.right: searchFilter.right
                     anchors.rightMargin: Screen.pixelDensity * 4.0
                     verticalAlignment: Text.AlignVCenter
-                    font: chooseDocumentsPage.font
+                    font.pointSize: chooseDocumentsPage.fontPointSize
                     onTextChanged: {
                         installInterface.filterWorksByText(text);
                     }

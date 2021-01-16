@@ -16,7 +16,6 @@ import QtQuick.Controls 2.4
 import QtQuick.Controls.Material 2.3
 import QtQuick.Window 2.11
 import BibleTime 1.0
-import "bookshelfmanager"
 
 Window {
     id: root

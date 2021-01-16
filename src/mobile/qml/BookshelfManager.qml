@@ -7,6 +7,8 @@ import QtQuick.Window 2.12
 Dialog {
     id: bookshelfManager
 
+    font.pointSize: btStyle.uiFontPointSize;
+
     function changeButton(buttonName, visible) {
         var button;
         if (buttonName === "back")
@@ -26,9 +28,6 @@ Dialog {
 
         else if (buttonName === "cancel")
             button = cancelButton;
-
-//        if (button.visible !== visible)
-//            console.log ("    BookshelfManager: changeButton", buttonName, visible);
 
         button.visible = visible
     }
@@ -62,7 +61,7 @@ Dialog {
             anchors.rightMargin: Screen.pixelDensity * 2
             anchors.verticalCenter: parent.verticalCenter
             color: Material.accent
-            font.pointSize: bookshelfManager.font.pointSize + 1
+            font.pointSize: btStyle.uiFontPointSize + 1
             text: "Bookshelf Manager"
         }
 
@@ -84,7 +83,6 @@ Dialog {
         anchors.right: parent.right
         anchors.top: bookshelfHeader.bottom
         anchors.bottom: bookshelfFooter.top
-        font: bookshelfManager.font
     }
 
     Rectangle {
@@ -118,31 +116,31 @@ Dialog {
                 id: backButton
 
                 text: "< " + qsTr("Back")
-                font: bookshelfManager.font
                 onClicked: pages.prevPage();
+                font.pointSize: btStyle.uiFontPointSize
             }
 
             Button {
                 id: nextButton
 
                 text: qsTr("Next") + " >"
-                font: bookshelfManager.font
                 onClicked: pages.nextPage()
+                font.pointSize: btStyle.uiFontPointSize
             }
 
             Button {
                 id: installButton
 
                 text: qsTr("Install")
-                font: bookshelfManager.font
                 onClicked: pages.nextPage()
+                font.pointSize: btStyle.uiFontPointSize
             }
 
             Button {
                 id: finishButton
 
                 text: qsTr("Finish") + " >"
-                font: bookshelfManager.font
+                font.pointSize: btStyle.uiFontPointSize
                 onClicked: {
                     pages.nextPage();
                     bookshelfManager.close();
@@ -153,7 +151,7 @@ Dialog {
                 id: closeButton
 
                 text: qsTr("Close")
-                font: bookshelfManager.font
+                font.pointSize: btStyle.uiFontPointSize
                 onClicked: bookshelfManager.done(Dialog.Accepted)
 
             }
@@ -162,7 +160,7 @@ Dialog {
                 id: cancelButton
 
                 text: qsTr("Cancel")
-                font: bookshelfManager.font
+                font.pointSize: btStyle.uiFontPointSize
                 onClicked: bookshelfManager.done(Dialog.Rejected)
 
             }

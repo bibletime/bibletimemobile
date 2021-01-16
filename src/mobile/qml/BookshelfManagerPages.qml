@@ -6,7 +6,6 @@ Item {
     id: bookshelfPages
 
     property alias index: pages.currentIndex
-    property font font: Qt.font({ family: "Helvetica", pointSize: 10, weight: Font.Normal })
 
     enum PageName {
         Task=0,
@@ -111,13 +110,11 @@ Item {
 
     function initPage() {
         var page = currentItem(pages.currentIndex);
-//        console.log("BookshelfManagerPages: initPage", pages.currentIndex, page);
         page.initPage();
     }
 
     function donePage() {
         var page = currentItem(pages.currentIndex);
-//        console.log("BookshelfManagerPages: donePage", pages.currentIndex, page);
         page.donePage();
     }
 
@@ -160,54 +157,38 @@ Item {
 
         TaskPage {
             id: taskPage
-
-            font: bookshelfPages.font
         }
 
         UpdateSourcesQuestionPage {
             id: updateSourcesQuestionPage
-
-            font: bookshelfPages.font
         }
 
         UpdateSourcesPage {
             id: updateSourcesPage
-
-            font: bookshelfPages.font
         }
 
         ChooseSourcesPage {
             id: chooseSourcesPage
-
-            font: bookshelfPages.font
         }
 
         ChooseLanguagesPage {
             id: chooseLanguagesPage
-
-            font: bookshelfPages.font
         }
 
         ChooseDocumentsPage {
             id: chooseDocumentPage
-            font: bookshelfPages.font
         }
 
         InstallDocumentsPage {
             id: installDocumentsPage
-            font: bookshelfPages.font
         }
 
         UpdateDocumentsPage {
             id: updateDocumentsPage
-
-            font: bookshelfPages.font
         }
 
         RemoveDocumentsPage {
             id: removeDocumentsPage
-
-            font: bookshelfPages.font
         }
     }
 

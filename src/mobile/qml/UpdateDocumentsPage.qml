@@ -7,7 +7,7 @@ import QtQuick.Controls 1.4
 Item {
     id: updateDocumentsPage
 
-    property font font: Qt.font({ family: "Helvetica", pointSize: 10, weight: Font.Normal })
+    property real fontPointSize: btStyle.uiFontPointSize
 
     function initPage() {
         installInterface.initializeUpdateDocumentsModel();
@@ -27,7 +27,6 @@ Item {
 
 
     function finishedDownload() {
-//        console.log("  UpdateDocumentsPage: finishedDownload")
         bookshelfManager.changeButton("back", true);
         bookshelfManager.changeButton("close", true);
     }
@@ -44,7 +43,7 @@ Item {
         text: qsTr("Choose documents to update")
         wrapMode: Text.Wrap
         color: Material.foreground
-        font: removeDocumentsPage.font
+        font.pointSize: updateDocumentsPage.fontPointSize
     }
 
     ListView {
@@ -73,7 +72,7 @@ Item {
                 anchors.right: parent.right
                 anchors.rightMargin: Screen.pixelDensity * 1
                 anchors.top: parent.top
-                font: removeDocumentsPage.font
+                font.pointSize: updateDocumentsPage.fontPointSize
                 checked: installChecked
                 onCheckedChanged: {
                     installChecked = checked;
@@ -90,7 +89,7 @@ Item {
                 anchors.topMargin: -Screen.pixelDensity * 2
                 color: Material.foreground
                 text: description
-                font: removeDocumentsPage.font
+                font.pointSize: updateDocumentsPage.fontPointSize
                 elide: Text.ElideRight
             }
 
@@ -104,7 +103,7 @@ Item {
                 anchors.topMargin: -Screen.pixelDensity * 2
                 color: Material.foreground
                 text: version
-                font: removeDocumentsPage.font
+                font.pointSize: updateDocumentsPage.fontPointSize
                 elide: Text.ElideRight
             }
         }

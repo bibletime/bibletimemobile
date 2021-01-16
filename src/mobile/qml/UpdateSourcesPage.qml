@@ -4,9 +4,9 @@ import QtQuick.Controls 2.5
 import QtQuick.Window 2.12
 
 Item {
-    id: updatingLibraries
+    id: updateSourcesQuestionPage
 
-    property font font: Qt.font({ family: "Helvetica", pointSize: 10, weight: Font.Normal })
+    property real fontPointSize: btStyle.uiFontPointSize
 
     function initPage() {
         bookshelfManager.changeButton("back", false);
@@ -24,7 +24,6 @@ Item {
     }
 
     function finishedDownload() {
-//        console.log("  UpdateSourcesPage finishedDownload")
         bookshelfManager.changeButton("back", true);
         bookshelfManager.changeButton("next", true);
         bookshelfManager.changeButton("cancel", true);
@@ -39,7 +38,7 @@ Item {
         anchors.topMargin: Screen.pixelDensity * 1
         text: qsTr("Updating document lists from remote libraries")
         color: Material.foreground
-        font: updatingLibraries.font
+        font.pointSize: updateSourcesPage.fontPointSize
         onVisibleChanged: {
             if (visible) {
                 installInterface.refreshLists2();
@@ -52,7 +51,7 @@ Item {
 
         text: installInterface.progressText
         color: Material.foreground
-        font: updatingLibraries.font
+        font.pointSize: updateSourcesPage.fontPointSize
         anchors.horizontalCenter: progressBar.horizontalCenter
         anchors.bottom: progressBar.top
         anchors.bottomMargin: Screen.pixelDensity * 1
@@ -101,7 +100,7 @@ Item {
         anchors.topMargin: Screen.pixelDensity * 1
         width: Screen.pixelDensity * 14
         text: qsTr("Stop")
-        font: updatingLibraries.font
+        font.pointSize: updateSourcesPage.fontPointSize
         onClicked: {
             finishedDownload();
             installInterface.cancel();
@@ -118,7 +117,7 @@ Item {
         contentItem: Text {
             anchors.horizontalCenter: stopButton.horizontalCenter
             text: stopButton.text
-            font: stopButton.font
+            font.pointSize: updateSourcesPage.fontPointSize
             color: Material.accent
             verticalAlignment: Text.AlignVCenter
             horizontalAlignment: Text.AlignHCenter
