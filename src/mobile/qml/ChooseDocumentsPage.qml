@@ -16,6 +16,7 @@ Item {
         installInterface.initializeDocumentsModel();
         var category = installInterface.categoryFromIndex(categoryListView.currentIndex);
         installInterface.filterWorksByCategory(category);
+        filterInput.clear();
         bookshelfManager.changeButton("back", true);
         bookshelfManager.changeButton("next", false);
         bookshelfManager.changeButton("install", true);

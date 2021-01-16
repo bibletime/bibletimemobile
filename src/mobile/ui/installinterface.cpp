@@ -325,6 +325,7 @@ void InstallInterface::initializeDocumentsModel() {
             m_worksModel3.appendRow(item);
         }
     }
+    m_documentsSortFilterModel.setTextFilter("");
     m_documentsSortFilterModel.sort(0);
 }
 
@@ -379,6 +380,7 @@ QVariant InstallInterface::documentsSortFilterModel() {
 void InstallInterface::initializeRemoveDocumentsModel() {
 
     m_worksModel3.clear();
+    m_documentsSortFilterModel.setTextFilter("");
 
     auto moduleList = CSwordBackend::instance()->moduleList();
     for (auto module : moduleList) {
@@ -387,6 +389,7 @@ void InstallInterface::initializeRemoveDocumentsModel() {
         initializeDocumentsItem(module, item, "");
         m_worksModel3.appendRow(item);
     }
+    m_documentsSortFilterModel.setTextFilter("");
     m_documentsSortFilterModel.sort(0);
 }
 
@@ -413,6 +416,7 @@ void InstallInterface::finishRemovingDocuments() {
 
 void InstallInterface::initializeUpdateDocumentsModel() {
 
+    m_documentsSortFilterModel.setTextFilter("");
     QSet<QString> installedModules;
     const QList<CSwordModuleInfo*> modules = CSwordBackend::instance()->moduleList();
     for (int moduleIndex=0; moduleIndex<modules.count(); ++moduleIndex) {
