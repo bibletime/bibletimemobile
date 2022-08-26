@@ -11,7 +11,9 @@
 **********/
 
 #include "fileinterface.h"
+#include <QClipboard>
 #include <QFile>
+#include <QGuiApplication>
 #include <QTextStream>
 #include <QUrl>
 
@@ -22,30 +24,29 @@ FileInterface::FileInterface(QObject *parent) :
 }
 
 void FileInterface::setSource(const QString& source) {
-    QUrl url(source);
-    m_source = url.path();
-}
-
-QString FileInterface::read() {
-    if (m_source.isEmpty()){
-        return QString();
-    }
+    m_source = source;
+    m_fileContent.clear();
+    if (m_source.isEmpty())
+        return;
 
     QFile file(m_source);
-    QString fileContent;
+    m_fileContent.clear();
     if ( file.open(QIODevice::ReadOnly) ) {
         QString line;
         QTextStream t( &file );
         do {
             line = t.readLine();
-            fileContent += line + "\n";
+            m_fileContent += line + "\n";
         } while (!line.isNull());
 
         file.close();
     } else {
-        return QString();
+        return;
     }
-    return fileContent;
+}
+
+QString FileInterface::read() {
+    return m_fileContent;
 }
 
 bool FileInterface::write(const QString& data) {
@@ -62,6 +63,15 @@ bool FileInterface::write(const QString& data) {
     file.close();
 
     return true;
+}
+
+QString FileInterface::contents() const {
+    return m_fileContent;
+}
+
+void FileInterface::copyToClipboard(const QString& text) {
+    QClipboard *clipboard = QGuiApplication::clipboard();
+    clipboard->setText(text);
 }
 
 }

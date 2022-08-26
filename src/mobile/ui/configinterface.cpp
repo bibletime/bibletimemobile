@@ -37,8 +37,12 @@ QString ConfigInterface::getUserHomeSwordDir() {
     return util::directory::getUserHomeSwordDir().absolutePath();
 }
 
-QString ConfigInterface::getWritableTmpDir() {
-    return QStandardPaths::writableLocation(QStandardPaths::TempLocation);
+QString ConfigInterface::getUserHomeDir() {
+    return QStandardPaths::writableLocation(QStandardPaths::HomeLocation);
+}
+
+QString ConfigInterface::getDocumentationDir() {
+    return QStandardPaths::writableLocation(QStandardPaths::DocumentsLocation);
 }
 
 int ConfigInterface::intValue(const QString& configKey, bool defaultValue) {

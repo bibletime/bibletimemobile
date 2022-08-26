@@ -75,6 +75,7 @@ InstallInterface::InstallInterface() :
 // *******************************************************
 
 void InstallInterface::refreshLists2() {
+    qInfo() << "Document refresh starting.";
     m_wasCanceled = false;
     emit wasCanceledChanged();
     m_tempSource.clear();
@@ -670,6 +671,7 @@ void InstallInterface::slotPercentComplete2(int percent, const QString& title) {
         updateSwordBackend(m_tempSource);
         updateCategoryModel();
         emit finishedDownload();
+        qInfo() << "Document refresh finished.";
     }
 }
 

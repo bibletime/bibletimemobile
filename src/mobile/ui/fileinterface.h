@@ -25,21 +25,26 @@ public:
     explicit FileInterface(QObject *parent = nullptr);
 
     Q_PROPERTY(QString source READ source WRITE setSource NOTIFY sourceChanged)
+    Q_PROPERTY(QString contents READ contents NOTIFY contentsChanged)
 
     Q_INVOKABLE QString read();
     Q_INVOKABLE bool write(const QString& data);
+    Q_INVOKABLE void copyToClipboard(const QString& text);
 
     QString source() { return m_source; }
+    QString contents() const;
 
 public slots:
     void setSource(const QString& source);
 
 signals:
+    void contentsChanged();
     void sourceChanged(const QString& source);
     void error(const QString& msg);
 
 private:
     QString m_source;
+    QString m_fileContent;
 };
 
 }

@@ -125,6 +125,7 @@ OTHER_FILES += \
     ../../../src/mobile/qml/TreeChooser.qml \
     ../../../src/mobile/qml/VerseChooser.qml \
     ../../../src/mobile/qml/ViewFile.qml \
+    ../../../src/mobile/qml/ViewLog.qml \
     ../../../src/mobile/qml/Window.qml \
     ../../../src/mobile/qml/WindowManager.qml \
     ../../../src/mobile/qml/bookshelfmanager/BookshelfManager.qml

@@ -61,7 +61,7 @@ Rectangle {
         ColumnLayout {
             id: column
 
-            spacing: btStyle.pixelsPerMillimeterY * 2
+            spacing: btStyle.pixelsPerMillimeterY * 5
 
             Image {
                 id: logo
@@ -86,7 +86,7 @@ Rectangle {
                     anchors.leftMargin: btStyle.pixelsPerMillimeterX * 2
                     anchors.verticalCenter: bibletimeDebugMode.verticalCenter
                     color: Material.foreground
-                    text: "BibleTime Debug Mode"
+                    text: "BibleTime Debug Log"
                     font.pointSize: btStyle.uiFontPointSize
                 }
 
@@ -117,7 +117,7 @@ Rectangle {
                     anchors.leftMargin: btStyle.pixelsPerMillimeterX * 2
                     anchors.verticalCenter: swordDebugMode.verticalCenter
                     color: Material.foreground
-                    text: "Sword Debug Mode"
+                    text: "Sword Debug Log"
                     font.pointSize: btStyle.uiFontPointSize
                 }
 
@@ -146,9 +146,10 @@ Rectangle {
                     id: usrBaseDirLabel
 
                     anchors.left: parent.left
+                    anchors.leftMargin: btStyle.pixelsPerMillimeterX * 2
                     anchors.top: parent.top
                     color: Material.foreground
-                    text: "UserBaseDir:"
+                    text: "Home BibleTime Dir:"
                     font.pointSize: btStyle.uiFontPointSize
                 }
 
@@ -156,6 +157,7 @@ Rectangle {
                     id: usrBaseDir
 
                     anchors.left: parent.left
+                    anchors.leftMargin: btStyle.pixelsPerMillimeterX * 2
                     anchors.top: usrBaseDirLabel.bottom
                     width: usrBaseDirRect.width
                     color: Material.foreground
@@ -178,6 +180,7 @@ Rectangle {
                     id: homeSwordDirLabel
 
                     anchors.left: parent.left
+                    anchors.leftMargin: btStyle.pixelsPerMillimeterX * 2
                     anchors.top: parent.top
                     color: Material.foreground
                     text: "Home Sword Dir: "
@@ -188,6 +191,7 @@ Rectangle {
                     id: homeSwordDir
 
                     anchors.left: parent.left
+                    anchors.leftMargin: btStyle.pixelsPerMillimeterX * 2
                     anchors.top: homeSwordDirLabel.bottom
                     width: homeSwordDirRect.width
                     color: Material.foreground
@@ -198,66 +202,39 @@ Rectangle {
             }
 
             Rectangle {
-                id: writeableTmpDirRect
-
-                Layout.maximumWidth: flick.contentWidth
-                Layout.preferredWidth: flick.contentWidth
-                Layout.preferredHeight: writableTmpDirLabel.contentHeight + writableTempDir.contentHeight
-                color: Material.background
-                height:btStyle.pixelsPerMillimeterX * 12
-
-                Text {
-                    id: writableTmpDirLabel
-
-                    anchors.left: parent.left
-                    anchors.top: parent.top
-                    color: Material.foreground
-                    text: "Writable Tmp Dir: "
-                    font.pointSize: btStyle.uiFontPointSize
-                }
-
-                Text {
-                    id: writableTempDir
-
-                    anchors.left: parent.left
-                    anchors.top: writableTmpDirLabel.bottom
-                    width: writeableTmpDirRect.width
-                    color: Material.foreground
-                    text: configInterface.getWritableTmpDir();
-                    font.pointSize: btStyle.uiFontPointSize
-                    wrapMode: Text.Wrap
-                }
-            }
-
-            Rectangle {
-                id: fileBrowserRect
+                id: fileLogRect
 
                 color: Material.background
                 width: debugDialog.width
                 height:btStyle.pixelsPerMillimeterX * 5
 
-                BtmButton {
+                Button {
                     anchors.left: parent.left
+                    anchors.leftMargin: btStyle.pixelsPerMillimeterX * 2
                     anchors.verticalCenter: parent.verticalCenter
-                    text: "File Browser"
+                    text: "View current log file"
                     onClicked: {
                         debugDialog.visible = false;
-                        viewFile.open();
+                        viewFile.open(configInterface.getUserHomeDir() + "/bibletime.log");
                     }
                 }
             }
 
             Rectangle {
+                id: filePrevLogRect
+
                 color: Material.background
                 width: debugDialog.width
                 height:btStyle.pixelsPerMillimeterX * 5
 
-                BtmButton {
+                Button {
                     anchors.left: parent.left
+                    anchors.leftMargin: btStyle.pixelsPerMillimeterX * 2
                     anchors.verticalCenter: parent.verticalCenter
-                    text: "Add Source"
+                    text: "View previous log file"
                     onClicked: {
-                        installInterface.addSource("holmlund.info");
+                        debugDialog.visible = false;
+                        viewFile.open(configInterface.getUserHomeDir() + "/bibletime_prev.log");
                     }
                 }
             }

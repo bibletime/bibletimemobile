@@ -11,18 +11,28 @@
 **********/
 
 import QtQuick 2.11
+import QtQuick.Controls 2.5
 import QtQuick.Controls.Material 2.3
 import QtQuick.Dialogs 1.2
+import QtQuick.Window 2.12
 import BibleTime 1.0
 
 Rectangle {
     id: viewFile
 
+    property string filename: ""
+
     color: Material.background
     anchors.fill: parent
 
-    function open() {
-        fileDialog.open();
+    function open(filename) {
+        visible = true;
+        logFileInterface.setSource(filename);
+        fileViewer.text = logFileInterface.contents;
+    }
+
+    FileInterface {
+        id: logFileInterface
     }
 
     BtStyle {
@@ -49,34 +59,14 @@ Rectangle {
         }
     }
 
-    FileInterface {
-        id: logFileInterface
-    }
-
-    FileDialog {
-        id: fileDialog
-        title: "Please choose a file"
-        selectExisting: true
-        folder: shortcuts.home
-        onAccepted: {
-            viewFile.visible = true;
-            logFileInterface.source = fileDialog.fileUrl;
-            fileViewer.text = logFileInterface.read();
-            keyReceiver.forceActiveFocus();
-        }
-        onRejected: {
-            keyReceiver.forceActiveFocus();
-            debugDialog.visible = true;
-        }
-    }
-
     Flickable {
 
         anchors.left: parent.left
         anchors.leftMargin: btStyle.pixelsPerMillimeterX
         anchors.top: viewFileTitleBar.bottom
         anchors.right: parent.right
-        anchors.bottom: parent.bottom
+        anchors.bottom: viewerFooter.top
+        clip: true
         contentHeight: fileViewer.height
 
         Text {
@@ -86,6 +76,42 @@ Rectangle {
             wrapMode: Text.Wrap
             font.pointSize: btStyle.uiFontPointSize -1
             color: Material.foreground
+        }
+    }
+
+    Rectangle {
+        id: viewerFooter
+
+        anchors.left: parent.left
+        anchors.right: parent.right
+        anchors.bottom: parent.bottom
+        height: Screen.pixelDensity * 12
+        color: Material.background
+
+        Rectangle {
+            id: spacer2
+
+            anchors.top: parent.top
+            anchors.left: parent.left
+            anchors.leftMargin: Screen.pixelDensity * 2
+            anchors.right: parent.right
+            anchors.rightMargin: Screen.pixelDensity * 2
+            height: 1
+            color: Material.accent
+        }
+
+        Button {
+            id: copyButton
+
+            anchors.right: parent.right
+            anchors.rightMargin: Screen.pixelDensity * 5
+            anchors.bottom: parent.bottom
+            anchors.bottomMargin: Screen.pixelDensity * 2
+            text: qsTr("Copy")
+            onClicked: {
+                console.log("copying");
+                logFileInterface.copyToClipboard(logFileInterface.contents);
+            }
         }
     }
 

@@ -216,14 +216,14 @@ void setupMessageLog() {
     if (! btConfig().value<bool>("DEBUG/BibleTime", false))
         return;
 
-    QString tmpDir = QStandardPaths::writableLocation(QStandardPaths::TempLocation);
+    QString logDir = QStandardPaths::writableLocation(QStandardPaths::HomeLocation);
 
-    QString prevLog = tmpDir + "/prev.log";
+    QString prevLog = logDir + "/bibletime_prev.log";
     QFile prevFile(prevLog);
     if (prevFile.exists())
         prevFile.remove();
 
-    QString currentLog = tmpDir + "/current.log";
+    QString currentLog = logDir + "/bibletime.log";
     QFile currentFile(currentLog);
     if (currentFile.exists())
         currentFile.rename(prevLog);
