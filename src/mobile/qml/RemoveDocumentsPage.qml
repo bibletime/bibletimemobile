@@ -54,7 +54,12 @@ Item {
         delegate: Item {
             id: iDelegate
 
-            height: Screen.pixelDensity * 12
+            height: {
+                var pixel = btStyle.pixelsPerMillimeterY * 11;
+                var uiFont = chooseDocumentPage.fontPointSize * 3;
+                var uiText = checkDelegate.height + info.contentHeight;
+                return Math.max(pixel, uiFont, uiText);
+            }
             width: removeWorksListView.width
 
             CheckDelegate {
