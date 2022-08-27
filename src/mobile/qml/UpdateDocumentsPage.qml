@@ -60,7 +60,11 @@ Item {
         delegate: Item {
             id: iDelegate
 
-            height: Screen.pixelDensity * 12
+            height: {
+                var pixel = btStyle.pixelsPerMillimeterY * 12;
+                var uiFont = chooseDocumentPage.fontPointSize * 3.5;
+                return Math.max(pixel, uiFont);
+            }
             width: updateWorksListView.width
 
             CheckDelegate {
@@ -72,6 +76,7 @@ Item {
                 anchors.right: parent.right
                 anchors.rightMargin: Screen.pixelDensity * 1
                 anchors.top: parent.top
+                height: parent.height
                 font.pointSize: updateDocumentsPage.fontPointSize
                 checked: installChecked
                 onCheckedChanged: {
@@ -85,8 +90,7 @@ Item {
                 anchors.leftMargin: Screen.pixelDensity * 6
                 anchors.right: parent.right
                 anchors.rightMargin: Screen.pixelDensity * 3
-                anchors.top: checkDelegate.bottom
-                anchors.topMargin: -Screen.pixelDensity * 2
+                anchors.bottom: checkDelegate.bottom
                 color: Material.foreground
                 text: description
                 font.pointSize: updateDocumentsPage.fontPointSize
@@ -96,9 +100,9 @@ Item {
             Text {
                 id: versionText
                 anchors.left:  parent.left
-                anchors.leftMargin: updateWorksListView.width * 0.65
+                anchors.leftMargin: updateWorksListView.width * 0.55
                 anchors.right: parent.right
-                anchors.rightMargin: Screen.pixelDensity * 3
+                anchors.rightMargin: Screen.pixelDensity * 6
                 anchors.verticalCenter: checkDelegate.verticalCenter
                 anchors.topMargin: -Screen.pixelDensity * 2
                 color: Material.foreground

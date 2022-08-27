@@ -57,11 +57,14 @@ Item {
 
     function nextUpdatePage() {
         if (index === BookshelfManagerPages.PageName.Task) {
-            index = BookshelfManagerPages.PageName.UpdateSources;
+            index = BookshelfManagerPages.PageName.UpdateSourcesQuestion;
+        } else if (index === BookshelfManagerPages.PageName.UpdateSourcesQuestion) {
+            if (updateSourcesQuestionPage.update)
+                index = BookshelfManagerPages.PageName.UpdateSources;
+            else
+                index = BookshelfManagerPages.PageName.UpdateDocuments;
         } else if (index === BookshelfManagerPages.PageName.UpdateSources) {
-            index = BookshelfManagerPages.PageName.UpdateDocuments;
-        } else if (index === BookshelfManagerPages.PageName.UpdateDocuments) {
-        index = BookshelfManagerPages.PageName.InstallDocuments;
+        index = BookshelfManagerPages.PageName.UpdateDocuments;
         }
     }
 
