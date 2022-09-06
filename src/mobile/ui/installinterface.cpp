@@ -13,6 +13,7 @@
 #include "installinterface.h"
 
 #include "backend/btinstallbackend.h"
+#include "backend/btinstallmgr.h"
 #include "backend/btinstallthread.h"
 #include "backend/config/btconfig.h"
 #include "mobile/bookshelfmanager/installsources.h"
@@ -816,6 +817,46 @@ void InstallInterface::updateLanguageModel(const QString& currentCategory) {
     m_languageList = languages.values();
     m_languageList.sort();
     setupTextModel(m_languageList, &m_languageModel);
+}
+
+QString getSourceType(int type) {
+    if (type == 1)
+        return "FTP";
+    if (type == 2)
+        return "SFTP";
+    if (type == 3)
+        return "HTTP";
+    if (type == 4)
+        return "HTTPD";
+    return "";
+}
+
+QString InstallInterface::addRemoteLibrary(const QString& name, int type,
+                                           const QString& server, const QString& path) {
+    QString nameTrimmed = name.trimmed();
+    if (nameTrimmed.isEmpty())
+        return tr("Please provide a name");
+
+    sword::InstallSource is = BtInstallBackend::source(nameTrimmed);
+    if (is.caption.c_str() == nameTrimmed)  // source already exists
+        return tr("A source with this name already exists. Please provide a different name.");
+
+    QString serverTrimmed = server.trimmed();
+    if (serverTrimmed.isEmpty())
+        return tr("Please provide a server");
+
+    QString pathTrimmed = path.trimmed();
+    if (pathTrimmed.isEmpty())
+        return tr("Please provide a path");
+
+    sword::InstallSource newSource(""); //empty, invalid Source
+    newSource.caption = nameTrimmed.toUtf8();
+    newSource.uid = name.trimmed().toUtf8();
+    newSource.type = getSourceType(type).toUtf8();
+    newSource.source = serverTrimmed.toUtf8();
+    newSource.directory = pathTrimmed.toUtf8();
+    BtInstallBackend::addSource(newSource);
+    return "";
 }
 
 }

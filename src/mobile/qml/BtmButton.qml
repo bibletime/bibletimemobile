@@ -19,8 +19,8 @@ T.AbstractButton {
 
     implicitWidth: Math.max(contentItem.implicitWidth + indicator.implicitWidth, background.implicitWidth)
     implicitHeight: Math.max(contentItem.implicitHeight, indicator.implicitHeight, background.implicitHeight)
-    leftPadding: btStyle.pixelsPerMillimeterX * 2
-    rightPadding: btStyle.pixelsPerMillimeterX * 2
+    leftPadding: btStyle.pixelsPerMillimeterX * 4
+    rightPadding: btStyle.pixelsPerMillimeterX * 4
     topPadding: btStyle.pixelsPerMillimeterX
     bottomPadding: btStyle.pixelsPerMillimeterX
 
@@ -45,6 +45,10 @@ T.AbstractButton {
 
         implicitWidth: contentText.contentWidth + leftPadding + rightPadding
         implicitHeight: 20 + topPadding + bottomPadding
-        color: Material.background
+        color: {
+            if (Material.theme == Material.Light)
+                return "#d7d7d7"
+            return "#323232"
+        }
     }
 }

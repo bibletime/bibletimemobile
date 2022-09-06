@@ -50,6 +50,7 @@
         <file>qml/ProgressDialog.qml</file>
         <file>qml/QuestionDialog.qml</file>
         <file>qml/ReferenceDisplay.qml</file>
+        <file>qml/RemoteLibraryDialog.qml</file>
         <file>qml/RightArrow.qml</file>
         <file>qml/SearchDialog.qml</file>
         <file>qml/SearchDrawer.qml</file>

@@ -50,6 +50,8 @@ public:
 
     Q_INVOKABLE void cancel();
     Q_INVOKABLE void refreshLists2();
+    Q_INVOKABLE QString addRemoteLibrary(const QString& name, int type,
+                                      const QString& server, const QString& path);
 
     qreal progressMax() const;
     qreal progressMin() const;

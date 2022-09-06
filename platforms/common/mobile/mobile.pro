@@ -110,6 +110,7 @@ OTHER_FILES += \
     ../../../src/mobile/qml/ProgressDialog.qml \
     ../../../src/mobile/qml/QuestionDialog.qml \
     ../../../src/mobile/qml/ReferenceDisplay.qml \
+    ../../../src/mobile/qml/RemoteLibraryDialog.qml \
     ../../../src/mobile/qml/RightArrow.qml \
     ../../../src/mobile/qml/SearchDialog.qml \
     ../../../src/mobile/qml/SearchDrawer.qml \

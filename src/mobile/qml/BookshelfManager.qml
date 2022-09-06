@@ -166,4 +166,15 @@ Dialog {
             }
         }
     }
+
+    RemoteLibraryDialog {
+        id: remoteLibraryDialog
+
+        visible: false
+        orientation: root.orientation
+        onAccepted: {
+            pages.prevPage();
+        }
+    }
 }
+

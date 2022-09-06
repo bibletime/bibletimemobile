@@ -40,14 +40,17 @@ Item {
     ListView {
         id: listView
         anchors.left: parent.left
-        anchors.leftMargin: Screen.pixelDensity * 8
+        anchors.leftMargin: Screen.pixelDensity * 3
         anchors.right: parent.right
+        anchors.rightMargin: Screen.pixelDensity * 3
         anchors.top: text1.bottom
         anchors.topMargin: Screen.pixelDensity * 5
-        anchors.bottom: parent.bottom
+        anchors.bottom: addButton.top
         anchors.bottomMargin: Screen.pixelDensity * 5
 
         model: installInterface.sourceModel2
+        spacing: btStyle.pixelsPerMillimeterX * 2
+        clip: true
         delegate: Rectangle {
             id: d
 
@@ -66,6 +69,26 @@ Item {
                 onToggled: {
                     checked2 = checked;
                 }
+            }
+        }
+    }
+
+    Button {
+        id: addButton
+        anchors.bottom: parent.bottom
+        anchors.bottomMargin: Screen.pixelDensity * 2
+        anchors.left: parent.left
+        anchors.leftMargin: Screen.pixelDensity * 5
+        text: qsTr("Add Library")
+        font.pointSize: installDocumentsPage.fontPointSize
+        onClicked: {
+            remoteLibraryDialog.open()
+        }
+        background: Rectangle {
+            color: {
+                if (Material.theme == Material.Light)
+                    return "#d7d7d7"
+                return "#323232"
             }
         }
     }
