@@ -73,23 +73,15 @@ Item {
         }
     }
 
-    Button {
+    BtmButton {
         id: addButton
         anchors.bottom: parent.bottom
         anchors.bottomMargin: Screen.pixelDensity * 2
         anchors.left: parent.left
         anchors.leftMargin: Screen.pixelDensity * 5
         text: qsTr("Add Library")
-        font.pointSize: installDocumentsPage.fontPointSize
         onClicked: {
             remoteLibraryDialog.open()
-        }
-        background: Rectangle {
-            color: {
-                if (Material.theme == Material.Light)
-                    return "#d7d7d7"
-                return "#323232"
-            }
         }
     }
 }

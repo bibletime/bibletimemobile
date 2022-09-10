@@ -112,55 +112,49 @@ Dialog {
             anchors.verticalCenter: parent.verticalCenter
             spacing: Screen.pixelDensity * 2
 
-            Button {
+            BtmButton {
                 id: backButton
 
                 text: "< " + qsTr("Back")
                 onClicked: pages.prevPage();
-                font.pointSize: btStyle.uiFontPointSize
             }
 
-            Button {
+            BtmButton {
                 id: nextButton
 
                 text: qsTr("Next") + " >"
                 onClicked: pages.nextPage()
-                font.pointSize: btStyle.uiFontPointSize
             }
 
-            Button {
+            BtmButton {
                 id: installButton
 
                 text: qsTr("Install")
                 onClicked: pages.nextPage()
-                font.pointSize: btStyle.uiFontPointSize
             }
 
-            Button {
+            BtmButton {
                 id: finishButton
 
                 text: qsTr("Finish") + " >"
-                font.pointSize: btStyle.uiFontPointSize
                 onClicked: {
                     pages.nextPage();
                     bookshelfManager.close();
                 }
             }
 
-            Button {
+            BtmButton {
                 id: closeButton
 
                 text: qsTr("Close")
-                font.pointSize: btStyle.uiFontPointSize
                 onClicked: bookshelfManager.done(Dialog.Accepted)
 
             }
 
-            Button {
+            BtmButton {
                 id: cancelButton
 
                 text: qsTr("Cancel")
-                font.pointSize: btStyle.uiFontPointSize
                 onClicked: bookshelfManager.done(Dialog.Rejected)
 
             }
