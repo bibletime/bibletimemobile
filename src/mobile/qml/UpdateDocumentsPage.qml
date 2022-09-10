@@ -61,9 +61,10 @@ Item {
             id: iDelegate
 
             height: {
-                var pixel = btStyle.pixelsPerMillimeterY * 12;
-                var uiFont = chooseDocumentPage.fontPointSize * 3.5;
-                return Math.max(pixel, uiFont);
+                var pixel = btStyle.pixelsPerMillimeterY * 11;
+                var uiFont = chooseDocumentPage.fontPointSize * 3;
+                var uiText = checkDelegate.height + info.contentHeight;
+                return Math.max(pixel, uiFont, uiText);
             }
             width: updateWorksListView.width
 
@@ -76,7 +77,6 @@ Item {
                 anchors.right: parent.right
                 anchors.rightMargin: Screen.pixelDensity * 1
                 anchors.top: parent.top
-                height: parent.height
                 font.pointSize: updateDocumentsPage.fontPointSize
                 checked: installChecked
                 onCheckedChanged: {
@@ -90,9 +90,11 @@ Item {
                 anchors.leftMargin: Screen.pixelDensity * 6
                 anchors.right: parent.right
                 anchors.rightMargin: Screen.pixelDensity * 3
-                anchors.bottom: checkDelegate.bottom
+                anchors.top: checkDelegate.bottom
+                anchors.topMargin: -Screen.pixelDensity * 2.5
                 color: Material.foreground
                 text: description
+                wrapMode: Text.Wrap
                 font.pointSize: updateDocumentsPage.fontPointSize
                 elide: Text.ElideRight
             }
@@ -100,7 +102,7 @@ Item {
             Text {
                 id: versionText
                 anchors.left:  parent.left
-                anchors.leftMargin: updateWorksListView.width * 0.55
+                anchors.leftMargin: updateWorksListView.width * 0.65
                 anchors.right: parent.right
                 anchors.rightMargin: Screen.pixelDensity * 6
                 anchors.verticalCenter: checkDelegate.verticalCenter
@@ -112,5 +114,4 @@ Item {
             }
         }
     }
-
 }

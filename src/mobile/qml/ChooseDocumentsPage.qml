@@ -242,7 +242,7 @@ Item {
                         wrapMode: Text.Wrap
                         width: checkDelegate.width
                         font.pointSize: chooseDocumentPage.fontPointSize
-                        //elide: Text.ElideRight
+                        elide: Text.ElideRight
                     }
 
                     Text {
