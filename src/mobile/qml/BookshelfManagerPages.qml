@@ -64,8 +64,10 @@ Item {
             else
                 index = BookshelfManagerPages.PageName.UpdateDocuments;
         } else if (index === BookshelfManagerPages.PageName.UpdateSources) {
-        index = BookshelfManagerPages.PageName.UpdateDocuments;
-        }
+            index = BookshelfManagerPages.PageName.UpdateDocuments;
+        } else if (index === BookshelfManagerPages.PageName.UpdateDocuments)
+            index = BookshelfManagerPages.PageName.InstallDocuments;
+
     }
 
     function nextRemovePage() {
@@ -101,7 +103,7 @@ Item {
 
     function prevUpdatePage() {
         if (index === BookshelfManagerPages.PageName.InstallDocuments)
-            index = BookshelfManagerPages.PageName.Task;
+            index = BookshelfManagerPages.PageName.UpdateDocuments;
         else if (index === BookshelfManagerPages.PageName.UpdateDocuments)
             index = BookshelfManagerPages.PageName.Task;
     }
