@@ -85,6 +85,8 @@ Window {
     height: btStyle.height
     visible: true
     width:  btStyle.width
+    x:0
+    y:0
 
     onWidthChanged: {
         setOrientation();
