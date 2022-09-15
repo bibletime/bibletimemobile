@@ -11,6 +11,7 @@ Item {
     property real fontPointSize: btStyle.uiFontPointSize
 
     function initPage() {
+        console.log("updateSourcesQuestionPage.initPage")
         bookshelfManager.changeButton("back", true);
         bookshelfManager.changeButton("next", true);
         bookshelfManager.changeButton("install", false);

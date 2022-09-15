@@ -9,6 +9,7 @@ Item {
     property real fontPointSize: btStyle.uiFontPointSize
 
     function initPage() {
+        console.log("chooseLanguagesPage.initPage")
         installInterface.initializeLanguagesModel();
         listView.positionViewAtIndex(installInterface.indexOfFirstLanguageChecked,ListView.Beginning)
         bookshelfManager.changeButton("back", true);

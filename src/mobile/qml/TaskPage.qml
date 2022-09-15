@@ -12,6 +12,7 @@ Item {
     property alias remove: removeRadioButton.checked
 
     function initPage() {
+        console.log("taskPage.initPage")
         bookshelfManager.changeButton("back", false);
         bookshelfManager.changeButton("next", true);
         bookshelfManager.changeButton("install", false);

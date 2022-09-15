@@ -9,6 +9,7 @@ Item {
     property real fontPointSize: btStyle.uiFontPointSize
 
     function initPage() {
+        console.log("updateSourcesPage.initPage")
         bookshelfManager.changeButton("back", false);
         bookshelfManager.changeButton("next", false);
         bookshelfManager.changeButton("install", false);

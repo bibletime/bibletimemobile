@@ -11,6 +11,7 @@ Item {
     property real fontPointSize: btStyle.uiFontPointSize
 
     function initPage() {
+        console.log("chooseDocumentsPage.initPage")
         installInterface.initializeCategoriesModel();
         categoryListView.currentIndex = 0;
         installInterface.initializeDocumentsModel();
