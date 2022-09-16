@@ -14,10 +14,7 @@ Item {
         listView.positionViewAtIndex(installInterface.indexOfFirstLanguageChecked,ListView.Beginning)
         bookshelfManager.changeButton("back", true);
         bookshelfManager.changeButton("next", true);
-        bookshelfManager.changeButton("install", false);
-        bookshelfManager.changeButton("finish", false);
-        bookshelfManager.changeButton("close", false);
-        bookshelfManager.changeButton("cancel", true);
+        bookshelfManager.changeButton("close", true);
     }
 
     function donePage() {

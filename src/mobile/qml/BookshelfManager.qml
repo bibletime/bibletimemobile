@@ -9,6 +9,16 @@ Dialog {
 
     font.pointSize: btStyle.uiFontPointSize;
 
+    function hideButtons() {
+        changeButton("back", false);
+        changeButton("next", false);
+        changeButton("install", false);
+        changeButton("remove", false);
+        changeButton("finish", false);
+        changeButton("close", false);
+        changeButton("cancel", false);
+    }
+
     function changeButton(buttonName, visible) {
         var button;
         if (buttonName === "back")
@@ -19,6 +29,9 @@ Dialog {
 
         else if (buttonName === "install")
             button = installButton;
+
+        else if (buttonName === "remove")
+            button = removeButton;
 
         else if (buttonName === "finish")
             button = finishButton;
@@ -134,9 +147,16 @@ Dialog {
             }
 
             BtmButton {
+                id: removeButton
+
+                text: qsTr("Remove")
+                onClicked: pages.nextPage()
+            }
+
+            BtmButton {
                 id: finishButton
 
-                text: qsTr("Finish") + " >"
+                text: qsTr("Finish")
                 onClicked: {
                     pages.nextPage();
                     bookshelfManager.close();

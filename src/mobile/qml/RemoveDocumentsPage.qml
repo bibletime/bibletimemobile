@@ -10,14 +10,12 @@ Item {
     property real fontPointSize: btStyle.uiFontPointSize
 
     function initPage() {
+        console.log("removeDocumentsPage.initPage")
         installInterface.initializeRemoveDocumentsModel();
         installInterface.filterWorksByCategory("");
-        bookshelfManager.changeButton("back", false);
-        bookshelfManager.changeButton("next", false);
-        bookshelfManager.changeButton("install", false);
-        bookshelfManager.changeButton("finish", true);
-        bookshelfManager.changeButton("close", false);
-        bookshelfManager.changeButton("cancel", true);
+        bookshelfManager.changeButton("back", true);
+        bookshelfManager.changeButton("remove", true);
+        bookshelfManager.changeButton("close", true);
     }
 
     function donePage() {

@@ -10,14 +10,7 @@ Item {
 
     function initPage() {
         console.log("installDocumentsPage.initPage")
-        bookshelfManager.changeButton("back", false, false);
         installInterface.installDocuments();
-        bookshelfManager.changeButton("back", true);
-        bookshelfManager.changeButton("next", false);
-        bookshelfManager.changeButton("install", false);
-        bookshelfManager.changeButton("finish", false);
-        bookshelfManager.changeButton("close", true);
-        bookshelfManager.changeButton("cancel", false);
         installInterface.modulesDownloadFinished.disconnect(finishedDownload);
         installInterface.modulesDownloadFinished.connect(finishedDownload);
     }
@@ -28,6 +21,8 @@ Item {
     function finishedDownload() {
         bookshelfManager.changeButton("back", true);
         bookshelfManager.changeButton("close", true);
+        console.log("finished download");
+        bookshelfPages.nextPage();
     }
 
     Text {

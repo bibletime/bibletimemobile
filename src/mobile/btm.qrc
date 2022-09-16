@@ -74,6 +74,7 @@
         <file>qml/ChooseDocumentsPage.qml</file>
         <file>qml/ChooseLanguagesPage.qml</file>
         <file>qml/ChooseSourcesPage.qml</file>
+        <file>qml/FinishedPage.qml</file>
         <file>qml/InstallDocumentsPage.qml</file>
         <file>qml/RemoveDocumentsPage.qml</file>
         <file>qml/TaskPage.qml</file>

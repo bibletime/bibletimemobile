@@ -10,12 +10,6 @@ Item {
 
     function initPage() {
         console.log("updateSourcesPage.initPage")
-        bookshelfManager.changeButton("back", false);
-        bookshelfManager.changeButton("next", false);
-        bookshelfManager.changeButton("install", false);
-        bookshelfManager.changeButton("finish", false);
-        bookshelfManager.changeButton("close", false);
-        bookshelfManager.changeButton("cancel", false);
         installInterface.finishedDownload.disconnect(finishedDownload);
         installInterface.finishedDownload.connect(finishedDownload);
     }
@@ -27,7 +21,7 @@ Item {
     function finishedDownload() {
         bookshelfManager.changeButton("back", true);
         bookshelfManager.changeButton("next", true);
-        bookshelfManager.changeButton("cancel", true);
+        bookshelfManager.changeButton("close", true);
     }
 
     Text {

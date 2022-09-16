@@ -13,12 +13,8 @@ Item {
 
     function initPage() {
         console.log("taskPage.initPage")
-        bookshelfManager.changeButton("back", false);
         bookshelfManager.changeButton("next", true);
-        bookshelfManager.changeButton("install", false);
-        bookshelfManager.changeButton("finish", false);
-        bookshelfManager.changeButton("close", false);
-        bookshelfManager.changeButton("cancel", true);
+        bookshelfManager.changeButton("close", true);
     }
 
     function donePage() {

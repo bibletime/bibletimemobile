@@ -16,11 +16,13 @@ Item {
         ChooseDocuments=5,
         InstallDocuments=6,
         UpdateDocuments=7,
-        RemoveDocuments=8
+        RemoveDocuments=8,
+        Finished=9
     }
 
     function initialize() {
         pages.currentIndex = BookshelfManagerPages.PageName.Task
+        bookshelfManager.hideButtons();
         initPage();
         updateSourcesQuestionPage.update = false;
         taskPage.install = true;
@@ -28,6 +30,7 @@ Item {
 
     function nextPage() {
         donePage();
+        bookshelfManager.hideButtons();
         if (taskPage.remove)
             nextRemovePage();
         else if (taskPage.update)
@@ -51,8 +54,10 @@ Item {
             index = BookshelfManagerPages.PageName.ChooseLanguages;
         } else if (index === BookshelfManagerPages.PageName.ChooseLanguages) {
             index = BookshelfManagerPages.PageName.ChooseDocuments;
-        } else if (index === BookshelfManagerPages.PageName.ChooseDocuments)
+        } else if (index === BookshelfManagerPages.PageName.ChooseDocuments) {
             index = BookshelfManagerPages.PageName.InstallDocuments;
+        } else if (index === BookshelfManagerPages.PageName.InstallDocuments)
+            index = BookshelfManagerPages.PageName.Finished;
     }
 
     function nextUpdatePage() {
@@ -65,18 +70,22 @@ Item {
                 index = BookshelfManagerPages.PageName.UpdateDocuments;
         } else if (index === BookshelfManagerPages.PageName.UpdateSources) {
             index = BookshelfManagerPages.PageName.UpdateDocuments;
-        } else if (index === BookshelfManagerPages.PageName.UpdateDocuments)
+        } else if (index === BookshelfManagerPages.PageName.UpdateDocuments) {
             index = BookshelfManagerPages.PageName.InstallDocuments;
-
+        } else if (index === BookshelfManagerPages.PageName.InstallDocuments)
+            index = BookshelfManagerPages.PageName.Finished
     }
 
     function nextRemovePage() {
         if (index === BookshelfManagerPages.PageName.Task) {
             index = BookshelfManagerPages.PageName.RemoveDocuments
+        } else if (index === BookshelfManagerPages.PageName.RemoveDocuments) {
+            index = BookshelfManagerPages.PageName.Finished
         }
     }
 
     function prevPage() {
+        bookshelfManager.hideButtons();
         if (taskPage.remove)
             prevRemovePage();
         else if (taskPage.update)
@@ -99,6 +108,8 @@ Item {
             index = BookshelfManagerPages.PageName.UpdateSourcesQuestion;
         else if (index === BookshelfManagerPages.PageName.UpdateSourcesQuestion)
             index = BookshelfManagerPages.PageName.Task;
+        else if (index === BookshelfManagerPages.PageName.Finished)
+            index = BookshelfManagerPages.PageName.ChooseDocuments;
     }
 
     function prevUpdatePage() {
@@ -106,10 +117,14 @@ Item {
             index = BookshelfManagerPages.PageName.UpdateDocuments;
         else if (index === BookshelfManagerPages.PageName.UpdateDocuments)
             index = BookshelfManagerPages.PageName.Task;
+        else if (index === BookshelfManagerPages.PageName.UpdateSources)
+            index = BookshelfManagerPages.PageName.UpdateSourcesQuestion;
     }
 
     function prevRemovePage() {
-        if (index === BookshelfManagerPages.PageName.RemoveDocuments)
+        if (index === BookshelfManagerPages.PageName.Finished)
+            index = BookshelfManagerPages.PageName.RemoveDocuments;
+        else if (index === BookshelfManagerPages.PageName.RemoveDocuments)
             index = BookshelfManagerPages.PageName.Task;
     }
 
@@ -151,6 +166,8 @@ Item {
         else if (index === BookshelfManagerPages.PageName.RemoveDocuments) {
             return removeDocumentsPage;
         }
+        else if (index === BookshelfManagerPages.PageName.Finished)
+            return finishedPage;
     }
 
     StackLayout {
@@ -194,6 +211,10 @@ Item {
 
         RemoveDocumentsPage {
             id: removeDocumentsPage
+        }
+
+        FinishedPage {
+            id: finishedPage
         }
     }
 

@@ -19,11 +19,8 @@ Item {
         installInterface.filterWorksByCategory(category);
         filterInput.clear();
         bookshelfManager.changeButton("back", true);
-        bookshelfManager.changeButton("next", false);
         bookshelfManager.changeButton("install", true);
-        bookshelfManager.changeButton("finish", false);
-        bookshelfManager.changeButton("close", false);
-        bookshelfManager.changeButton("cancel", true);
+        bookshelfManager.changeButton("close", true);
     }
 
     function donePage() {

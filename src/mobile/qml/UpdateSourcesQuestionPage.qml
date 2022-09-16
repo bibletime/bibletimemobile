@@ -2,7 +2,6 @@ import QtQuick 2.0
 import QtQuick.Controls.Material 2.3
 import QtQuick.Controls 2.5
 import QtQuick.Window 2.12
-//import QtQuick.Controls 1.4
 
 Item {
     id: updatingLibraries
@@ -11,13 +10,11 @@ Item {
     property real fontPointSize: btStyle.uiFontPointSize
 
     function initPage() {
-        console.log("updateSourcesQuestionPage.initPage")
+        console.log("updateSourcesQuestionPage.initPage");
+        checkBox.checked = false;
         bookshelfManager.changeButton("back", true);
         bookshelfManager.changeButton("next", true);
-        bookshelfManager.changeButton("install", false);
-        bookshelfManager.changeButton("finish", false);
-        bookshelfManager.changeButton("close", false);
-        bookshelfManager.changeButton("cancel", true);
+        bookshelfManager.changeButton("close", true);
     }
 
     function donePage() {
@@ -32,8 +29,8 @@ Item {
         anchors.right: parent.right
         anchors.rightMargin: Screen.pixelDensity * 4
         anchors.top: parent.top
-        anchors.topMargin: Screen.pixelDensity * 1
-        text: qsTr("Do you want to update the list of documents from remote libraries?")
+        anchors.topMargin: Screen.pixelDensity * 5
+        text: qsTr("Do you want to update the list of documents available from remote libraries?")
         wrapMode: Text.Wrap
         color: Material.foreground
         font.pointSize: updateSourcesQuestionPage.fontPointSize

@@ -13,11 +13,8 @@ Item {
         console.log("updateDocumentsPage.initPage")
         installInterface.initializeUpdateDocumentsModel();
         bookshelfManager.changeButton("back", true);
-        bookshelfManager.changeButton("next", false);
         bookshelfManager.changeButton("install", true);
-        bookshelfManager.changeButton("finish", false);
-        bookshelfManager.changeButton("close", false);
-        bookshelfManager.changeButton("cancel", true);
+        bookshelfManager.changeButton("close", true);
         installInterface.modulesDownloadFinished.disconnect(finishedDownload);
         installInterface.modulesDownloadFinished.connect(finishedDownload);
     }
