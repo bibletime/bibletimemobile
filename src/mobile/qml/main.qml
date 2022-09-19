@@ -144,6 +144,7 @@ Window {
         ]
 
         Keys.onReleased: {
+            console.log("main: Keys.onReleased");
             if (event.key === Qt.Key_Back || event.key === Qt.Key_Escape) {
                 event.accepted = true;
                 quitQuestion.visible = true;
