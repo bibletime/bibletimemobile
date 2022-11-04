@@ -2,6 +2,7 @@
 <manifest android:versionCode="$$VCODE" xmlns:android="http://schemas.android.com/apk/res/android" android:installLocation="auto" android:versionName="$$VNAME" package="org.qtproject.bibletime.mobile">
     <application android:label="BibleTime Mobile" android:name="org.qtproject.qt5.android.bindings.QtApplication" android:icon="@drawable/icon">
         <activity android:configChanges="orientation|uiMode|screenLayout|screenSize|smallestScreenSize|locale|fontScale|keyboard|keyboardHidden|navigation" 
+                android:exported="true"
 		android:screenOrientation="unspecified" 
 		android:label="BibleTime Mobile" 
 		android:name="org.qtproject.qt5.android.bindings.QtActivity">
