@@ -119,6 +119,8 @@ Item {
             index = BookshelfManagerPages.PageName.Task;
         else if (index === BookshelfManagerPages.PageName.UpdateSources)
             index = BookshelfManagerPages.PageName.UpdateSourcesQuestion;
+        else if (index === BookshelfManagerPages.PageName.Finished)
+            index = BookshelfManagerPages.PageName.UpdateDocuments;
     }
 
     function prevRemovePage() {
