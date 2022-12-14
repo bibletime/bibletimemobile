@@ -28,6 +28,7 @@
 /platforms/android/mobile/android/arm64/AndroidManifest.xml
 /platforms/src
 /platforms/ios/build*
+/platforms/linux/build*
 *.pro.user*
 bibletime*.qm
 mobile*.qm
