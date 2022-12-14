@@ -2,8 +2,6 @@ BTMVER=328
 
 DEFINES += BTM_VERSION=\\\"$$BTMVER\\\"
 
-QT += svg xml qml quick quickcontrols2
-
 include(../../common/mobile/mobile.pro)
 
 TARGET = bibletime-mobile
