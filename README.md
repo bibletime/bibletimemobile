@@ -8,12 +8,12 @@
 - OpenJdk - version 11 or lower. (version 8 is known to work)
 - BibleTime Mobile - https://github.com/bibletime/bibletimemobile
 - BibleTime - https://github.com/bibletime/bibletime commit 1a8467dc72ff9fdcc79d671e582f17261b10c836
-- Sword - 1.8.1
+- Sword - 1.8.1 - Find sword-1.8.1.tar.gz at this [link](http://crosswire.org/ftpmirror/pub/sword/source/v1.8/).
 - CLucene - https://github.com/kalemas/clucene (master branch)
 #### Recommended build process for android.
 ##### Example Android build
 It is highly recommended you build a Hello World type program and run it on Android before proceeding to build and run BibleTime Mobile. Use QtCreator menu "File/New Project" to create a "Qt Quick Application".
-See [Qt for Android - Building from source (https://doc.qt.io/qt-5/android-building.html)] for more information.
+See [Qt for Android - Building from source ](https://doc.qt.io/qt-5/android-building.html) for more information.
 
 ##### BibleTime Mobile Android build
 1. Choose and make a build directory.
