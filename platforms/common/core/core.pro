@@ -141,7 +141,7 @@ lupdate_only {
 }
 
 
-RESOURCES += $${BIBLETIME_PATH}/i18n/messages/bibletime_translate.qrc
+#RESOURCES += $${BIBLETIME_PATH}/i18n/messages/bibletime_translate.qrc
 
 # Core Platform Section
 

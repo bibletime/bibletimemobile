@@ -34,7 +34,7 @@ public:
     BtmModuleTextFilter();
     ~BtmModuleTextFilter();
 
-    QString processText(const QString& text, bool selected=false);
+    QString processText(const QString& text);
     void setShowReferences(bool on);
 
 private:

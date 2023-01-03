@@ -465,7 +465,7 @@ Rectangle {
 
                     Text {
                         id: column0Text
-                        text: text1
+                        text: text0
                         textFormat: Text.RichText
                         anchors.top: parent.top
                         anchors.left: parent.left
@@ -487,7 +487,7 @@ Rectangle {
 
                     Text {
                         id: column1Text
-                        text: text2
+                        text: text1
                         textFormat: Text.RichText
                         anchors.top: parent.top
                         anchors.left: column0Text.right
@@ -510,7 +510,7 @@ Rectangle {
 
                     Text {
                         id: column2Text
-                        text: text3
+                        text: text2
                         textFormat: Text.RichText
                         anchors.top: parent.top
                         anchors.left: column1Text.right
@@ -533,7 +533,7 @@ Rectangle {
 
                     Text {
                         id: column3Text
-                        text: text4
+                        text: text3
                         textFormat: Text.RichText
                         anchors.top: parent.top
                         anchors.left: column2Text.right

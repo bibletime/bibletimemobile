@@ -107,10 +107,6 @@ void BtStyle::setCurrentStyle(int style) {
 
         currentStyle = style;
 
-        BtModuleTextModel::setLinkColor(QColor(180,180,255));
-        BtModuleTextModel::setHighlightColor(QColor(0,0,0));
-        BtModuleTextModel::setJesusWordsColor(QColor(255,0,0));
-
         setTextColor(QColor(255,255,255));
         setLinkColor(QColor(0,0,80));
         setTextBackgroundColor(QColor(0,0,0));
@@ -148,10 +144,6 @@ void BtStyle::setCurrentStyle(int style) {
 
         currentStyle = style;
 
-        BtModuleTextModel::setLinkColor(QColor(0,0,255));
-        BtModuleTextModel::setHighlightColor(QColor(0,0,255));
-        BtModuleTextModel::setJesusWordsColor(QColor(255,0,0));
-
         setTextColor(QColor(0,0,0));
         setLinkColor(QColor(0,0,220));
         setTextBackgroundColor(QColor(255,255,255));
@@ -188,10 +180,6 @@ void BtStyle::setCurrentStyle(int style) {
     else if (style == BtStyle::crimsonTheme) {
 
         currentStyle = style;
-
-        BtModuleTextModel::setLinkColor(QColor(0,0,255));
-        BtModuleTextModel::setHighlightColor(QColor(0,0,255));
-        BtModuleTextModel::setJesusWordsColor(QColor(170,0,0));
 
         setTextColor(QColor(0,0,0));
         setLinkColor(QColor(0,0,220));
