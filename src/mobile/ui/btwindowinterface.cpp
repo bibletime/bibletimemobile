@@ -32,6 +32,7 @@
 #include "backend/keys/cswordkey.h"
 #include "backend/keys/cswordtreekey.h"
 #include "backend/managers/cdisplaytemplatemgr.h"
+#include "backend/managers/colormanager.h"
 #include "backend/managers/cswordbackend.h"
 #include "backend/models/btmoduletextmodel.h"
 #include "backend/rendering/btinforendering.h"
@@ -423,9 +424,7 @@ void BtWindowInterface::displayText(const QString& text, const QString& lang) {
                                       div + text + "</div>",
                                       settings));
     content.replace("#CHAPTERTITLE#", "");
-    content.replace("#LINK_COLOR#", "blue");
-    content.replace("#HIGHLIGHT_COLOR#", "blue");
-    content.replace("#JESUS_WORDS_COLOR#", "red");
+    content = ColorManager::instance().replaceColors(content);
     m_footnoteText = content;
     footnoteTextChanged();
 }

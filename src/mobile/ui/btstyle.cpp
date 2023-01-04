@@ -108,7 +108,7 @@ void BtStyle::setCurrentStyle(int style) {
         currentStyle = style;
 
         setTextColor(QColor(255,255,255));
-        setLinkColor(QColor(0,0,80));
+        setLinkColor(QColor(180,190,255));
         setTextBackgroundColor(QColor(0,0,0));
         setTextBackgroundHighlightColor(QColor(184,135,11));
         setInputBorderColor(QColor(218,165,3));
