@@ -331,7 +331,6 @@ FocusScope {
                 delegate: Text {
                     text: line
                     textFormat: Text.RichText
-                    width: parent.width
                     color: Material.foreground
                     font.family: btWindowInterface.fontName
                     font.pointSize: btWindowInterface.fontSize
