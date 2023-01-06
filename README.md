@@ -7,7 +7,7 @@
 - Qt Creator - version 7-9 (latest version for building on Android)
 - OpenJdk - version 11 or lower. (version 8 is known to work)
 - BibleTime Mobile - https://github.com/bibletime/bibletimemobile
-- BibleTime - https://github.com/bibletime/bibletime commit 1a8467dc72ff9fdcc79d671e582f17261b10c836
+- BibleTime - https://github.com/bibletime/bibletime.git  - checkout the stable-3.0 branch
 - Sword - 1.9.0 - Find sword-1.9.0.tar.gz at this [link](http://crosswire.org/ftpmirror/pub/sword/source/v1.9/).
 - CLucene - https://github.com/kalemas/clucene (master branch)
 #### Recommended build process for android.
