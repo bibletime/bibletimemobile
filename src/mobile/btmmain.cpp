@@ -264,6 +264,7 @@ int main(int argc, char *argv[]) {
 
     defaultFont = new QFont();
     *defaultFont = app.font();
+    defaultFont->setPointSize(18);
 
 #if defined Q_OS_ANDROID
     if (! getStoragePermission())

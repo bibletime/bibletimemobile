@@ -796,7 +796,7 @@ QString BtWindowInterface::getFontName() const {
 
 int BtWindowInterface::getFontSize() const {
     if (!module())
-        return 22;
+        return getDefaultFont().pointSize();
     const CLanguageMgr::Language* lang = module()->language();
     BtConfig::FontSettingsPair fontPair = btConfig().getFontForLanguage(*lang);
     if (fontPair.first) {
@@ -804,7 +804,7 @@ int BtWindowInterface::getFontSize() const {
         int fontPointSize = font.pointSize();
         return fontPointSize;
     }
-    int fontPointSize = btConfig().value<int>("ui/textFontSize",22);
+    int fontPointSize = btConfig().value<int>("ui/textFontSize",getDefaultFont().pointSize());
     return fontPointSize;
 }
 
