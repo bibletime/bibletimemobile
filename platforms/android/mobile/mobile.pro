@@ -6,7 +6,6 @@ DEFINES += BTM_VERSION=\\\"$$BTMVER\\\"
 
 CONFIG+=declarative_debug
 CONFIG+=qml_debug
-QT += svg xml qml quick quickcontrols2
 
 include(../../common/mobile/mobile.pro)
 

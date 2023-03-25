@@ -9,6 +9,8 @@ DEFINES += BT_MOBILE
 BTMGIT_VERSION = $$system(git rev-parse HEAD)
 DEFINES += BTM_GIT_VERSION=\\\"$$BTMGIT_VERSION\\\"
 
+QT += svg xml qml quick quickcontrols2
+
 QMAKE_CXXFLAGS_DEBUG -= -O2
 QMAKE_CXXFLAGS_DEBUG += -O0
 
