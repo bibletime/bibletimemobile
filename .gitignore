@@ -29,6 +29,7 @@
 /platforms/src
 /platforms/ios/build*
 /platforms/linux/build*
+/platforms/linux/mobile/RPMS
 *.pro.user*
 bibletime*.qm
 mobile*.qm
