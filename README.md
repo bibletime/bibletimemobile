@@ -35,6 +35,7 @@ Note: If you get a strange error when installing and you are changing build type
 6. Use the menu "Build/Build All Projects" to compile the source. This should produce a file like <builddir>/bibletimemobile/platforms/android/build-mobile-Desktop_Qt_5_15_2_GCC_64bit-Debug/bibletime-mobile.
 7. Use the menu "Build/Run" to start the app.
 
-
-
-
+#### Recommended build process for Sailfish OS
+1. In the build directory place the source code using the following names: bibletimemobile, bibletime, sword, and clucene.
+2. The build requires a version of qt5 newer than the provided by the Sailfish OS SDK, to configure the newer version follow the instructions in https://github.com/sailfishos-chum/qt5/wiki/Getting-Started
+3. Using as working directory bibletimemobile/platforms/linux/mobile run `sfdk build` and `sfdk deploy --sdk`
