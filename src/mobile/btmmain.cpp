@@ -178,17 +178,6 @@ static void installSwordLocales(QDir& homeSword)
 }
 #endif
 
-#if defined Q_OS_ANDROID
-bool getStoragePermission() {
-    QString writePerms("android.permission.WRITE_EXTERNAL_STORAGE");
-    QStringList perms(writePerms);
-    QtAndroid::PermissionResultMap map = QtAndroid::requestPermissionsSync(perms);
-    auto value = map.value(writePerms);
-    bool allowed = value == QtAndroid::PermissionResult::Granted;
-    return allowed;
-}
-#endif
-
 /*******************************************************************************
   Handle Qt's meta type system.
 *******************************************************************************/
@@ -265,11 +254,6 @@ int main(int argc, char *argv[]) {
     defaultFont = new QFont();
     *defaultFont = app.font();
     defaultFont->setPointSize(18);
-
-#if defined Q_OS_ANDROID
-    if (! getStoragePermission())
-        return EXIT_FAILURE;
-#endif
 
     if (QOperatingSystemVersion::current().majorVersion() <= 10) {
         migrateDataExternalToHome(".bibletime");
