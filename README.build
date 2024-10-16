@@ -1,0 +1,14 @@
+
+Using fedora 40 get clucene source:
+    dnf download --source clucene-core
+
+Extract the rpm package:
+    rpm2cpio clucene-2.3.3.4-48.20130812.e8e3d20git.fc40.src.rpm |cpio -idvm
+    Note the *.tar.xz file
+
+Put *.tar.xz file, *.spec file, and patches in ~/rpmbuild/SOURCES
+
+From ~/rpmbuild/SOURCES execute:
+    rpmbuild -bp *.spec
+
+Look in ~/rpmbuilds/BUILD for the source directory clucene-core-2.3.3.4

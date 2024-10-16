@@ -21,9 +21,8 @@ enum TextRoles {
     CheckedRole = Qt::UserRole + 2
 };
 
-DocumentModel::DocumentModel(Grouping const & grouping,
-                                       QObject * const parent)
-    : BtBookshelfTreeModel(grouping, parent)
+DocumentModel::DocumentModel(QObject * parent)
+    : BtBookshelfTreeModel(parent)
 {
     setDefaultChecked(BtBookshelfTreeModel::UNCHECKED);
     setCheckable(true);
@@ -41,7 +40,7 @@ QVariant DocumentModel::data(QModelIndex const & i, int role) const {
                             module(index(i.row(), 0, i.parent())))
                     {
                         if (CSwordModuleInfo * imodule =
-                                CSwordBackend::instance()->findModuleByName(m->name()))
+                                CSwordBackend::instance().findModuleByName(m->name()))
                             textList = "," + imodule->config(
                                         CSwordModuleInfo::ModuleVersion)
                                    + " => "

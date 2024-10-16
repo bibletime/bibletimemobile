@@ -13,6 +13,8 @@
 #pragma once
 
 #include <QObject>
+#include "backend/managers/cswordbackend.h"
+#include <optional>
 
 namespace btm {
 
@@ -25,6 +27,12 @@ public:
 private:
     void initBackends();
     void initSwordConfigFile();
+
+    std::optional<CSwordBackend> m_backend;
+
+
+
+
 
 };
 

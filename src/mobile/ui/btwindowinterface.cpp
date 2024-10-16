@@ -22,23 +22,20 @@
 #include <QQmlContext>
 #include <QQmlEngine>
 #include <QQuickItem>
+#include <QRegularExpression>
 #include <QStringList>
 #include <swkey.h>
 #include "backend/config/btconfig.h"
-#include "backend/drivers/cswordbiblemoduleinfo.h"
 #include "backend/drivers/cswordbookmoduleinfo.h"
 #include "backend/drivers/cswordlexiconmoduleinfo.h"
 #include "backend/drivers/cswordmoduleinfo.h"
 #include "backend/keys/cswordkey.h"
 #include "backend/keys/cswordtreekey.h"
 #include "backend/managers/cdisplaytemplatemgr.h"
-#include "backend/managers/colormanager.h"
+#include "mobile/ui/colormanagermobile.h"
 #include "backend/managers/cswordbackend.h"
 #include "backend/models/btmoduletextmodel.h"
 #include "backend/rendering/btinforendering.h"
-#include "backend/rendering/cdisplayrendering.h"
-#include "backend/rendering/centrydisplay.h"
-#include "backend/rendering/chtmlexportrendering.h"
 #include "backend/rendering/cplaintextexportrendering.h"
 #include "mobile/btmmain.h"
 #include "util/btconnect.h"
@@ -67,23 +64,21 @@ BtWindowInterface::BtWindowInterface(QObject* parent)
     filterOptions.morphTags = 1;
     filterOptions.redLetterWords = 1;
     m_moduleTextModel->setFilterOptions(filterOptions);
-
-    BT_CONNECT(CSwordBackend::instance(),
-               SIGNAL(sigSwordSetupChanged(CSwordBackend::SetupChangedReason)),
+    BT_CONNECT(&CSwordBackend::instance(),
+               &CSwordBackend::sigSwordSetupChanged,
                this,
-               SLOT(reloadModules(CSwordBackend::SetupChangedReason)));
+               &BtWindowInterface::reloadModules);
 }
 
 BtWindowInterface::~BtWindowInterface() {
-
 }
 
-void BtWindowInterface::reloadModules(CSwordBackend::SetupChangedReason /* reason */ ) {
+void BtWindowInterface::reloadModules() {
     QString moduleName = getModuleName();
     QString reference = getReference();
-    CSwordModuleInfo* module = CSwordBackend::instance()->findModuleByName(moduleName);
+     CSwordModuleInfo* module = CSwordBackend::instance().findModuleByName(moduleName);
     if (module) {
-        m_key = CSwordKey::createInstance(module);
+        m_key = module->createKey();
         m_key->setKey(reference);
     } else {
         ; // close window ?
@@ -94,7 +89,7 @@ void BtWindowInterface::updateModel() {
     QString moduleName= getModuleName();
     QStringList moduleList = QStringList() << moduleName;
     QList<const CSwordModuleInfo*> modules =
-            CSwordBackend::instance()->getConstPointerList(moduleList);
+            CSwordBackend::instance().getConstPointerList(moduleList);
 }
 
 static bool moduleIsBook(const CSwordModuleInfo* module) {
@@ -156,12 +151,14 @@ int BtWindowInterface::getCurrentModelIndex() const {
         QString keyName = m_key->key();
         key.setKey(keyName);
         CSwordTreeKey p(key);
-        p.root();
+        p.positionToRoot();
         if(p != key)
-            return key.getIndex()/4;
+            return key.offset()/4;
     }
-    else if (moduleIsLexicon(module())){        const CSwordLexiconModuleInfo *li = qobject_cast<const CSwordLexiconModuleInfo*>(m_key->module());
-        int index = li->entries().indexOf(m_key->key());
+    else if (moduleIsLexicon(module())) {
+        const CSwordLexiconModuleInfo *lexInfo =
+            qobject_cast<const CSwordLexiconModuleInfo*>(m_key->module());
+        int index = lexInfo->entries().indexOf(m_key->key());
         return index;
     }
     return 0;
@@ -209,10 +206,9 @@ int BtWindowInterface::getNumModules() const {
 QString BtWindowInterface::stripHtml(const QString& html) {
     QString t = html;
     //since t is a complete HTML page at the moment, strip away headers and footers of a HTML page
-    QRegExp re("(?:<html.*>.+<body.*>)", Qt::CaseInsensitive); //remove headers, case insensitive
-    re.setMinimal(true);
+    QRegularExpression re("(?:<html.*>.+<body.*>)", QRegularExpression::CaseInsensitiveOption); //remove headers, case insensitive
     t.replace(re, "");
-    t.replace(QRegExp("</body></html>", Qt::CaseInsensitive), "");//remove footer
+    t.replace(QRegularExpression("</body></html>", QRegularExpression::CaseInsensitiveOption), "");//remove footer
     return t;
 }
 
@@ -220,60 +216,52 @@ QString BtWindowInterface::getRawText(int row, int column) {
     BT_ASSERT(column >= 0 && column <= m_moduleNames.count());
     CSwordVerseKey key = m_moduleTextModel->indexToVerseKey(row);
     QString moduleName = m_moduleNames.at(column);
-    CSwordModuleInfo* module = CSwordBackend::instance()->findModuleByName(moduleName);
+    CSwordModuleInfo* module = CSwordBackend::instance().findModuleByName(moduleName);
     CSwordVerseKey mKey(module);
     mKey.setKey(key.key());
     QString rawText = mKey.rawText();
     return stripHtml(rawText);
 }
-
+// TODO test
 QString BtWindowInterface::getReferenceFromUrl(const QString& url) {
     QString reference;
-    QRegExp rx("sword://(bible|lexicon)/(.*)/(.*)(\\|\\|)", Qt::CaseInsensitive);
-    rx.setMinimal(false);
-    int pos1 = rx.indexIn(url);
-    if (pos1 > -1) {
-        reference = "href=sword://" + rx.cap(1) + "/" + rx.cap(2) + "/" + rx.cap(3);
+    QRegularExpression rx("sword://(bible|lexicon)/(.*)/(.*)(\\|\\|)", QRegularExpression::CaseInsensitiveOption);
+    QRegularExpressionMatch match = rx.match(url);
+    if (match.hasMatch()) {
+        reference = "href=sword://" + match.captured(1) + "/" + match.captured(2) + "/" + match.captured(3);
     } else {
-        QRegExp rx0("sword://(bible|lexicon)/(.*)/(.*)", Qt::CaseInsensitive);
-        rx0.setMinimal(false);
-        int pos1 = rx0.indexIn(url);
-        if (pos1 > -1) {
-            reference = "href=sword://" + rx0.cap(1) + "/" + rx0.cap(2) + "/" + rx0.cap(3);
-
+        QRegularExpression rx0("sword://(bible|lexicon)/(.*)/(.*)", QRegularExpression::CaseInsensitiveOption);
+        QRegularExpressionMatch match = rx0.match(url);
+        if (match.hasMatch()) {
+            reference = "href=sword://" + match.captured(1) + "/" + match.captured(2) + "/" + match.captured(3);
         } else {
-            QRegExp rx1("sword://footnote/(.*)=(.*)", Qt::CaseInsensitive);
-            rx1.setMinimal(false);
-            int pos1 = rx1.indexIn(url);
-            if (pos1 > -1) {
-                reference = "note=" + rx1.cap(1);
-
+            QRegularExpression rx1("sword://footnote/(.*)=(.*)", QRegularExpression::CaseInsensitiveOption);
+            QRegularExpressionMatch match = rx1.match(url);
+            if (match.hasMatch()) {
+                reference = "note=" + match.captured(1);
             } else {
-                QRegExp rx2("sword://lemmamorph/(.*)=(.*)/(.*)", Qt::CaseInsensitive);
-                rx2.setMinimal(false);
-                int pos1 = rx2.indexIn(url);
-                if (pos1 > -1) {
-                    reference = rx2.cap(1) + "=" + rx2.cap(2);
+                QRegularExpression rx2("sword://lemmamorph/(.*)=(.*)/(.*)", QRegularExpression::CaseInsensitiveOption);
+                QRegularExpressionMatch match = rx2.match(url);
+                if (match.hasMatch()) {
+                    reference = match.captured(1) + "=" + match.captured(2);
                 }
             }
         }
     }
     return reference;
 }
-
+// TODO test
 QString BtWindowInterface::getKeyFromUrl(const QString& url) {
     QString reference;
-    QRegExp rx("sword://(bible|lexicon)/(.*)/(.*)(\\|\\|)", Qt::CaseInsensitive);
-    rx.setMinimal(false);
-    int pos1 = rx.indexIn(url);
-    if (pos1 > -1) {
-        reference = rx.cap(3);
+    QRegularExpression rx("sword://(bible|lexicon)/(.*)/(.*)(\\|\\|)", QRegularExpression::CaseInsensitiveOption);
+    QRegularExpressionMatch match = rx.match(url);
+    if (match.hasMatch()) {
+        reference = match.captured(3);
     } else {
-        QRegExp rx0("sword://(bible|lexicon)/(.*)/(.*)", Qt::CaseInsensitive);
-        rx0.setMinimal(false);
-        int pos1 = rx0.indexIn(url);
-        if (pos1 > -1) {
-            reference = rx0.cap(3);
+        QRegularExpression rx0("sword://(bible|lexicon)/(.*)/(.*)", QRegularExpression::CaseInsensitiveOption);
+        QRegularExpressionMatch match = rx0.match(url);
+        if (match.hasMatch()) {
+            reference = match.captured(3);
         }
     }
     return reference;
@@ -321,7 +309,6 @@ void BtWindowInterface::setReferenceByUrl(const QString& url) {
 void BtWindowInterface::setInfo(const QString & renderedData, const QString & lang) {
     QString text = Rendering::formatInfo(renderedData, lang);
     text.replace("#CHAPTERTITLE#", "");
-//    m_textBrowser->setText(text);
     displayText(text, lang);
 }
 
@@ -340,7 +327,6 @@ void BtWindowInterface::setInfo(const Rendering::ListInfoData & list) {
     setInfo(Rendering::formatInfo(list, l));
     setFootnoteVisible(true);
 }
-
 
 void BtWindowInterface::setReference(const QString& key) {
     QString newKey = key;
@@ -375,7 +361,7 @@ void BtWindowInterface::decodeLemmaMorph(const QString& attributes) {
 
     Rendering::ListInfoData infoList(Rendering::detectInfo(attributes));
     BtConstModuleList l;
-    CSwordModuleInfo* m = CSwordBackend::instance()->findModuleByName(getModuleName());
+    CSwordModuleInfo* m = CSwordBackend::instance().findModuleByName(getModuleName());
     if(m != nullptr)
         l.append(m);
     QString text = Rendering::formatInfo(infoList, l);
@@ -386,15 +372,17 @@ void BtWindowInterface::decodeLemmaMorph(const QString& attributes) {
 void BtWindowInterface::decodeFootnote(const QString& keyName, const QString& footnote) {
 
     QString text;
-    CSwordModuleInfo * const module = CSwordBackend::instance()->findModuleByName(getModuleName());
+    CSwordModuleInfo * const module = CSwordBackend::instance().findModuleByName(getModuleName());
     if (!module)
         return;
 
-    QSharedPointer<CSwordKey> key(CSwordKey::createInstance(module));
+    QSharedPointer<CSwordKey> key(module->createKey());
+
     key->setKey(keyName);
     key->renderedText(CSwordKey::ProcessEntryAttributesOnly); // force entryAttributes
 
-    auto & m = module->module();
+    Q_ASSERT(false);
+    auto & m = module->swordModule();
     const char * const note =
             m.getEntryAttributes()
             ["Footnote"][footnote.toLatin1().data()]["body"].c_str();
@@ -403,7 +391,7 @@ void BtWindowInterface::decodeFootnote(const QString& keyName, const QString& fo
     text = QString::fromUtf8(m.renderText(
                                  module->isUnicode()
                                  ? static_cast<const char *>(text.toUtf8())
-                                 : static_cast<const char *>(text.toLatin1())));
+                                 : static_cast<const char *>(text.toLatin1())).c_str());
     QString lang = module->language()->abbrev();
     displayText(text, lang);
 }
@@ -424,9 +412,9 @@ void BtWindowInterface::displayText(const QString& text, const QString& lang) {
                                       div + text + "</div>",
                                       settings));
     content.replace("#CHAPTERTITLE#", "");
-    content = ColorManager::instance().replaceColors(content);
+    content = ColorManagerMobile::instance().replaceColors(content);
     m_footnoteText = content;
-    footnoteTextChanged();
+    emit footnoteTextChanged();
 }
 
 QString BtWindowInterface::getFootnoteText() const {
@@ -465,7 +453,7 @@ void BtWindowInterface::setModuleToBeginning() {
         return;
     if (moduleIsBibleOrCommentary(m_key->module())) {
         CSwordVerseKey* verseKey = dynamic_cast<CSwordVerseKey*>(m_key);
-        verseKey->setPosition(sword::TOP);
+        verseKey->positionToTop();
         emit referenceChange();
     }
 }
@@ -483,12 +471,12 @@ void BtWindowInterface::setModuleName(const QString& moduleName) {
     else
         m_moduleNames[0] = moduleName;
 
-    CSwordModuleInfo* m = CSwordBackend::instance()->findModuleByName(moduleName);
+    CSwordModuleInfo* m = CSwordBackend::instance().findModuleByName(moduleName);
     if (!m)
         return;
 
     if (!m_key) {
-        m_key = CSwordKey::createInstance(m);
+        m_key = m->createKey();
     }
     else {
         if (moduleIsBibleOrCommentary(m) &&
@@ -502,7 +490,7 @@ void BtWindowInterface::setModuleName(const QString& moduleName) {
 
         else {
             delete m_key;
-            m_key = CSwordKey::createInstance(m);
+            m_key = m->createKey();
         }
 
     }
@@ -516,7 +504,7 @@ void BtWindowInterface::setModuleName(const QString& moduleName) {
 
     CSwordTreeKey* treeKey = dynamic_cast<CSwordTreeKey*>(m_key);
     if (treeKey)
-        treeKey->firstChild();
+        treeKey->positionToFirstChild();
 
     m_moduleTextModel->setModules(m_moduleNames);
 
@@ -666,7 +654,7 @@ void BtWindowInterface::processNodes(const QDomNodeList& nodes) {
             }
         }
         if (!nodeReferences.isEmpty()) {
-            QStringList parts = comboBoxEntries.split('/', QString::SkipEmptyParts);
+            QStringList parts = comboBoxEntries.split('/', Qt::SkipEmptyParts);
             if (parts.count() == 4 && parts.at(0) == "sword:" && parts.at(1) == "Bible") {
                 m_references += nodeReferences;
                 m_comboBoxEntries += parts.at(3);
@@ -737,12 +725,8 @@ QString BtWindowInterface::getEnglishReference() const {
 void BtWindowInterface::saveWindowStateToConfig(int windowIndex) {
     const QString windowKey = QString::number(windowIndex);
     const QString windowGroup = "window/" + windowKey + '/';
-
-    BtConfig & conf = btConfig();
-    conf.beginGroup(windowGroup);
-    conf.setSessionValue("key", getEnglishKey(m_key));
-    conf.setSessionValue("modules", m_moduleNames);
-    conf.endGroup();
+    btConfig().setValue(windowGroup + "key", getEnglishKey(m_key));
+    btConfig().setValue(windowGroup + "modules", m_moduleNames);
 }
 
 void BtWindowInterface::referenceChanged() {
@@ -780,7 +764,7 @@ QString BtWindowInterface::getFontName() const {
     const CSwordModuleInfo* m = module();
     if (m == nullptr)
         return QString();
-    const CLanguageMgr::Language* lang = m->language();
+    auto const lang = m->language();
     if (lang == nullptr)
         return QString();
     BtConfig::FontSettingsPair fontPair = btConfig().getFontForLanguage(*lang);
@@ -797,7 +781,7 @@ QString BtWindowInterface::getFontName() const {
 int BtWindowInterface::getFontSize() const {
     if (!module())
         return getDefaultFont().pointSize();
-    const CLanguageMgr::Language* lang = module()->language();
+    auto const lang = module()->language();
     BtConfig::FontSettingsPair fontPair = btConfig().getFontForLanguage(*lang);
     if (fontPair.first) {
         QFont font = fontPair.second;
@@ -809,7 +793,7 @@ int BtWindowInterface::getFontSize() const {
 }
 
 void BtWindowInterface::setFontSize(int size) {
-    const CLanguageMgr::Language* lang = module()->language();
+    auto const lang = module()->language();
     BtConfig::FontSettingsPair fontPair = btConfig().getFontForLanguage(*lang);
     fontPair.second.setPointSize(size);
     btConfig().setFontForLanguage(*lang, fontPair);
@@ -835,11 +819,11 @@ bool BtWindowInterface::getRightScroll() const {
 void BtWindowInterface::setScrollBarPosition(int pos ) {
     btConfig().setValue("ui/scrollBarPosition", pos);
     if (pos == ScrollBarPosition::RIGHT) {
-        leftScrollChanged();
-        rightScrollChanged();
+        emit leftScrollChanged();
+        emit rightScrollChanged();
     } else {
-        rightScrollChanged();
-        leftScrollChanged();
+        emit rightScrollChanged();
+        emit leftScrollChanged();
     }
 }
 
@@ -885,7 +869,7 @@ bool BtWindowInterface::getHistoryBackwardVisible() const {
 bool BtWindowInterface::moduleIsWritable(int column) {
     BT_ASSERT(column >= 0 && column <= m_moduleNames.count());
     QString moduleName = m_moduleNames.at(column);
-    CSwordModuleInfo* module = CSwordBackend::instance()->findModuleByName(moduleName);
+    CSwordModuleInfo* module = CSwordBackend::instance().findModuleByName(moduleName);
     return module->isWritable();
 }
 
@@ -924,15 +908,15 @@ void BtWindowInterface::lookupAvailableModules() {
     m_hebrewStrongsLexicons.clear();
     m_bibles.clear();
     Q_FOREACH(CSwordModuleInfo const * const m,
-              CSwordBackend::instance()->moduleList()) {
+              CSwordBackend::instance().moduleList()) {
         if (m->type() ==  CSwordModuleInfo::Bible) {
             m_bibles += m->name();
         }
         if (m->type() ==  CSwordModuleInfo::Lexicon) {
-            if (m->has(CSwordModuleInfo::HebrewDef)) {
+            if (m->has(CSwordModuleInfo::FeatureHebrewDef)) {
                 m_hebrewStrongsLexicons += m->name();
             }
-            if (m->has(CSwordModuleInfo::GreekDef)) {
+            if (m->has(CSwordModuleInfo::FeatureGreekDef)) {
                 m_greekStrongsLexicons += m->name();
             }
         }
@@ -943,7 +927,7 @@ void BtWindowInterface::configModuleByType(const QString& type, const QStringLis
     CSwordModuleInfo* module = btConfig().getDefaultSwordModuleByType(type);
     if (!module && availableModuleNames.count() > 0) {
         QString moduleName = availableModuleNames.at(0);
-        module = CSwordBackend::instance()->findModuleByName(moduleName);
+        module = CSwordBackend::instance().findModuleByName(moduleName);
         btConfig().setDefaultSwordModuleByType(type, module);
     }
 }
@@ -975,10 +959,10 @@ RefIndexes BtWindowInterface::normalizeReferences(const QString& ref1, const QSt
     CSwordKey * key = m_key->copy();
     key->setKey(ref1);
     QString x1 = key->key();
-    ri.index1 = m_moduleTextModel->keyToIndex(key);
+    ri.index1 = m_moduleTextModel->keyToIndex(*key);
     key->setKey(ref2);
     QString x2 = key->key();
-    ri.index2 = m_moduleTextModel->keyToIndex(key);
+    ri.index2 = m_moduleTextModel->keyToIndex(*key);
     ri.r1 = ref1;
     ri.r2 = ref2;
     if (ri.index1 > ri.index2) {
@@ -1049,8 +1033,8 @@ bool BtWindowInterface::copyKey(CSwordKey const * const key,
             dynamic_cast<CSwordVerseKey const *>(key);
     if (vk && vk->isBoundSet()) {
         text = render->renderKeyRange(
-                    QString::fromUtf8(vk->getLowerBound()),
-                    QString::fromUtf8(vk->getUpperBound()),
+                    vk->lowerBound(),
+                    vk->upperBound(),
                     modules
                     );
     } else {
@@ -1086,7 +1070,7 @@ std::unique_ptr<Rendering::CTextRendering> BtWindowInterface::newRenderer(Format
     using R = std::unique_ptr<Rendering::CTextRendering>;
     BT_ASSERT((format == Text) || (format == HTML));
     if (format == HTML)
-        return R{new Rendering::CHTMLExportRendering(addText,
+        return R{new Rendering::CTextRendering(addText,
                                                      displayOptions,
                                                      filterOptions)};
     return R{new Rendering::CPlainTextExportRendering(addText,

@@ -51,7 +51,7 @@ Rectangle {
     }
 
     onVisibleChanged: {
-        if (visible == true) {
+        if (visible === true) {
             moduleInterface.setBibleCommentaryOnly(bibleCommentaryOnly);
             moduleInterface.updateCategoryAndLanguageModels();
             categoryIndex = lastCategoryIndex;
@@ -60,7 +60,7 @@ Rectangle {
     }
 
     onCategoryIndexChanged: {
-        if (visible == true) {
+        if (visible === true) {
             moduleInterface.updateWorksModel();
         }
     }
@@ -128,7 +128,6 @@ Rectangle {
             }
         }
     }
-
 
     ModuleInterface {
         id: moduleInterface

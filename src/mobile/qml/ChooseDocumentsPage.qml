@@ -1,5 +1,4 @@
-import QtQuick.Controls 1.4 as Controls1
-import QtQuick.Controls.Styles 1.4 as ControlsStyle1
+import QtQuick.Controls
 import QtQuick 2.0
 import QtQuick.Controls.Material 2.3
 import QtQuick.Controls 2.5
@@ -27,7 +26,7 @@ Item {
         installInterface.finishChoosingDocuments();
     }
 
-    Controls1.SplitView {
+    SplitView {
         id: splitView
 
         anchors.left: parent.left
@@ -35,10 +34,11 @@ Item {
         anchors.top: parent.top
         anchors.bottom: parent.bottom
         orientation: Qt.Vertical
-        handleDelegate: Item {
+
+        handle: Item {
 
             width: 100;
-            height: Screen.pixelDensity * 3
+            implicitHeight: Screen.pixelDensity * 3
 
             Rectangle {
                 id: vHandle
@@ -54,10 +54,12 @@ Item {
             }
         }
 
+
+
         Item {
             id: topItem
 
-            height: chooseDocumentsPage.height * 0.3
+            SplitView.preferredHeight: chooseDocumentsPage.height * 0.3
             width: categoryListView.width
 
             Rectangle {
@@ -296,6 +298,10 @@ Item {
                     anchors.leftMargin: Screen.pixelDensity * 2.0
                     anchors.right: searchFilter.right
                     anchors.rightMargin: Screen.pixelDensity * 4.0
+                    anchors.top: parent.top
+                    anchors.topMargin: Screen.pixelDensity * 1.0
+                    anchors.bottom: parent.bottom
+                    anchors.bottomMargin: Screen.pixelDensity * 1.0
                     verticalAlignment: Text.AlignVCenter
                     font.pointSize: chooseDocumentsPage.fontPointSize
                     onTextChanged: {

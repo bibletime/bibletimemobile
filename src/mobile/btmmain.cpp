@@ -10,6 +10,7 @@
 *
 **********/
 
+#include <QDirIterator>
 #include <QDebug>
 #include <QGuiApplication>
 #include <QQuickItem>
@@ -187,10 +188,8 @@ void registerMetaTypes() {
     qRegisterMetaType<DisplayOptions>("DisplayOptions");
 
     qRegisterMetaType<BtConfig::StringMap>("StringMap");
-    qRegisterMetaTypeStreamOperators<BtConfig::StringMap>("StringMap");
 
     qRegisterMetaType<QList<int> >("QList<int>");
-    qRegisterMetaTypeStreamOperators<QList<int> >("QList<int>");
 }
 
 void myMessageOutput(QtMsgType type, const QMessageLogContext&, const QString& message ) {
@@ -234,14 +233,10 @@ void setupSwordLog() {
     btm::BtmLog * btmLog = new btm::BtmLog();
     sword::SWLog::setSystemLog(btmLog);
     sword::SWLog::getSystemLog()->setLogLevel(sword::SWLog::LOG_DEBUG);
-
-
 }
 
 int main(int argc, char *argv[]) {
     namespace DU = util::directory;
-
-    QCoreApplication::setAttribute(Qt::AA_EnableHighDpiScaling);
 
     BibleTimeApp app(argc, argv);
 

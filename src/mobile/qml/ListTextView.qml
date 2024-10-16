@@ -93,7 +93,7 @@ Rectangle {
             objectName: "entry"
 
             color: Material.background
-            width: parent.width
+            width: listView.width
             height: {
                 var pixel = btStyle.pixelsPerMillimeterY * 8;
                 var uiFont = btStyle.uiFontPointSize * 3.5;

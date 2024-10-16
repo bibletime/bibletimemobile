@@ -42,6 +42,7 @@ Rectangle {
 
         function selectItem(x, y) {
             var index = listView.indexAt(x+contentX,y+contentY);
+            var item  = listView.itemAt(x+contentX,y+contentY);
             currentIndex = index;
             top.itemSelected(index);
         }
@@ -53,7 +54,7 @@ Rectangle {
             objectName: "entry"
 
             color: Material.background
-            width: parent.width
+            width: listView.width
             height: {
                 var pixel = btStyle.pixelsPerMillimeterY * 7;
                 var uiFont = btStyle.uiFontPointSize * 2;

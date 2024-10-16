@@ -18,6 +18,7 @@ Rectangle {
     id: searchResultsTitleBar
 
     signal back();
+    signal searchResultsMenuRequested();
 
     color: Material.primary
 
@@ -43,5 +44,22 @@ Rectangle {
         anchors.leftMargin: btStyle.pixelsPerMillimeterX * 2.5
         verticalAlignment: Text.AlignVCenter
         text: qsTranslate("SearchResults", "Search Results")
+    }
+
+    MenuButton {
+        id: searchMenuButton
+
+        width: parent.height * 1.1
+        height: parent.height
+        anchors.right: parent.right
+        anchors.top: parent.top
+        anchors.bottom: parent.bottom
+        foreground: Material.foreground
+        background: Material.background
+
+        onButtonClicked: {
+            searchResultsTitleBar.searchResultsMenuRequested();
+        }
+
     }
 }

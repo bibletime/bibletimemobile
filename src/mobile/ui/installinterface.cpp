@@ -16,9 +16,12 @@
 #include "backend/btinstallmgr.h"
 #include "backend/btinstallthread.h"
 #include "backend/config/btconfig.h"
+#include "backend/drivers/cswordmoduleinfo.h"
+#include "backend/managers/cswordbackend.h"
 #include "mobile/bookshelfmanager/installsources.h"
 #include <QThread>
 #include <QDebug>
+#include <swversion.h>
 
 namespace btm {
 
@@ -50,9 +53,14 @@ QString const LanguagesKey = "GUI/BookshelfWizard/languages";
 
 QString const groupingOrderKey("GUI/BookshelfWizard/InstallPage/grouping");
 
+
+static QStringList targetList() {
+    QStringList names = CSwordBackend::instance().swordDirList();
+    return names;
+}
+
 InstallInterface::InstallInterface() :
     QObject(),
-    m_backend(0),
     m_thread(0),
     m_worker(0),
     m_nextInstallIndex(0),
@@ -60,13 +68,12 @@ InstallInterface::InstallInterface() :
     m_wasCanceled(false),
     m_progressMin(0),
     m_progressMax(0),
-    m_progressValue(0),
-    m_groupingOrder(groupingOrderKey) {
+    m_progressValue(0) {
 
     // Setup models:
-    m_bookshelfModel = new BtBookshelfModel(this);
-    m_installPageModel = new DocumentModel(m_groupingOrder, this);
-    m_installPageModel->setSourceModel(m_bookshelfModel);
+    auto bookshelfModel = BtBookshelfModel::newInstance();
+    m_installPageModel = new DocumentModel(this);
+    m_installPageModel->setSourceModel(bookshelfModel);
     m_filterModel = new BtBookshelfFilterModel(this);
     m_filterModel->setSourceModel(m_installPageModel);
     m_documentsSortFilterModel.setSourceModel(&m_worksModel3);
@@ -199,12 +206,19 @@ QVariant InstallInterface::sourceModel2() {
 
 void InstallInterface::initializeLanguagesModel() {
     QSet<QString> languageSet;
-    for (auto const & sourceName : m_selectedSources)
-        for (auto const * module :
-             BtInstallBackend::backend(
-                 BtInstallBackend::source(sourceName))->moduleList())
+
+    for (auto const & sourceName : m_selectedSources) {
+        std::unique_ptr<CSwordBackend const> const backend =
+            BtInstallBackend::backend(BtInstallBackend::source(sourceName));
+
+        for (auto const * module : backend->moduleList())
             languageSet.insert(module->language()->translatedName());
+    }
+
     QStringList languages = languageSet.values();
+
+
+
     languages.sort(Qt::CaseInsensitive);
     m_selectedLanguages = btConfig().value<QStringList>(LanguagesKey, QStringList{});
     m_indexOfFirstLanguageChecked = setupCheckedModel2(languages, m_selectedLanguages, &m_languageModel2);
@@ -259,11 +273,12 @@ static void setupTextModel(const QStringList& modelList, RoleItemModel* model) {
 
 void InstallInterface::initializeCategoriesModel() {
     QSet<QString> categories;
-    for (auto const & sourceName : m_selectedSources) {
-        for (auto const * module :
-             BtInstallBackend::backend(
-                 BtInstallBackend::source(sourceName))->moduleList()) {
 
+    for (auto const & sourceName : m_selectedSources) {
+        std::unique_ptr<CSwordBackend const> const backend =
+            BtInstallBackend::backend(BtInstallBackend::source(sourceName));
+
+        for (auto const * module : backend->moduleList()) {
             QString lang = module->language()->translatedName();
             if (m_selectedLanguages.contains(lang)) {
                 CSwordModuleInfo::Category category = module->category();
@@ -278,9 +293,9 @@ void InstallInterface::initializeCategoriesModel() {
 }
 
 void InstallInterface::initializeDocumentsItem(
-        const CSwordModuleInfo * module,
-        QStandardItem * item,
-        const QString& sourceName) {
+    const CSwordModuleInfo * module,
+    QStandardItem * item,
+    const QString& sourceName) {
 
     CSwordModuleInfo::Category category = module->category();
     QString categoryName = module->categoryName(category);
@@ -301,7 +316,7 @@ void InstallInterface::initializeDocumentsItem(
 void InstallInterface::initializeDocumentsModel() {
 
     QSet<QString> installedModules;
-    const QList<CSwordModuleInfo*> modules = CSwordBackend::instance()->moduleList();
+    const QList<CSwordModuleInfo*> modules = CSwordBackend::instance().moduleList();
     for (int moduleIndex=0; moduleIndex<modules.count(); ++moduleIndex) {
         CSwordModuleInfo* module = modules.at(moduleIndex);
         QString name = module->name();
@@ -310,10 +325,12 @@ void InstallInterface::initializeDocumentsModel() {
     m_worksModel3.clear();
     if (m_categoryModel.rowCount() == 0)
         return;
+
     for (auto const & sourceName : m_selectedSources) {
-        for (auto const * module :
-             BtInstallBackend::backend(
-                 BtInstallBackend::source(sourceName))->moduleList()) {
+        std::unique_ptr<CSwordBackend const> const backend =
+            BtInstallBackend::backend(BtInstallBackend::source(sourceName));
+
+        for (auto const * module : backend->moduleList()) {
             QString lang = module->language()->translatedName();
             if (! m_selectedLanguages.contains(lang))
                 continue;
@@ -347,6 +364,7 @@ void InstallInterface::filterWorksByText(const QString& text) {
 
 void InstallInterface::finishChoosingDocuments() {
     m_modulesToInstall.clear();
+    m_usedBackends.clear();
     for (int row=0; row<m_worksModel3.rowCount(); ++row) {
         QModelIndex index = m_worksModel3.index(row,0);
         QStandardItem * item = m_worksModel3.itemFromIndex(index);
@@ -355,10 +373,11 @@ void InstallInterface::finishChoosingDocuments() {
             QString moduleName = item->data(WorksRoles3::ModuleNameRole).toString();
             QString sourceName = item->data(WorksRoles3::SourceNameRole).toString();
             sword::InstallSource const source = BtInstallBackend::source(sourceName);
-            CSwordBackend * const backend = BtInstallBackend::backend(source);
+            std::unique_ptr<CSwordBackend const> backend = BtInstallBackend::backend(source);
             CSwordModuleInfo * module = backend->findModuleByName(moduleName);
             module->setProperty("installSourceName", sourceName);
             m_modulesToInstall.append(module);
+            m_usedBackends.emplace_back(std::move(backend));
         }
     }
 }
@@ -384,7 +403,7 @@ void InstallInterface::initializeRemoveDocumentsModel() {
     m_worksModel3.clear();
     m_documentsSortFilterModel.setTextFilter("");
 
-    auto moduleList = CSwordBackend::instance()->moduleList();
+    auto moduleList = CSwordBackend::instance().moduleList();
     for (auto module : moduleList) {
 
         QStandardItem * item = new QStandardItem();
@@ -404,13 +423,13 @@ void InstallInterface::finishRemovingDocuments() {
         bool checked = item->data(WorksRoles3::CheckedRole).toBool();
         if (checked) {
             QString moduleName = item->data(WorksRoles3::ModuleNameRole).toString();
-            CSwordModuleInfo * module = CSwordBackend::instance()->findModuleByName(moduleName);
+            CSwordModuleInfo * module = CSwordBackend::instance().findModuleByName(moduleName);
             if (module)
                 m_modulesToRemove.append(module);
         }
     }
     QSet<CSwordModuleInfo*> modulesSet(m_modulesToRemove.begin(), m_modulesToRemove.end());
-    CSwordBackend::instance()->uninstallModules(modulesSet);
+    CSwordBackend::instance().uninstallModules(modulesSet);
 }
 
 
@@ -420,7 +439,7 @@ void InstallInterface::initializeUpdateDocumentsModel() {
 
     m_documentsSortFilterModel.setTextFilter("");
     QSet<QString> installedModules;
-    const QList<CSwordModuleInfo*> modules = CSwordBackend::instance()->moduleList();
+    const QList<CSwordModuleInfo*> modules = CSwordBackend::instance().moduleList();
     for (int moduleIndex=0; moduleIndex<modules.count(); ++moduleIndex) {
         CSwordModuleInfo* module = modules.at(moduleIndex);
         QString name = module->name();
@@ -429,9 +448,11 @@ void InstallInterface::initializeUpdateDocumentsModel() {
     m_worksModel3.clear();
     QStringList sourceNames = BtInstallBackend::sourceNameList();
     for (auto const & sourceName : sourceNames) {
-        for (auto const * module :
-             BtInstallBackend::backend(
-                 BtInstallBackend::source(sourceName))->moduleList()) {
+        std::unique_ptr<CSwordBackend const> const backend =
+            BtInstallBackend::backend(BtInstallBackend::source(sourceName));
+
+        for (auto const * module : backend->moduleList()) {
+
             QString moduleName = module->name();
             if (! installedModules.contains(moduleName))
                 continue;
@@ -439,20 +460,16 @@ void InstallInterface::initializeUpdateDocumentsModel() {
             using CSMI = CSwordModuleInfo;
             using CSV = sword::SWVersion const;
             CSMI const * const installedModule =
-                    CSwordBackend::instance()->findModuleByName(module->name());
+                CSwordBackend::instance().findModuleByName(module->name());
             CSV localVersion = CSV(installedModule->config(CSMI::ModuleVersion).toLatin1());
             CSV remoteVersion = CSV(module->config(CSMI::ModuleVersion).toLatin1());
             bool update = localVersion < remoteVersion;
             if (update) {
                 QStandardItem * item = new QStandardItem();
                 initializeDocumentsItem(module, item, sourceName);
-
                 QString versionInfo = QString(localVersion.getText()) +
-                        " => " + QString(remoteVersion.getText());
+                                      " => " + QString(remoteVersion.getText());
                 item->setData(versionInfo, WorksRoles3::VersionRole);
-
-                //item->setData(module,WorksRoles3::ModuleRole);
-
                 m_worksModel3.appendRow(item);
             }
         }
@@ -509,7 +526,7 @@ void InstallInterface::installModules() {
 // Other **************************************************
 
 static CSwordModuleInfo* moduleInstalled(const CSwordModuleInfo& moduleInfo) {
-    CSwordModuleInfo *installedModule = CSwordBackend::instance()->findModuleByName(moduleInfo.name());
+    CSwordModuleInfo *installedModule = CSwordBackend::instance().findModuleByName(moduleInfo.name());
     return installedModule;
 }
 
@@ -543,13 +560,11 @@ static void setupWorksModel(const QStringList& titleList,
 }
 
 void InstallInterface::updateWorksModel(
-        const QString& sourceName,
-        const QString& categoryName,
-        const QString& languageName)
+    const QString& sourceName,
+    const QString& categoryName,
+    const QString& languageName)
 {
-    if (m_backend == nullptr)
-        return;
-    const QList<CSwordModuleInfo*> modules = m_backend->moduleList();
+    const QList<CSwordModuleInfo*> modules = CSwordBackend::instance().moduleList();
 
     m_worksTitleList.clear();
     m_worksDescList.clear();
@@ -561,15 +576,15 @@ void InstallInterface::updateWorksModel(
         module->setProperty("installSourceName", sourceName);
         CSwordModuleInfo::Category category = module->category();
         QString moduleCategoryName = module->categoryName(category);
-        const CLanguageMgr::Language* language = module->language();
+        auto const language = module->language();
         QString moduleLanguageName = language->translatedName();
         if (moduleCategoryName == categoryName &&
-                moduleLanguageName == languageName ) {
+            moduleLanguageName == languageName ) {
             QString name = module->name();
             QString description = module->config(CSwordModuleInfo::Description);
             QString version = module->config(CSwordModuleInfo::ModuleVersion);
             QString info = description + ": " + version;\
-            int installed = moduleInstalled(*module) ? 1 : 0;
+                int installed = moduleInstalled(*module) ? 1 : 0;
             m_worksTitleList.append(name);
             m_worksDescList.append(info);
             m_worksList.append(module);
@@ -581,7 +596,7 @@ void InstallInterface::updateWorksModel(
 
 
 int InstallInterface::installedModulesCount() {
-    return CSwordBackend::instance()->moduleList().count();
+    return CSwordBackend::instance().moduleList().count();
 }
 
 void InstallInterface::clearModules() {
@@ -591,7 +606,7 @@ void InstallInterface::clearModules() {
 
 void InstallInterface::addModule(const QString& sourceName, const QString& moduleName) {
     updateSwordBackend(sourceName);
-    const QList<CSwordModuleInfo*> modules = m_backend->moduleList();
+    const QList<CSwordModuleInfo*> modules = CSwordBackend::instance().moduleList();
     for (int moduleIndex=0; moduleIndex<modules.count(); ++moduleIndex) {
         CSwordModuleInfo* module = modules.at(moduleIndex);
         module->setProperty("installSourceName", sourceName);
@@ -656,7 +671,7 @@ void InstallInterface::slotOneItemCompleted(int /* moduleIndex */, bool /* succe
 
 void InstallInterface::slotThreadFinished() {
     setProgressVisible(false);
-    CSwordBackend::instance()->reloadModules(CSwordBackend::AddedModules);
+    CSwordBackend::instance().reloadModules();
     if (m_wasCanceled) {
         return;
     }
@@ -683,7 +698,7 @@ QString InstallInterface::getModuleName(int moduleIndex) {
 }
 
 QString InstallInterface::getSourcePath() {
-    QStringList targets = BtInstallBackend::targetList();
+    QStringList targets = targetList();
     for (QStringList::iterator it = targets.begin(); it != targets.end(); ++it)  {
         // Add the path only if it's writable
         QString sourcePath = *it;
@@ -703,7 +718,8 @@ QString InstallInterface::getSourcePath() {
 }
 
 void InstallInterface::removeModules() {
-    CSwordBackend::instance()->uninstallModules(m_modulesToRemove.toSet());
+    //    CSwordBackend::instance().uninstallModules(m_modulesToRemove.toSet());
+    CSwordBackend::instance().uninstallModules(QSet<CSwordModuleInfo*>(m_modulesToRemove.begin(), m_modulesToRemove.end()));
 }
 
 void InstallInterface::runThread2() {
@@ -723,8 +739,10 @@ void InstallInterface::runThread2() {
 void InstallInterface::updateSwordBackend(const QString& sourceName) {
     if (sourceName.isEmpty())
         return;
-    sword::InstallSource source = BtInstallBackend::source(sourceName);
-    m_backend = BtInstallBackend::backend(source);
+    sword::InstallSource const source = BtInstallBackend::source(sourceName);
+
+    std::unique_ptr<CSwordBackend const> backend(
+        BtInstallBackend::backend(source));
 }
 
 QVariant InstallInterface::worksModel() {
@@ -734,9 +752,9 @@ QVariant InstallInterface::worksModel() {
 }
 
 void InstallInterface::refreshListsAutomatic(
-        const QString& source,
-        const QString& category,
-        const QString& language) {
+    const QString& source,
+    const QString& category,
+    const QString& language) {
     m_wasCanceled = false;
     emit wasCanceledChanged();
     m_tempSource = source;
@@ -784,9 +802,7 @@ void InstallInterface::setupSourceModel() {
 }
 
 void InstallInterface::updateCategoryModel() {
-    if (m_backend == nullptr)
-        return;
-    const QList<CSwordModuleInfo*> modules = CSwordBackend::instance()->moduleList();
+    const QList<CSwordModuleInfo*> modules = CSwordBackend::instance().moduleList();
     QSet<QString> categories;
     for (int moduleIndex=0; moduleIndex<modules.count(); ++moduleIndex) {
         CSwordModuleInfo* module = modules.at(moduleIndex);
@@ -800,9 +816,7 @@ void InstallInterface::updateCategoryModel() {
 }
 
 void InstallInterface::updateLanguageModel(const QString& currentCategory) {
-    if (m_backend == nullptr)
-        return;
-    const QList<CSwordModuleInfo*> modules = m_backend->moduleList();
+    const QList<CSwordModuleInfo*> modules = CSwordBackend::instance().moduleList();
     QSet<QString> languages;
     for (int moduleIndex=0; moduleIndex<modules.count(); ++moduleIndex) {
         CSwordModuleInfo* module = modules.at(moduleIndex);
@@ -810,7 +824,7 @@ void InstallInterface::updateLanguageModel(const QString& currentCategory) {
         QString categoryName = module->categoryName(category);
         if (!currentCategory.isEmpty() && currentCategory != categoryName)
             continue;
-        const CLanguageMgr::Language* language = module->language();
+        auto const language = module->language();
         QString languageName = language->translatedName();
         languages.insert(languageName);
     }

@@ -52,11 +52,11 @@ Rectangle {
     function removeParallelModule() {
         moduleChooser.bibleCommentaryOnly = false;
         var n = btWindowInterface.numModules
-        if (n == 4)
+        if (n === 4)
             btWindowInterface.module4Name = "";
-        if (n == 3)
+        if (n === 3)
             btWindowInterface.module3Name = "";
-        if (n == 2)
+        if (n === 2)
             btWindowInterface.module2Name = "";
     }
 
@@ -475,7 +475,6 @@ Rectangle {
                         font.pointSize: btWindowInterface.fontSize
                         wrapMode: Text.WordWrap
                         visible: listView.columns > 0
-                        onWidthChanged: doLayout()
 
                         MouseArea {
                             anchors.fill: parent
@@ -498,7 +497,6 @@ Rectangle {
                         font.pointSize: btWindowInterface.fontSize
                         wrapMode: Text.WordWrap
                         visible: listView.columns > 1
-                        onWidthChanged: doLayout()
 
                         MouseArea {
                             anchors.fill: parent
@@ -521,7 +519,6 @@ Rectangle {
                         font.pointSize: btWindowInterface.fontSize
                         wrapMode: Text.WordWrap
                         visible: listView.columns > 2
-                        onWidthChanged: doLayout()
 
                         MouseArea {
                             anchors.fill: parent
@@ -544,7 +541,6 @@ Rectangle {
                         font.pointSize: btWindowInterface.fontSize
                         wrapMode: Text.WordWrap
                         visible: listView.columns > 3
-                        onWidthChanged: doLayout()
 
                         MouseArea {
                             anchors.fill: parent

@@ -19,8 +19,9 @@
 #include <QScreen>
 #include "backend/config/btconfig.h"
 #include "backend/models/btmoduletextmodel.h"
+#include <swversion.h>
 
-// BtStyle is a class that is registered at a QML item. It can be placed into
+// BtStyle is a class that is registered as a QML item. It can be placed into
 // QML files and its properties are available to be used in QML. It contains
 // colors, sizes, etc. that affect the look of the UI. You can have multipe
 // instances of the item. Changing a property on one of them changes all of them
@@ -543,7 +544,7 @@ QString BtStyle::getBibleTimeGitVersion() const {
 
 QString BtStyle::getQtVersion() const {
     QString version =  qVersion();
-        return  version;
+    return  version;
 }
 
 QString BtStyle::getSwordVersion() const {

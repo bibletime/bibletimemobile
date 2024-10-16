@@ -48,9 +48,6 @@ BibleTimeApp::~BibleTimeApp() {
 
     delete CDisplayTemplateMgr::instance();
 
-    CLanguageMgr::destroyInstance();
-    CSwordBackend::destroyInstance();
-
     BtConfig::destroyInstance();
 }
 
@@ -64,31 +61,31 @@ bool BibleTimeApp::initBtConfig() {
         /// \todo Migrate from btConfigOldApi to BTCONFIG_API_VERSION
         qWarning() << "BibleTime configuration migration is not yet implemented!!!";
         if (message::showWarning(
-                    nullptr,
-                    tr("Warning!"),
-                    tr("Migration to the new configuration system is not yet "
-                       "implemented. Proceeding might result in <b>loss of data"
-                       "</b>. Please backup your configuration files before "
-                       "you continue!<br/><br/>Do you want to continue? Press "
-                       "\"No\" to quit BibleTime immediately."),
-                    QMessageBox::Yes | QMessageBox::No,
-                    QMessageBox::No) == QMessageBox::No)
+                nullptr,
+                tr("Warning!"),
+                tr("Migration to the new configuration system is not yet "
+                   "implemented. Proceeding might result in <b>loss of data"
+                   "</b>. Please backup your configuration files before "
+                   "you continue!<br/><br/>Do you want to continue? Press "
+                   "\"No\" to quit BibleTime immediately."),
+                QMessageBox::Yes | QMessageBox::No,
+                QMessageBox::No) == QMessageBox::No)
             return false;
     } else {
         BT_ASSERT(r == BtConfig::INIT_NEED_UNIMPLEMENTED_BACKWARD_MIGRATE);
         if (message::showWarning(
-                    nullptr,
-                    tr("Error loading configuration!"),
-                    tr("Failed to load BibleTime's configuration, because it "
-                       "appears that the configuration file corresponds to a "
-                       "newer version of BibleTime. This is likely caused by "
-                       "BibleTime being downgraded. Loading the new "
-                       "configuration file may result in <b>loss of data</b>."
-                       "<br/><br/>Do you still want to try to load the new "
-                       "configuration file? Press \"No\" to quit BibleTime "
-                       "immediately."),
-                    QMessageBox::Yes | QMessageBox::No,
-                    QMessageBox::No) == QMessageBox::No)
+                nullptr,
+                tr("Error loading configuration!"),
+                tr("Failed to load BibleTime's configuration, because it "
+                   "appears that the configuration file corresponds to a "
+                   "newer version of BibleTime. This is likely caused by "
+                   "BibleTime being downgraded. Loading the new "
+                   "configuration file may result in <b>loss of data</b>."
+                   "<br/><br/>Do you still want to try to load the new "
+                   "configuration file? Press \"No\" to quit BibleTime "
+                   "immediately."),
+                QMessageBox::Yes | QMessageBox::No,
+                QMessageBox::No) == QMessageBox::No)
             return false;
     }
     BtConfig::forceMigrate();

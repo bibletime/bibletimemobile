@@ -13,6 +13,7 @@
 #include "chooserinterface.h"
 
 #include "backend/drivers/cswordbiblemoduleinfo.h"
+#include "backend/drivers/cswordbookmoduleinfo.h"
 #include "backend/drivers/cswordmoduleinfo.h"
 #include "backend/keys/cswordtreekey.h"
 #include "backend/keys/cswordversekey.h"
@@ -41,19 +42,19 @@ void ChooserInterface::initializeRoleNameModel() {
 }
 
 int ChooserInterface::getNewTestamentIndex(const QString& moduleName) {
-    CSwordModuleInfo* m = CSwordBackend::instance()->findModuleByName(moduleName);
+    CSwordModuleInfo* m = CSwordBackend::instance().findModuleByName(moduleName);
     const CSwordBibleModuleInfo* bibleModule = qobject_cast<const CSwordBibleModuleInfo*>(m);
     if (! bibleModule)
         return -1;
-    QStringList books = *bibleModule->books();
-    CSwordKey * key = CSwordKey::createInstance(m);
+    QStringList books = bibleModule->books();
+    CSwordKey * key = m->createKey();
     CSwordVerseKey* verseKey = dynamic_cast<CSwordVerseKey*>(key);
     if (verseKey) {
         for (int i=0; i<books.count(); ++i) {
             QString book = books.at(i);
             QString keyName = book + " 1:1";
             verseKey->setKey(keyName);
-            int testament = verseKey->getTestament();
+            int testament = verseKey->testament();
             if (testament == 2)
                 return i;
         }
@@ -63,25 +64,21 @@ int ChooserInterface::getNewTestamentIndex(const QString& moduleName) {
 
 QStringList ChooserInterface::getBooks(const QString& moduleName) const {
     QStringList books;
-    CSwordModuleInfo* module = CSwordBackend::instance()->findModuleByName(moduleName);
+    CSwordModuleInfo* module = CSwordBackend::instance().findModuleByName(moduleName);
     const CSwordBibleModuleInfo* bibleModule = qobject_cast<const CSwordBibleModuleInfo*>(module);
     if (bibleModule)
-        books = *bibleModule->books();
+        books = bibleModule->books();
     return books;
 }
 
 QStringList ChooserInterface::getChapters(const QString& moduleName, const QString& book) const {
     QStringList chapters;
-    CSwordModuleInfo* m = CSwordBackend::instance()->findModuleByName(moduleName);
+    CSwordModuleInfo* m = CSwordBackend::instance().findModuleByName(moduleName);
     const CSwordBibleModuleInfo* module = qobject_cast<const CSwordBibleModuleInfo*>(m);
     if (module) {
-        CSwordKey * key = CSwordKey::createInstance(m);
-        CSwordVerseKey* verseKey = dynamic_cast<CSwordVerseKey*>(key);
-        if (verseKey) {
-            int count = module->chapterCount(book);
-            for (int i = 1; i <= count; i++) {
-                chapters << QString::number(i);
-            }
+        int count = module->chapterCount(book);
+        for (int i = 1; i <= count; i++) {
+            chapters << QString::number(i);
         }
     }
     return chapters;
@@ -89,7 +86,7 @@ QStringList ChooserInterface::getChapters(const QString& moduleName, const QStri
 
 QStringList ChooserInterface::getVerses(const QString& moduleName, const QString& book, const QString& strChapter) const {
     QStringList verses;
-    CSwordModuleInfo* m = CSwordBackend::instance()->findModuleByName(moduleName);
+    CSwordModuleInfo* m = CSwordBackend::instance().findModuleByName(moduleName);
     const CSwordBibleModuleInfo* module = qobject_cast<const CSwordBibleModuleInfo*>(m);
     if (module) {
         int chapter = strChapter.toInt();
@@ -102,7 +99,7 @@ QStringList ChooserInterface::getVerses(const QString& moduleName, const QString
 }
 
 bool ChooserInterface::isBibleOrCommentary(const QString& moduleName) {
-    CSwordModuleInfo* module = CSwordBackend::instance()->findModuleByName(moduleName);
+    CSwordModuleInfo* module = CSwordBackend::instance().findModuleByName(moduleName);
     if (!module)
         return false;
     CSwordModuleInfo::Category category = module->category();
@@ -114,7 +111,7 @@ bool ChooserInterface::isBibleOrCommentary(const QString& moduleName) {
 }
 
 bool ChooserInterface::isBook(const QString& moduleName) {
-    CSwordModuleInfo* module = CSwordBackend::instance()->findModuleByName(moduleName);
+    CSwordModuleInfo* module = CSwordBackend::instance().findModuleByName(moduleName);
     if (!module)
         return false;
     return module->category() == CSwordModuleInfo::Books;
@@ -131,7 +128,7 @@ static QString constructPath(const QStringList& pathList) {
 
 QString ChooserInterface::getBackPath(const QString& /*reference*/) {
     QString reference = getTreeReference();
-    QStringList pathList = reference.split('/', QString::SkipEmptyParts);
+    QStringList pathList = reference.split('/', Qt::SkipEmptyParts);
     pathList.removeLast();
     QString backPath;
     if (pathList.count() == 0)
@@ -145,10 +142,14 @@ QString ChooserInterface::getTreeReference() const {
 }
 
 void ChooserInterface::setupTree(const QString& moduleName, const QString& reference) {
-    CSwordModuleInfo* module = CSwordBackend::instance()->findModuleByName(moduleName);
-    CSwordKey* key = CSwordKey::createInstance(module);
-    m_treeKey = dynamic_cast<CSwordTreeKey*>(key);
+    CSwordModuleInfo* module = CSwordBackend::instance().findModuleByName(moduleName);
+
+    const CSwordBookModuleInfo * bookModule =
+        qobject_cast<const CSwordBookModuleInfo*>(module);
+    CSwordTreeKey key(bookModule->tree(), bookModule);
+    m_treeKey = key.copy();
     m_treeKey->setKey(reference);
+
     QStringList siblings;
     QList<int> hasChildrenList;
     parseKey(&siblings, &hasChildrenList, m_treeKey);
@@ -162,7 +163,7 @@ void ChooserInterface::next(QString value) {
 
     QString newPath = constructPath(keyPathList);
     m_treeKey->setKey(newPath);
-    m_treeKey->firstChild();
+    m_treeKey->positionToFirstChild();
 
     CSwordTreeKey tmpKey(*m_treeKey);
     QStringList siblings;
@@ -170,7 +171,7 @@ void ChooserInterface::next(QString value) {
     parseKey(&siblings, &counts, &tmpKey);
     populateRoleNameModel(siblings, counts);
 
-    m_treeKey->setKey(tmpKey);
+//    m_treeKey->setKey(tmpKey);
 }
 
 void ChooserInterface::back() {
@@ -201,13 +202,13 @@ QStringList ChooserInterface::getKeyPath() const {
     QString oldKey = m_treeKey->key(); //string backup of key
 
     if (oldKey.isEmpty()) { //don't set keys equal to "/", always use a key which may have content
-        m_treeKey->firstChild();
+        m_treeKey->positionToFirstChild();
         oldKey = m_treeKey->key();
     }
 
     QStringList siblings; //split up key
     if (!oldKey.isEmpty()) {
-        siblings = oldKey.split('/', QString::SkipEmptyParts);
+        siblings = oldKey.split('/', Qt::SkipEmptyParts);
     }
     return siblings;
 }
@@ -240,20 +241,18 @@ static int findEntry(const QString& sibling, bool* found,
         bool hasChildren = key->hasChildren();
         hasChildrenList->append(hasChildren ? 1 : 0);
         ++index;
-    } while (key->nextSibling());
+    } while (key->positionToNextSibling());
     return foundIndex;
 }
 
 void ChooserInterface::parseKey(QStringList * siblings,
                                 QList<int>* hasChildrenList, CSwordTreeKey* key) {
     QString oldKey = key->key();
-    QStringList pathDepthList = oldKey.split("/", QString::SkipEmptyParts);
+    QStringList pathDepthList = oldKey.split("/", Qt::SkipEmptyParts);
     int depth = 0;
-    key->root();
+    key->positionToRoot();
 
-    while ( key->firstChild() && (depth < pathDepthList.count()) ) {
-        QString localName = key->getLocalNameUnicode();
-        QString savedKey = key->key();
+    while ( key->positionToFirstChild() && (depth < pathDepthList.count()) ) {
         bool found = false;
         QString path = pathDepthList[depth];
         siblings->clear();

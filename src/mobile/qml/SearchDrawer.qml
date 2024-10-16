@@ -11,8 +11,7 @@
 **********/
 
 import QtQuick 2.11
-import QtQuick.Controls 1.2 as Controls1
-import QtQuick.Controls 2.4
+import QtQuick.Controls
 import QtQuick.Controls.Material 2.3
 import QtQuick.Layouts 1.3
 import BibleTime 1.0
@@ -32,7 +31,7 @@ Drawer {
     property bool indexingCancelled;
 
     signal resultsFinished();
-    signal resultsMenuRequested();
+    signal searchResultsMenuRequested(var module, string reference);
     signal progressTextChanged(string text);
     signal progressValueChanged(int value);
 
@@ -77,15 +76,15 @@ Drawer {
 
         color: Material.background
 
-        Controls1.SplitView {
+        SplitView {
             id: searchResultsArea
 
             anchors.fill: parent
             orientation: Qt.Vertical
-            handleDelegate: Rectangle {
+            handle: Rectangle {
                 id: vHandle
                 width: 1;
-                height: {
+                implicitHeight: {
                     var pixel = btStyle.pixelsPerMillimeterY * 7;
                     var uiFont = btStyle.uiFontPointSize * 3;
                     var mix = pixel * 0.7 + uiFont * 0.3;
@@ -99,42 +98,19 @@ Drawer {
                 Text {
                     id: title
                     text: {
-                        return btWindowInterface.moduleName + "   " +  btWindowInterface.reference;
+                        return btWindowInterface.moduleName + "   " +  btWindowInterface.reference;parent
                     }
                     color: Material.foreground
                     font.pointSize: btStyle.uiFontPointSize
-                    anchors.left: parent.left
-                    anchors.top: parent.top
-                    anchors.bottom: parent.bottom
-                    anchors.right: searchMenuButton.left
-                    horizontalAlignment: Text.AlignHCenter
-                    verticalAlignment: Text.AlignVCenter
-                }
-
-                MenuButton {
-                    id: searchMenuButton
-
-                    width: parent.height * 1.1
-                    height: parent.height
-                    anchors.right: parent.right
-                    anchors.top: parent.top
-                    anchors.bottom: parent.bottom
-                    anchors.margins: 2
-                    foreground: Material.foreground
-                    background: Material.background
-                    visible: btSearchInterface.haveReferences
-
-                    onButtonClicked: {
-                        resultsMenuRequested();
-                    }
+                    anchors.centerIn: parent
                 }
             }
 
             Rectangle {
                 id: topArea
 
-                width: searchDrawer.width
-                height: searchDrawer.height * searchDrawer.topBottomSplit
+                SplitView.preferredHeight: parent.height * searchDrawer.topBottomSplit
+                SplitView.minimumHeight: 80
                 color: Material.background
 
                 SearchResultsTitleBar {
@@ -145,9 +121,14 @@ Drawer {
                     onBack: {
                         searchDrawer.close();
                     }
+                    onSearchResultsMenuRequested: {
+                        var module = searchDrawer.getModule();
+                        var reference = searchDrawer.getReference();
+                        searchDrawer.searchResultsMenuRequested(module, reference);
+                    }
                 }
 
-                Controls1.SplitView {
+                SplitView {
                     id: topSplitter
 
                     orientation: Qt.Horizontal
@@ -156,9 +137,9 @@ Drawer {
                     anchors.bottom: parent.bottom
                     anchors.left: searchResultsTitleBar.left
                     anchors.right: searchResultsTitleBar.right
-                    handleDelegate: Rectangle {
-                        width: handleWidth;
-                        height: 2;
+                    handle: Rectangle {
+                        implicitWidth: handleWidth;
+                        implicitHeight: 5;
                         color: Material.background
                         border.color: Material.accent
                         border.width: 1
@@ -167,21 +148,15 @@ Drawer {
                     SearchResultsModules {
                         id: searchResultsModules
 
-                        anchors.left: parent.left
-                        anchors.top: parent.top
-                        width: parent.width * searchDrawer.leftRightSplit
-                        height: parent.height
+                        SplitView.preferredWidth: parent.width * searchDrawer.leftRightSplit
                         onModuleNameChanged: {
                             btSearchInterface.selectReferences(currentIndex)
                         }
-
                     }
 
                     SearchResultsReferences {
                         id: searchResultsReferences
 
-                        width: parent.width * searchDrawer.leftRightSplit
-                        height: parent.height
                         onReferenceChanged: {
                             searchResultsText.updateTextDisplay();
                         }
@@ -192,27 +167,24 @@ Drawer {
             SearchResultsText {
                 id: searchResultsText
 
-                width: searchDrawer.width
-                height: searchDrawer.height - topArea.height
-                Layout.fillHeight: true
                 moduleName: btSearchInterface.getModuleName(searchResultsModules.currentIndex);
                 reference: btSearchInterface.getReference(searchResultsReferences.currentIndex);
             }
+        }
 
-            BtWindowInterface {
-                id: btWindowInterface
+        BtWindowInterface {
+            id: btWindowInterface
+        }
+
+        BtSearchInterface {
+            id: btSearchInterface
+
+            onProgressTextChanged: {
+                searchDrawer.progressTextChanged(btSearchInterface.progressText);
             }
-
-            BtSearchInterface {
-                id: btSearchInterface
-
-                onProgressTextChanged: {
-                    searchDrawer.progressTextChanged(btSearchInterface.progressText);
-                }
-                onProgressValueChanged: {
-                    var value = btSearchInterface.progressValue
-                    searchDrawer.progressValueChanged(btSearchInterface.progressValue)
-                }
+            onProgressValueChanged: {
+                var value = btSearchInterface.progressValue
+                searchDrawer.progressValueChanged(btSearchInterface.progressValue)
             }
         }
     }

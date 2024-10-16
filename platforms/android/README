@@ -12,8 +12,16 @@ Qt Creator 12.0.0
 Change distributionUrl to 7.3.3 and classpath to 7.2.1
 https://stackoverflow.com/questions/67782975/how-to-fix-the-module-java-base-does-not-opens-java-io-to-unnamed-module
 
+Testing
 Because Android 13 requires Version 2 signing (which Qt 5.15.2 does not have) the apk must
 be manually signed and installed for testing. See the adjacent signit and loadit files.
 
+Production
+Qt Creator signs the aab file. Upload it to the Play Console.
+
+--------------
+July 30, 2024
+
+target = 35
 
 

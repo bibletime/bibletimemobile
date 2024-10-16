@@ -13,6 +13,7 @@
 #include "configinterface.h"
 #include <QStandardPaths>
 #include "util/directory.h"
+#include <QDir>
 
 namespace btm {
 

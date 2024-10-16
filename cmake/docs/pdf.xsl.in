@@ -1,0 +1,4 @@
+<?xml version='1.0'?>
+<xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform" version="1.0">
+    <xsl:import href="@BT_DOCBOOK_XSL_PDF_DOCBOOK_XSL@"/>
+</xsl:stylesheet>

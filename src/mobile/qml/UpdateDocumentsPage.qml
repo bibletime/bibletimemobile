@@ -2,7 +2,6 @@ import QtQuick 2.0
 import QtQuick.Controls.Material 2.3
 import QtQuick.Controls 2.5
 import QtQuick.Window 2.12
-import QtQuick.Controls 1.4
 
 Item {
     id: updateDocumentsPage
@@ -77,9 +76,6 @@ Item {
                 anchors.top: parent.top
                 font.pointSize: updateDocumentsPage.fontPointSize
                 checked: installChecked
-                onCheckedChanged: {
-                    installChecked = checked;
-                }
             }
 
             Text {

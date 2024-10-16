@@ -26,16 +26,15 @@ Rectangle {
         btWindowInterface.updateCurrentModelIndex();
     }
 
+    width: parent.width
     color: Material.background
 
     ListView {
         id: listView
 
         clip: true
-        anchors.top: parent.top
-        anchors.bottom: parent.bottom
-        anchors.left: parent.left
-        anchors.right: parent.right
+        width: parent.width
+        anchors.fill: parent
         anchors.leftMargin: 8
         anchors.rightMargin: 8
         model: btWindowInterface.textModel
@@ -52,12 +51,11 @@ Rectangle {
         delegate: Text {
             text: line
             textFormat: Text.RichText
-            width: parent.width
+            width: listView.width
             color: Material.foreground
             font.family: btWindowInterface.fontName
             font.pointSize: btWindowInterface.fontSize
             wrapMode: Text.WordWrap
-            onWidthChanged: doLayout()
         }
     }
 }

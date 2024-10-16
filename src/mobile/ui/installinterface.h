@@ -19,11 +19,14 @@
 #include <QString>
 #include <QStringList>
 #include <QMap>
+#include <backend/managers/cswordbackend.h>
 #include "mobile/models/roleitemmodel.h"
 #include "mobile/models/workssortfiltermodel.h"
 #include "backend/bookshelfmodel/btbookshelffiltermodel.h"
 #include "mobile/models/documentmodel.h"
 #include "mobile/models/worksmodel.h"
+#include <optional>
+#include <memory>
 
 class BtInstallThread;
 class CSwordBackend;
@@ -200,7 +203,6 @@ private:
     void runThread();
     void setupSourceModel();
 
-    CSwordBackend* m_backend;
     BtInstallThread* m_thread;
     InstallSources* m_worker;
     int m_nextInstallIndex;
@@ -239,6 +241,8 @@ private:
     QMap<CSwordModuleInfo*, bool> m_modulesToInstallRemove;
     QList<CSwordModuleInfo*> m_modulesToRemove;
     QList<CSwordModuleInfo*> m_modulesToInstall;
+
+    std::vector<std::unique_ptr<CSwordBackend const>> m_usedBackends;
 };
 
 }

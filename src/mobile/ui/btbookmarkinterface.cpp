@@ -66,10 +66,10 @@ static QModelIndex getSourceIndex(const QModelIndex& index) {
 
 BtBookmarkInterface::BtBookmarkInterface(QObject* parent)
     : QObject(parent),
-      m_currentFolder(QModelIndex()){
+    m_currentFolder(QModelIndex()){
     getBookmarkModel();
     getFolderModel();
-    setCurrentFolderToRootFolder();
+    //    setCurrentFolderToRootFolder();
 
     QHash<int, QByteArray> roleNames;
     roleNames[TitleRole] =  "title";
@@ -78,6 +78,7 @@ BtBookmarkInterface::BtBookmarkInterface(QObject* parent)
 }
 
 QVariant BtBookmarkInterface::getBookmarkModel() {
+    // TODO test
     if (!s_bookmarksModel) {
         s_bookmarksModel = new BtBookmarksModel(this);
 
@@ -181,14 +182,9 @@ void BtBookmarkInterface::appendContextMenuItem(const QString& title, const QStr
 
 void BtBookmarkInterface::setupContextMenuModel(const QModelIndex& index) {
     m_contextMenuModel.clear();
-    int row = index.row();
-    int rowCount = index.model()->rowCount(index.parent());
-    bool folder = !isBookmark(index);
+    bool folder = ! isBookmark(index);
 
-    if (folder) {
-        appendContextMenuItem(tr("Expand/Collapse"), "toggleexpand");
-
-    } else {
+    if (! folder) {
         appendContextMenuItem(tr("Open"), "open");
     }
     if (folder)
@@ -208,6 +204,7 @@ QString BtBookmarkInterface::getReference(const QModelIndex& index) {
     if (!isBookmark(index))
         return "undefined";
     return s_bookmarksModel->key(index);
+    return QString();
 }
 
 QString BtBookmarkInterface::getModule(const QModelIndex& index) {
@@ -215,6 +212,7 @@ QString BtBookmarkInterface::getModule(const QModelIndex& index) {
         return "undefined";
     CSwordModuleInfo* module = s_bookmarksModel->module(index);
     return module->name();
+    return QString();
 }
 
 QModelIndex BtBookmarkInterface::currentFolder() const {
@@ -242,19 +240,21 @@ QString BtBookmarkInterface::folderName(const QModelIndex& index) {
     return name;
 }
 
-void BtBookmarkInterface::addBookmark(const QString& reference, const QString& moduleName) {
-    QModelIndex sourceIndex = getSourceIndex(m_currentFolder);
-    const CSwordModuleInfo* module = CSwordBackend::instance()->findModuleByName(moduleName);
+void BtBookmarkInterface::addBookmark(const QString& reference,
+                                      const QString& moduleName,
+                                      const QModelIndex & parent) {
+    const CSwordModuleInfo* module = CSwordBackend::instance().findModuleByName(moduleName);
     QString description = reference;
-    int row = s_bookmarksModel->rowCount(sourceIndex);
-    s_bookmarksModel->addBookmark(row, sourceIndex, *module, reference, description);
+    QModelIndex bookmarksParent = s_folderModel->mapToSource(parent);
+    int row = s_bookmarksModel->rowCount(bookmarksParent);
+    s_bookmarksModel->addBookmark(row, bookmarksParent, *module, reference, description);
     s_bookmarksModel->save();
 }
 
-void BtBookmarkInterface::addFolder(const QString& folderName) {
-    QModelIndex sourceIndex = getSourceIndex(m_currentFolder);
-    int row = s_bookmarksModel->rowCount(sourceIndex);
-    s_bookmarksModel->addFolder(row, sourceIndex, folderName);
+void BtBookmarkInterface::addFolder(const QString& folderName, const QModelIndex & parent) {
+    QModelIndex foldersParent = s_folderModel->mapToSource(parent);
+    int row = s_bookmarksModel->rowCount(foldersParent);
+    s_bookmarksModel->addFolder(row, foldersParent, folderName);
     s_bookmarksModel->save();
 }
 

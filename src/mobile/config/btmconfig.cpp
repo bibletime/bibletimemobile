@@ -68,7 +68,7 @@ QString BtmConfig::getDefaultSwordModuleByType(const QString& type) {
 }
 
 void BtmConfig::setDefaultSwordModuleByType(const QString& type, const QString& moduleName) {
-    CSwordModuleInfo * module = CSwordBackend::instance()->findModuleByName(moduleName);
+    CSwordModuleInfo * module = CSwordBackend::instance().findModuleByName(moduleName);
     btConfig().setDefaultSwordModuleByType(type, module);
 }
 
@@ -91,21 +91,21 @@ void BtmConfig::lookupAvailableModules() {
     m_availableGreekMorphLexicons.clear();
     m_availableHebrewMorphLexicons.clear();
     Q_FOREACH(CSwordModuleInfo const * const m,
-              CSwordBackend::instance()->moduleList()) {
+              CSwordBackend::instance().moduleList()) {
         if (m->type() ==  CSwordModuleInfo::Bible) {
             m_availableBibles += m->name();
         }
         if (m->type() ==  CSwordModuleInfo::Lexicon) {
-            if (m->has(CSwordModuleInfo::HebrewDef)) {
+            if (m->has(CSwordModuleInfo::FeatureHebrewDef)) {
                 m_availableHebrewStrongsLexicons += m->name();
             }
-            if (m->has(CSwordModuleInfo::GreekDef)) {
+            if (m->has(CSwordModuleInfo::FeatureGreekDef)) {
                 m_availableGreekStrongsLexicons += m->name();
             }
-            if (m->has(CSwordModuleInfo::HebrewParse)) {
+            if (m->has(CSwordModuleInfo::FeatureHebrewParse)) {
                 m_availableHebrewMorphLexicons += m->name();
             }
-            if (m->has(CSwordModuleInfo::GreekParse)) {
+            if (m->has(CSwordModuleInfo::FeatureGreekParse)) {
                 m_availableGreekMorphLexicons += m->name();
             }
         }
@@ -116,7 +116,7 @@ void BtmConfig::configModuleByType(const QString& type, const QStringList& avail
     CSwordModuleInfo* module = btConfig().getDefaultSwordModuleByType(type);
     if (!module && availableModuleNames.count() > 0) {
         QString moduleName = availableModuleNames.at(0);
-        module = CSwordBackend::instance()->findModuleByName(moduleName);
+        module = CSwordBackend::instance().findModuleByName(moduleName);
         btConfig().setDefaultSwordModuleByType(type, module);
     }
 }

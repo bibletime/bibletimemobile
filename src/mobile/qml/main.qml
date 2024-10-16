@@ -136,15 +136,11 @@ Window {
             setFontDialog,
             copyVersesDialog,
             searchDialog,
-            bookmarkFoldersParent,
-            addFolder1,
-            bookmarkFolders,
             bookmarkManager,
             addBookmark
         ]
 
         Keys.onReleased: {
-            console.log("main: Keys.onReleased");
             if (event.key === Qt.Key_Back || event.key === Qt.Key_Escape) {
                 event.accepted = true;
                 quitQuestion.visible = true;
@@ -169,71 +165,7 @@ Window {
         id: addBookmark
 
         visible: false
-        folderName: bookmarkFolders.currentFolderName
         z: 4
-        onBookmarkFolders: {
-            bookmarkFolders.visible = true;
-        }
-        onAddTheBookmark: {
-            bookmarkFolders.addTheReference(addBookmark.reference, addBookmark.moduleName);
-        }
-    }
-
-    AddFolder {
-        id: addFolder1
-
-        z: 6
-        visible: false
-        parentFolderName: bookmarkFoldersParent.currentFolderName
-        Keys.onReleased: {
-            if ((event.key === Qt.Key_Back || event.key === Qt.Key_Escape) && addFolder1.visible === true) {
-                addFolder1.visible = false;
-                keyReceiver.forceActiveFocus();
-                event.accepted = true;
-            }
-        }
-        onShowFolders: {
-            bookmarkFoldersParent.visible = true;
-        }
-        onFolderAdd: {
-            bookmarkFoldersParent.addFolder(folderName);
-        }
-        onFolderWasAdded: {
-            bookmarkFolders.expandAll();
-        }
-    }
-
-    BookmarkFolders {
-        id: bookmarkFolders
-        visible: false
-        allowNewFolders: true
-        z:5
-        onNewFolder: {
-            addFolder1.visible = true;
-        }
-
-        Keys.onReleased: {
-            if ((event.key === Qt.Key_Back || event.key === Qt.Key_Escape) && bookmarkFolders.visible === true) {
-                bookmarkFolders.visible = false;
-                keyReceiver.forceActiveFocus();
-                event.accepted = true;
-            }
-        }
-    }
-
-    BookmarkFolders {
-        id: bookmarkFoldersParent
-
-        visible: false
-        allowNewFolders: false
-        z:7
-        Keys.onReleased: {
-            if ((event.key === Qt.Key_Back || event.key === Qt.Key_Escape) && bookmarkFoldersParent.visible === true) {
-                bookmarkFoldersParent.visible = false;
-                keyReceiver.forceActiveFocus();
-                event.accepted = true;
-            }
-        }
     }
 
     BookmarkManager {
@@ -279,6 +211,7 @@ Window {
         Keys.onReleased: {
             if ((event.key === Qt.Key_Back || event.key === Qt.Key_Escape)  && bookmarkManagerMenus.visible === true) {
                 event.accepted = true;
+                console.log("close")
                 bookmarkManagerMenus.visible = false;
             }
         }
@@ -554,7 +487,6 @@ Window {
         implicitWidth:parent.width * 0.9
         text: installInterface.progressText
         visible: installInterface.progressVisible
-//        onCanceled: installManagerChooser.cancel();
         x: (parent.width - width) / 2
         y: (parent.height - height) / 2
         z: 1
@@ -845,7 +777,7 @@ Window {
             searchDrawer.performSearch();
         }
 
-        onResultsMenuRequested: {
+        onSearchResultsMenuRequested: {
             searchDrawer.close();
             searchResultsMenu.visible = true;
         }

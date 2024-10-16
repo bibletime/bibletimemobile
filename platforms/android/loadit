@@ -4,9 +4,9 @@ APK="$BUILD/android-build/build/outputs/apk/release/android-build-release-signed
 
 $ADB devices
 
+DEVICE=emulator-5556
 DEVICE=emulator-5554
 DEVICE="9889db31334755504d"
-DEVICE=emulator-5556
 
 $ADB -s $DEVICE  install $APK
 

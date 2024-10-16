@@ -20,22 +20,22 @@ namespace btm {
 
 SessionInterface::SessionInterface() :
     QObject() {
-
 }
 
 int SessionInterface::getColorTheme() {
-    BtConfig & conf = btConfig();
-    return conf.sessionValue<int>("ColorTheme", BtStyle::darkTheme);
+    auto sessionConf = btConfig().session();
+    return sessionConf.value<int>("ColorTheme", BtStyle::darkTheme);
 }
 
 int SessionInterface::getWindowArrangementMode() {
-    BtConfig & conf = btConfig();
-    return conf.sessionValue<int>("MainWindow/MDIArrangementMode");
+    auto sessionConf = btConfig().session();
+    return sessionConf.value<int>("MainWindow/MDIArrangementMode");
 }
 
 QStringList SessionInterface::getWindowList() {
-    BtConfig & conf = btConfig();
-    QStringList w = conf.sessionValue<QStringList>("windowsList");
+
+    auto const sessionConf = btConfig().session();
+    auto w = sessionConf.value<QStringList>(QStringLiteral("windowsList"));
     return w;
 }
 
@@ -43,7 +43,7 @@ QStringList SessionInterface::getInstalledModuleList(const QStringList& names) {
     QStringList installed;
     for (int i=0; i < names.count(); ++i) {
         QString moduleName = names.at(i);
-        CSwordModuleInfo * module = CSwordBackend::instance()->findModuleByName(moduleName);
+        CSwordModuleInfo * module = CSwordBackend::instance().findModuleByName(moduleName);
         if (module != nullptr)
             installed.append(moduleName);
     }
@@ -51,51 +51,49 @@ QStringList SessionInterface::getInstalledModuleList(const QStringList& names) {
 }
 
 QStringList SessionInterface::getWindowModuleList(const QString& win) {
-    BtConfig & conf = btConfig();
+    auto const sessionConf = btConfig().session();
     const QString windowGroup = "window/" + win + '/';
-    QStringList moduleNames = conf.sessionValue<QStringList>(windowGroup + "modules");
+    QStringList moduleNames = sessionConf.value<QStringList>(windowGroup + "modules");
     QStringList installed = getInstalledModuleList(moduleNames);
     return installed;
 }
 
 QString SessionInterface::getWindowKey(const QString& win) {
-    BtConfig & conf = btConfig();
+    auto sessionConf = btConfig().session();
     const QString windowGroup = "window/" + win + '/';
-    const QString key = conf.sessionValue<QString>(windowGroup + "key");
+    const QString key = sessionConf.value<QString>(windowGroup + "key");
     return key;
 }
 
 void SessionInterface::setColorTheme(const QString& color) {
-    BtConfig & conf = btConfig();
-    conf.setSessionValue("ColorTheme",color);
+    auto sessionConf = btConfig().session();
+    sessionConf.setValue("ColorTheme",color);
 }
 
 void SessionInterface::setWindowArrangementMode(int mode) {
-    BtConfig & conf = btConfig();
-    conf.setSessionValue("MainWindow/MDIArrangementMode", mode);
+    auto sessionConf = btConfig().session();
+    sessionConf.setValue("MainWindow/MDIArrangementMode", mode);
 }
 
 void SessionInterface::setWindowList(const QStringList& list) {
-    BtConfig & conf = btConfig();
-    conf.setSessionValue("windowsList", list);
+    auto sessionConf = btConfig().session();
+    sessionConf.setValue(QStringLiteral("windowsList"), list);
 }
 
 void SessionInterface::setWindowModuleList(int index, const QStringList& modules) {
-    BtConfig & conf = btConfig();
     const QString windowKey = QString::number(index);
     const QString windowGroup = "window/" + windowKey + '/';
-    conf.beginGroup(windowGroup);
-    conf.setSessionValue("modules", modules);
-    conf.endGroup();
+
+    auto conf = btConfig().session().group(windowGroup);
+    conf.setValue(QStringLiteral("modules"), modules);
 }
 
 void SessionInterface::setWindowKey(int index, const QString& key) {
-    BtConfig & conf = btConfig();
     const QString windowKey = QString::number(index);
     const QString windowGroup = "window/" + windowKey + '/';
-    conf.beginGroup(windowGroup);
-    conf.setSessionValue("key", key);
-    conf.endGroup();
+
+    auto conf = btConfig().session().group(windowGroup);
+    conf.setValue(QStringLiteral("key"), key);
 }
 
 }

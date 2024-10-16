@@ -45,8 +45,8 @@ public:
     void setCurrentFolder(const QModelIndex& folder);
 
 
-    Q_INVOKABLE void addBookmark(const QString& reference, const QString& moduleName);
-    Q_INVOKABLE void addFolder(const QString& folderName);
+    Q_INVOKABLE void addBookmark(const QString& reference, const QString& moduleName, const QModelIndex & parent);
+    Q_INVOKABLE void addFolder(const QString& folderName, const QModelIndex & parent);
     Q_INVOKABLE void doContextMenu(const QString& action, const QModelIndex& index);
     Q_INVOKABLE QString folderName(const QModelIndex& index);
     Q_INVOKABLE QVariantList getBookmarkModelExpandableIndexes();

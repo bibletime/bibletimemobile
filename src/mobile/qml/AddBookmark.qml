@@ -11,7 +11,7 @@
 **********/
 
 
-import QtQuick 2.11
+import QtQuick
 import QtQuick.Controls 2.4
 import QtQuick.Controls.Material 2.3
 import QtQuick.Layouts 1.3
@@ -20,7 +20,6 @@ import BibleTime 1.0
 Rectangle {
     id: addBookmark
 
-    property string moduleReference: ""
     property string moduleName: ""
     property string reference: ""
     property string folderName: ""
@@ -42,6 +41,11 @@ Rectangle {
     BtStyle {
         id: btStyle
     }
+
+    BtBookmarkInterface {
+        id: bookmarkInterface
+    }
+
 
     Rectangle {
         id: titleRect
@@ -73,7 +77,7 @@ Rectangle {
             Text {
                 id: titleText
                 color: Material.foreground
-                font.pointSize: btStyle.uiFontPointSize
+                font.pointSize: btStyle.uiFontPointSize + 1
                 anchors.horizontalCenter: parent.horizontalCenter
                 anchors.top: parent.top
                 anchors.bottom: parent.bottom
@@ -91,11 +95,11 @@ Rectangle {
         anchors.right: parent.right
         anchors.leftMargin:btStyle.pixelsPerMillimeterX * 2
         anchors.rightMargin:btStyle.pixelsPerMillimeterX * 2
-        anchors.bottom: referenceText.top
-        anchors.bottomMargin: btStyle.pixelsPerMillimeterX * 2
+        anchors.top: titleRect.bottom
+        anchors.topMargin: btStyle.pixelsPerMillimeterX * 4
         text: qsTranslate("Bookmarks", "Bookmark") + ":"
         elide: Text.ElideMiddle
-        font.pointSize: btStyle.uiFontPointSize + 1
+        font.pointSize: btStyle.uiFontPointSize
         color: Material.foreground
     }
 
@@ -104,13 +108,13 @@ Rectangle {
 
         anchors.left: parent.left
         anchors.right: parent.right
-        anchors.leftMargin:btStyle.pixelsPerMillimeterX * 8
+        anchors.leftMargin:btStyle.pixelsPerMillimeterX * 6
         anchors.rightMargin:btStyle.pixelsPerMillimeterX * 2
-        anchors.bottom: folderLabel.top
-        anchors.bottomMargin: btStyle.pixelsPerMillimeterX * 10
+        anchors.top: referenceLabel.bottom
+        anchors.topMargin: btStyle.pixelsPerMillimeterX * 3
         text: reference + " (" + moduleName + ")"
         elide: Text.ElideMiddle
-        font.pointSize: btStyle.uiFontPointSize + 1
+        font.pointSize: btStyle.uiFontPointSize
         color: Material.foreground
     }
 
@@ -119,11 +123,10 @@ Rectangle {
 
         anchors.left: parent.left
         anchors.leftMargin:btStyle.pixelsPerMillimeterX * 2
-        anchors.bottom: folderRect.top
-        anchors.bottomMargin: btStyle.pixelsPerMillimeterX * 2
+        anchors.top: referenceText.bottom
+        anchors.topMargin: btStyle.pixelsPerMillimeterX * 4
         text: qsTranslate("Bookmarks", "Folder") + ":"
-        horizontalAlignment: Text.AlignHCenter
-        font.pointSize: btStyle.uiFontPointSize + 1
+        font.pointSize: btStyle.uiFontPointSize
         color: Material.foreground
 
         Action {
@@ -140,55 +143,216 @@ Rectangle {
 
         anchors.left: parent.left
         anchors.right: parent.right
-        anchors.verticalCenter: parent.verticalCenter
-        height: buttons.height* 1.5
-        anchors.leftMargin:btStyle.pixelsPerMillimeterX * 8
-        anchors.rightMargin:btStyle.pixelsPerMillimeterX * 5
-        anchors.topMargin: 10
+        anchors.bottom: newFolderButton.top
+        anchors.top: folderLabel.bottom
+        anchors.leftMargin:btStyle.pixelsPerMillimeterX * 2
+        anchors.rightMargin:btStyle.pixelsPerMillimeterX * 2
+        anchors.topMargin: btStyle.pixelsPerMillimeterX * 4
+        anchors.bottomMargin: btStyle.pixelsPerMillimeterX * 4
         border.color: Material.foreground
         border.width: 2
         color: Material.background
 
-        Text {
-            id: folder
+        TreeView {
+            id: treeView
 
-            text: addBookmark.folderName
-            anchors.left: parent.left
-            anchors.verticalCenter: parent.verticalCenter
-            anchors.leftMargin: 10
-            font.pointSize: btStyle.uiFontPointSize + 1
-            color: Material.foreground
-        }
+            property bool mySelected: false
+            property var myIndex: []
 
-        MouseArea {
+            model: bookmarkInterface.folderModel
             anchors.fill: parent
-            onClicked: {
-                bookmarkFolders();
+            anchors.margins: 3
+            clip: true
+            selectionModel: ItemSelectionModel {
+                id: selectionModel
+                model: treeView.model
+                onCurrentChanged: {
+                    if (currentIndex.valid) {
+                        treeView.mySelected = true
+                        treeView.myIndex = currentIndex
+                    }
+                    else {
+                        treeView.mySelected = false
+                        treeView.myIndex = []
+                    }
+                }
+            }
+
+            delegate: TreeViewDelegate {
+                id: treeDelegate
+
+                implicitHeight: bookmarkLabel.height * 3
+                indentation: btStyle.pixelsPerMillimeterX * 5
+
+                background: Rectangle {
+                    color: Material.background
+                    width: treeView.width
+                }
+
+                contentItem: Label {
+                    id: bookmarkLabel
+
+                    text: treeDelegate.model.display
+                    color: current ? Material.accent : Material.foreground
+                    font.pointSize: btStyle.uiFontPointSize
+                    verticalAlignment: Text.AlignBottom
+                    MouseArea {
+                        anchors.fill: parent
+                        onClicked: {
+                            var modelIndex = treeDelegate.treeView.index(row, column)
+                            selectionModel.setCurrentIndex(modelIndex, selectionModel.Current)
+                        }
+                    }
+                }
+
+                indicator: Item {
+                    readonly property real __indicatorIndent: treeDelegate.leftMargin + (treeDelegate.depth * treeDelegate.indentation)
+                    x: __indicatorIndent
+                    y: (treeDelegate.height - height) / 2.5
+                    implicitWidth: implicitHeight
+                    implicitHeight: {
+                        var pixel = btStyle.pixelsPerMillimeterY * 8;
+                        var uiFont = btStyle.uiFontPointSize * 4.5;
+                        return Math.max(pixel, uiFont);
+                    }
+                    rotation: treeDelegate.expanded ? 90 : 0
+
+                    RightArrow {
+                        id: rightArrow
+
+                        height: parent.height / 2
+                        width:  height
+                        anchors.left: parent.left
+                        anchors.leftMargin: height/2
+                        anchors.verticalCenter: parent.verticalCenter
+                        color: Material.foreground
+                        visible: true
+                    }
+                }
+
+            }
+            onVisibleChanged: {
+                if (visible) {
+                    expandRecursively(-1,-1)
+                }
             }
         }
     }
 
-    Grid {
-        id: buttons
+    BtmButton {
+        id: newFolderButton
 
-        spacing: btStyle.pixelsPerMillimeterY * 4
-        columns: 2
-        anchors.horizontalCenter: parent.horizontalCenter
-        anchors.top: folderRect.bottom
-        anchors.topMargin: btStyle.pixelsPerMillimeterX * 12
-
-        BtmButton {
-            text: qsTr("OK")
-            onClicked: {
-                addBookmark.visible = false;
-                addBookmark.addTheBookmark();
-            }
+        anchors.left: parent.left
+        anchors.leftMargin: btStyle.pixelsPerMillimeterX * 4
+        anchors.bottom: okButton.top
+        anchors.bottomMargin: btStyle.pixelsPerMillimeterX * 4
+        visible: treeView.mySelected
+        text: qsTr("NEW FOLDER")
+        onClicked: {
+            folderNameDialog.open()
         }
+    }
 
-        BtmButton {
-            text: qsTr("CANCEL")
-            onClicked: {
-                addBookmark.visible = false;
+    BtmButton {
+        id: okButton
+
+        text: qsTr("OK")
+        anchors.right: cancelButton.left
+        anchors.rightMargin: btStyle.pixelsPerMillimeterX * 4
+        anchors.bottom: parent.bottom
+        anchors.bottomMargin: btStyle.pixelsPerMillimeterX * 4
+        visible: treeView.mySelected
+        onClicked: {
+            bookmarkInterface.addBookmark(addBookmark.reference,addBookmark.moduleName, treeView.myIndex)
+            addBookmark.visible = false;
+        }
+    }
+
+    BtmButton {
+        id: cancelButton
+
+        text: qsTr("CANCEL")
+        anchors.bottom: parent.bottom
+        anchors.bottomMargin: btStyle.pixelsPerMillimeterX * 4
+        anchors.right: parent.right
+        anchors.rightMargin: btStyle.pixelsPerMillimeterX * 4
+        onClicked: {
+            addBookmark.visible = false;
+        }
+    }
+
+    Popup {
+        id: folderNameDialog
+
+        width: Math.min(parent.width, parent.height) * 0.9
+        height: btStyle.pixelsPerMillimeterX * 45
+        anchors.centerIn: addBookmark
+        modal: true
+        focus: true
+        closePolicy: Popup.CloseOnEscape | Popup.CloseOnPressOutsideParent
+
+        contentItem: Rectangle {
+
+            anchors.verticalCenter: parent.verticalCenter
+            border.color: Material.foreground
+            border.width: 2
+            color: Material.background
+
+            Text {
+                id: title
+
+                anchors.left: parent.left
+                anchors.leftMargin: btStyle.pixelsPerMillimeterX * 4
+                anchors.top: parent.top
+                anchors.topMargin: btStyle.pixelsPerMillimeterX * 4
+                color: Material.foreground
+                font.pointSize: btStyle.uiFontPointSize
+                text: qsTranslate("Bookmarks", "New Folder")
+
+            }
+
+            TextField {
+                id: myFolderName
+
+                anchors.left: parent.left
+                anchors.leftMargin: btStyle.pixelsPerMillimeterX * 4
+                anchors.right: parent.right
+                anchors.rightMargin: btStyle.pixelsPerMillimeterX * 4
+                anchors .top: title.bottom
+                anchors.topMargin: btStyle.pixelsPerMillimeterX * 4
+                text: ""
+                implicitHeight: btStyle.pixelsPerMillimeterX * 8
+                font.pointSize: btStyle.uiFontPointSize
+                verticalAlignment: Text.AlignVCenter
+                inputMethodHints: Qt.ImhNoAutoUppercase
+                focus: true
+            }
+
+            BtmButton {
+                id: okButton2
+
+                text: qsTr("OK")
+                anchors.right: cancelButton2.left
+                anchors.rightMargin: btStyle.pixelsPerMillimeterX * 4
+                anchors.bottom: parent.bottom
+                anchors.bottomMargin: btStyle.pixelsPerMillimeterX * 4
+                onClicked: {
+                    bookmarkInterface.addFolder(myFolderName.text, treeView.myIndex)
+                    folderNameDialog.close()
+                }
+            }
+
+            BtmButton {
+                id: cancelButton2
+
+                text: qsTr("CANCEL")
+                anchors.bottom: parent.bottom
+                anchors.bottomMargin: btStyle.pixelsPerMillimeterX * 4
+                anchors.right: parent.right
+                anchors.rightMargin: btStyle.pixelsPerMillimeterX * 4
+                onClicked: {
+                    folderNameDialog.close()
+                }
             }
         }
     }

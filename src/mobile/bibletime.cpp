@@ -13,11 +13,8 @@
 #include "bibletime.h"
 
 #include "backend/config/btconfig.h"
-#include "backend/managers/btstringmgr.h"
-#include "backend/managers/clanguagemgr.h"
-#include "backend/managers/cswordbackend.h"
-#include "bibletimeapp.h"
 #include "util/directory.h"
+#include <QDir>
 #include <QLocale>
 #include <QTextStream>
 #include <stringmgr.h>
@@ -36,8 +33,6 @@ BibleTime::BibleTime(QObject* parent)
 void BibleTime::initBackends() {
     initSwordConfigFile();
 
-    sword::StringMgr::setSystemStringMgr( new BtStringMgr() );
-
 #ifdef Q_OS_MACOS
     // set a LocaleMgr with a fixed path to the locales.d of the DMG image on MacOS
     // note: this must be done after setting the BTStringMgr, because this will reset the LocaleMgr
@@ -45,12 +40,9 @@ void BibleTime::initBackends() {
     sword::LocaleMgr::setSystemLocaleMgr(new sword::LocaleMgr(util::directory::getSwordLocalesDir().absolutePath().toUtf8()));
 #endif
 
-    CSwordBackend *backend = CSwordBackend::createInstance();
-    QString systemName = QLocale::system().name();
-    QString language = btConfig().value<QString>("language", systemName);
-    backend->booknameLanguage(language);
+    m_backend.emplace();
 
-    const CSwordBackend::LoadError errorCode = CSwordBackend::instance()->initModules(CSwordBackend::OtherChange);
+    const CSwordBackend::LoadError errorCode = CSwordBackend::instance().initModules();
     if (errorCode != CSwordBackend::NoError) {
         ; // TODO
     }
@@ -72,8 +64,8 @@ void BibleTime::initSwordConfigFile() {
     QTextStream out(&file);
     out << "\n";
     out << "[Install]\n";
-    out << "DataPath="   << util::directory::convertDirSeparators( util::directory::getUserHomeDir().absolutePath()) << "\n";
-    out << "LocalePath="   << util::directory::convertDirSeparators( util::directory::getUserHomeSwordDir().absolutePath()) << "\n";
+    out << "DataPath="   << QDir::toNativeSeparators(util::directory::getUserHomeDir().absolutePath()) << "\n";
+    out << "LocalePath=" << QDir::toNativeSeparators(util::directory::getUserHomeSwordDir().absolutePath()) << "\n";
     out << "\n";
     file.close();
 

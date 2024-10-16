@@ -22,8 +22,7 @@ class DocumentModel: public BtBookshelfTreeModel {
 
 public: /* Methods: */
 
-    DocumentModel(Grouping const & grouping,
-                  QObject * const parent = nullptr);
+    DocumentModel(QObject * parent = nullptr);
 
     QVariant data(QModelIndex const & index,
                   int role = Qt::DisplayRole) const final override;

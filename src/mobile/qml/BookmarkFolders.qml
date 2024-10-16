@@ -11,9 +11,7 @@
 **********/
 
 import QtQml.Models 2.3
-import QtQuick 2.11
-import QtQuick.Controls 1.4 as Controls1
-import QtQuick.Controls.Styles 1.4 as ControlsStyle1
+import QtQuick
 import QtQuick.Controls 2.4
 import QtQuick.Controls.Material 2.3
 import QtQuick.Layouts 1.3
@@ -30,17 +28,18 @@ Rectangle {
         return Math.max(pixel, uiFont);
     }
 
-    signal newFolder();
+    // signal newFolder();
 
-    function addFolder(folderName) {
-        bookmarkInterface.addFolder(folderName);
-    }
+    // function addFolder(folderName) {
+    //     bookmarkInterface.addFolder(folderName);
+    // }
 
-    function addTheReference(reference, moduleName) {
-        bookmarkInterface.addBookmark(reference, moduleName);
-    }
+    // function addTheReference(reference, moduleName) {
+    //     bookmarkInterface.addBookmark(reference, moduleName);
+    // }
 
     function expandAll() {
+        // treeView.expandRecursively(-1,-1)
         var indexes = bookmarkInterface.getFolderModelExpandableIndexes();
         for(var i = 0; i <= indexes.length - 1; i++) {
             treeView.expand(indexes[i]);
@@ -88,7 +87,14 @@ Rectangle {
         }
     }
 
-    Controls1.TreeView {
+    MouseArea {
+        anchors.fill: parent
+        onClicked: {
+            console.log(mouseX, mouseY)
+        }
+    }
+
+    TreeView {
         id: treeView
 
         model: bookmarkInterface.folderModel
@@ -97,72 +103,77 @@ Rectangle {
         anchors.bottom: newFolderButton.top
         anchors.bottomMargin: btStyle.pixelsPerMillimeterX * 3
         anchors.top: titleRect.bottom
-        alternatingRowColors: false
-        backgroundVisible: false
-        selectionMode: Controls1.SelectionMode.SingleSelection
-
-        // See QTBUG-47243
-        selection: ItemSelectionModel {
-            id: selModel
-            model: treeView.model
+        delegate: TreeViewDelegate {
+            indentation:10
         }
 
-        onClicked: {
-            // See QTBUG-47243
-            selModel.clearCurrentIndex();
-            selModel.setCurrentIndex(index, 0x0002 | 0x0010);
 
-            bookmarkInterface.currentFolder = index;
-            var folderName = bookmarkInterface.folderName(index);
-            bookmarkFolders.currentFolderName = folderName;
-            bookmarkFolders.visible = false;
+//        alternatingRowColors: false
+//        backgroundVisible: false
+//        selectionMode: SelectionMode.SingleSelection
+
+        // // See QTBUG-47243
+        // selection: ItemSelectionModel {
+        //     id: selModel
+        //     model: treeView.model
+        // }
+
+        // onClicked: {
+        //     // See QTBUG-47243
+        //     selModel.clearCurrentIndex();
+        //     selModel.setCurrentIndex(index, 0x0002 | 0x0010);
+
+        //     bookmarkInterface.currentFolder = index;
+        //     var folderName = bookmarkInterface.folderName(index);
+        //     bookmarkFolders.currentFolderName = folderName;
+        //     bookmarkFolders.visible = false;
+        // }
+
+        // headerDelegate: Rectangle {
+        //     height: 0
+        //     visible: false
+        // }
+
+        // rowDelegate: Rectangle {
+        //     height: bookmarkFolders.rowHeight
+        //     property color selectedColor: Material.primary
+        //     color: styleData.selected ? selectedColor : Material.background
+        // }
+
+        // itemDelegate: Item {
+
+        //     Folder {
+        //         id: icon
+
+        //         width: parent.height * 0.7
+        //         height: parent.height * 0.7
+        //         anchors.verticalCenter: parent.verticalCenter
+        //         color: Material.foreground
+
+        //     }
+
+        //     Text {
+        //         anchors.verticalCenter: parent.verticalCenter
+        //         anchors.left: icon.right
+        //         color: Material.foreground
+        //         elide: styleData.elideMode
+        //         text: {
+        //             return styleData.value;
+        //         }
+        //         font.pointSize: btStyle.uiFontPointSize
+        //     }
         }
 
-        headerDelegate: Rectangle {
-            height: 0
-            visible: false
-        }
+        // style: ControlsStyle1.TreeViewStyle {
+        //     indentation: bookmarkFolders.rowHeight
+        // }
 
-        rowDelegate: Rectangle {
-            height: bookmarkFolders.rowHeight
-            property color selectedColor: Material.primary
-            color: styleData.selected ? selectedColor : Material.background
-        }
-
-        itemDelegate: Item {
-
-            Folder {
-                id: icon
-
-                width: parent.height * 0.7
-                height: parent.height * 0.7
-                anchors.verticalCenter: parent.verticalCenter
-                color: Material.foreground
-
-            }
-
-            Text {
-                anchors.verticalCenter: parent.verticalCenter
-                anchors.left: icon.right
-                color: Material.foreground
-                elide: styleData.elideMode
-                text: {
-                    return styleData.value;
-                }
-                font.pointSize: btStyle.uiFontPointSize
-            }
-        }
-
-        style: ControlsStyle1.TreeViewStyle {
-            indentation: bookmarkFolders.rowHeight
-        }
-
-        Controls1.TableViewColumn {
-            role: "display"
-            width: 200
-            visible: true
-        }
-    }
+        // Controls1.TableViewColumn {
+        //     role: "display"
+        //     width: 200
+        //     visible: true
+        // }
+    //    }
 
     BtmButton {
         id: newFolderButton
@@ -173,6 +184,10 @@ Rectangle {
         text: qsTr("NEW FOLDER")
         onClicked: {
             bookmarkFolders.newFolder();
+            console.log(treeView.x, treeView.y, treeView.width, treeView.height)
+            console.log(treeView.rows)
+
+
         }
     }
 }

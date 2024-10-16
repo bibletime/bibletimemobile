@@ -1,0 +1,26 @@
+[Desktop Entry]
+Comment=An easy to use bible study tool
+Comment[C]=An easy to use bible study tool
+Comment[cs]=Snadno použitelný nástroj pro studium Bible
+Comment[da]=Et letanvendeligt bibelstudieprogram
+Comment[de]=Ein einfach zu benutzendes Bibelprogramm
+Comment[et]=Lihtne Piibliuurimise vahend
+Comment[fi]=Helppokäyttöinen raamatunlukuohjelmisto
+Comment[fr]=Un outil d'étude biblique facile à utiliser
+Comment[it]=Un semplice strumento per studiare la Bibbia
+Exec=bibletime
+Icon=info.bibletime.BibleTime
+Name=BibleTime @BT_VERSION_FULL@
+Name[C]=BibleTime @BT_VERSION_FULL@
+Name[cs]=BibleTime @BT_VERSION_FULL@
+Name[da]=BibleTime @BT_VERSION_FULL@
+Name[de]=BibleTime @BT_VERSION_FULL@
+Name[et]=BibleTime @BT_VERSION_FULL@
+Name[fr]=BibleTime @BT_VERSION_FULL@
+Name[it]=BibleTime @BT_VERSION_FULL@
+GenericName=Bible Study Tool
+Terminal=false
+Type=Application
+Categories=X-Bible;X-Religion;Literature;Education;Dictionary;Qt;
+Keywords=bible;study;religion;literature;education;
+DocPath=bibletime/handbook/index.html

@@ -11,7 +11,7 @@
 *
 **********/
 
-#include "colormanager.h"
+#include "colormanagermobile.h"
 
 #include <QApplication>
 #include <QDir>
@@ -41,14 +41,14 @@ QString getColorByPattern(
 
 } // anonymous namespace
 
-ColorManager & ColorManager::instance() {
-    static ColorManager r;
+ColorManagerMobile & ColorManagerMobile::instance() {
+    static ColorManagerMobile r;
     return r;
 }
 
-ColorManager::ColorManager() = default;
+ColorManagerMobile::ColorManagerMobile() = default;
 
-QString ColorManager::replaceColors(QString content) {
+QString ColorManagerMobile::replaceColors(QString content) {
     QString text = content;
     text.replace("#JESUS_WORDS_COLOR#", "red");
     text.replace("#HIGHLIGHT_COLOR#", btm::BtStyle::getTextBackgroundHighlightColor().name());
@@ -56,14 +56,14 @@ QString ColorManager::replaceColors(QString content) {
     return text;
 }
 
-QString ColorManager::getBackgroundColor(QString const & style)
+QString ColorManagerMobile::getBackgroundColor(QString const & style)
 { return getColorByPattern(m_colorMaps, "BACKGROUND_COLOR", style); }
 
-QString ColorManager::getBackgroundHighlightColor(QString const & style)
+QString ColorManagerMobile::getBackgroundHighlightColor(QString const & style)
 { return getColorByPattern(m_colorMaps, "BACKGROUND_HIGHLIGHT", style); }
 
-QString ColorManager::getForegroundColor(QString const & style)
+QString ColorManagerMobile::getForegroundColor(QString const & style)
 { return getColorByPattern(m_colorMaps, "FOREGROUND_COLOR", style); }
 
-QString ColorManager::getCrossRefColor(QString const & style)
+QString ColorManagerMobile::getCrossRefColor(QString const & style)
 { return getColorByPattern(m_colorMaps, "CROSSREF_COLOR", style); }

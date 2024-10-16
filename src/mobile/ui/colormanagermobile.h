@@ -17,11 +17,11 @@
 #include <QString>
 
 
-class ColorManager {
+class ColorManagerMobile {
 
 public: /* Methods: */
 
-    static ColorManager & instance();
+    static ColorManagerMobile & instance();
 
     QString replaceColors(QString content);
     QString getBackgroundColor(QString const & style = QString());
@@ -31,12 +31,12 @@ public: /* Methods: */
 
 private: /* Methods: */
 
-    ColorManager();
+    ColorManagerMobile();
 
 private: /* Fields: */
 
     std::map<QString, std::map<QString, QString> > m_colorMaps;
 
-}; /* class ColorManager */
+}; /* class ColorManagerMobile */
 
 #endif

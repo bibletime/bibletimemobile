@@ -10,7 +10,10 @@
 *
 **********/
 
+#include <QRegularExpression>
 #include "btmmoduletextfilter.h"
+#include "colormanagermobile.h"
+
 namespace btm {
 
 BtmModuleTextFilter::BtmModuleTextFilter() :
@@ -23,7 +26,9 @@ BtmModuleTextFilter::~BtmModuleTextFilter() {
 QString BtmModuleTextFilter::processText(const QString &text) {
     if (text.isEmpty())
         return text;
+
     QString localText = fixNonRichText(text);
+    localText = ColorManagerMobile::instance().replaceColors(localText);
     splitText(localText);
     fixDoubleBR();
     if (m_showReferences) {
@@ -81,10 +86,10 @@ void BtmModuleTextFilter::splitText(const QString& text) {
         from = end+1;
     }
 }
-
+// TODO test
 void BtmModuleTextFilter::fixDoubleBR() {
+    static QRegularExpression const rx(R"regex(<br\s*/>)regex");
     for (int index = 2; index < m_parts.count(); ++index) {
-        QRegExp rx("<br\\s+/>");
         if (m_parts.at(index).contains(rx) && m_parts.at(index-2).contains(rx))
             m_parts[index] = "";
     }
@@ -93,20 +98,19 @@ void BtmModuleTextFilter::fixDoubleBR() {
 // Typical input:  <span class="footnote" note="ESV2011/Luke 11:37/1">
 // Output:         <span class="footnote" note="ESV2011/Luke 11:37/1">1</span>
 
-int BtmModuleTextFilter::rewriteFootnoteAsLink(int i, const QString& part) {
-    if (i+2 > m_parts.count())
+int BtmModuleTextFilter::rewriteFootnoteAsLink(int i, QString const & part) {
+    if (i + 2 >= m_parts.count())
         return 1;
 
-    QRegExp rxlen("note=\"([^\"]*)");
-    int pos = rxlen.indexIn(part);
-    if (pos > -1) {
-        QString noteValue = rxlen.cap(1);
-        QString footnoteText = m_parts.at(i+1);
-        QString url = "sword://footnote/" + noteValue + "=" + footnoteText;
-        QString newEntry = "<a class=\"footnote\" href=\"" + url + "\">";
-        m_parts[i] = newEntry;
-        m_parts[i+1] = "(" + footnoteText + ")";
-        m_parts[i+2] = "</a>";
+    static QRegularExpression const rx(R"regex(note="([^"]*))regex");
+    if (auto const match = rx.match(part); match.hasMatch()) {
+        auto const & footnoteText = m_parts.at(i + 1);
+        m_parts[i] =
+            QStringLiteral(
+                R"HTML(<a class="footnote" href="sword://footnote/%1=%2">)HTML")
+                .arg(match.captured(1)).arg(footnoteText);
+        m_parts[i+1] = QStringLiteral("(%1)").arg(footnoteText);
+        m_parts[i+2] = QStringLiteral("</a>");
         return 3;
     }
     return 1;
@@ -116,46 +120,52 @@ int BtmModuleTextFilter::rewriteFootnoteAsLink(int i, const QString& part) {
 // Typical input: <a name="Luke11_29" href="sword://Bible/ESV2011/Luke 11:29">
 // Output:        <a href="sword://Bible/ESV2011/Luke 11:29||name=Luke11_29">
 
-int BtmModuleTextFilter::rewriteHref(int i, const QString& part) {
-    QRegExp rx1("<a\\s(\\w+)=\"([\\s\\S]*)\"\\s(\\w+)=\"([\\s\\S]*)\"");
-    rx1.setMinimal(false);
-    int pos1 = rx1.indexIn(part);
-    if (pos1 >= 0 && rx1.captureCount() == 4) {
-        QString newEntry;
-        if (rx1.cap(1) == "href")
-            newEntry = "<a " + rx1.cap(1) + "=\"" + rx1.cap(2) + "||" + rx1.cap(3) + "=" + rx1.cap(4) + "\" name=\"crossref\">";
-        else
-            newEntry = "<a " + rx1.cap(3) + "=\"" + rx1.cap(4) + "||" + rx1.cap(1) + "=" + rx1.cap(2) + "\" name=\"crossref\">";
-
-        m_parts[i] = newEntry;
-    }
+int BtmModuleTextFilter::rewriteHref(int i, const QString & part) {
+    static QRegularExpression const rx(
+        R"regex(<a\s+(\w+)="([^"]*)"\s+(\w+)="([^"]*)")regex");
+    if (auto const match = rx.match(part); match.hasMatch())
+        m_parts[i] =
+            ((match.captured(1) == QStringLiteral("href"))
+                 ? QStringLiteral(R"HTML(<a %1="%2||%3=%4" name="crossref">)HTML")
+                 : QStringLiteral(R"HTML(<a %3="%4||%1=%2" name="crossref">)HTML"))
+                .arg(match.captured(1),
+                     match.captured(2),
+                     match.captured(3),
+                     match.captured(4));
     return 1;
 }
 
 // Typical input: <span lemma="H07225">God</span>
 // Output: "<a href="sword://lemmamorph/lemma=H0430||/God" style="color: black">"
-int BtmModuleTextFilter::rewriteLemmaOrMorphAsLink(int i, const QString& part) {
+
+int BtmModuleTextFilter::rewriteLemmaOrMorphAsLink(int i, QString const & part)
+{
+    if (i + 2 >= m_parts.count())
+        return 1;
 
     QString value;
-    QRegExp rx1("lemma=\"([^\"]*)*");
-    int pos1 = rx1.indexIn(part);
-    if (pos1 > -1)
-        value = "lemma=" + rx1.cap(1);
-
-    QRegExp rx2("morph=\"([^\"]*)(\){0,1}");
-    int pos2 = rx2.indexIn(part);
-    if (pos2 > -1) {
-        if (!value.isEmpty())
-            value += "||";
-        value += "morph=" + rx2.cap(1);
+    {
+        static QRegularExpression const rx(R"regex(lemma="([^"]*)")regex");
+        if (auto const match = rx.match(part); match.hasMatch())
+            value = QStringLiteral("lemma=") + match.captured(1);
+    }{
+        static QRegularExpression const rx(R"regex(morph="([^"]*)")regex");
+        if (auto const match = rx.match(part); match.hasMatch()) {
+            if (value.isEmpty()) {
+                value = QStringLiteral("morph=") + match.captured(1);
+            } else {
+                value = QStringLiteral("%1||morph=%2")
+                .arg(value, match.captured(1));
+            }
+        }
     }
 
-    QString refText = m_parts.at(i+1);
-    QString url = "sword://lemmamorph/" + value + "/" + refText;
-    QString newEntry;
-    newEntry = "<a href=\"" + url + "\">";
-    m_parts[i] = newEntry;
-    m_parts[i+2] = "</a>";
+    auto const & refText = m_parts.at(i + 1);
+    m_parts[i] =
+        QStringLiteral(
+            R"HTM(<a id="lemmamorph" href="sword://lemmamorph/%1/%2">)HTM")
+            .arg(value, refText);
+    m_parts[i + 2] = QStringLiteral("</a>");
     return 3;
 }
 

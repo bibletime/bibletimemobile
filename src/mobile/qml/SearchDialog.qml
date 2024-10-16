@@ -140,6 +140,7 @@ Rectangle {
             anchors.left: searchForLabel.right
             anchors.leftMargin: btStyle.pixelsPerMillimeterX * 2
             anchors.bottom: parent.bottom
+            anchors.top: parent.top
             bottomPadding: btStyle.pixelsPerMillimeterX * 1.5
             font.pointSize: btStyle.uiFontPointSize
             verticalAlignment: Text.AlignVCenter
@@ -147,6 +148,9 @@ Rectangle {
             focus: true
             text: ""
             width: searchForLabel.width * 2
+            onAccepted: {
+                searchDialog.setupSearch();
+            }
         }
 
         BtmButton {
@@ -187,6 +191,8 @@ Rectangle {
 
             anchors.left: searchInLabel.right
             anchors.leftMargin: btStyle.pixelsPerMillimeterX * 2
+            anchors.right: parent.right
+            anchors.rightMargin: anchors.leftMargin
             anchors.verticalCenter: parent.verticalCenter
             model: searchDialog.modules
         }
@@ -229,12 +235,13 @@ Rectangle {
         }
     }
 
-    Keys.onReleased: {
+    Keys.onReleased: function (event) {
         if ((event.key === Qt.Key_Back || event.key === Qt.Key_Escape) && searchDialog.visible === true) {
             searchDialog.visible = false;
             event.accepted = true;
         }
     }
+
 
     BtStyle {
         id: btStyle

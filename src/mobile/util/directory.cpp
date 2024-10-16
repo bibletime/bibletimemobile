@@ -300,33 +300,30 @@ void removeRecursive(const QString &dir) {
     d.rmdir(dir);
 }
 
-/** Returns the size of the directory including the size of all it's files and it's subdirs.
- */
-size_t getDirSizeRecursive(QString const & dir) {
+/** \returns the size of the directory including the size of all it's files and
+             it's subdirs. */
+::qint64 getDirSizeRecursive(QString const & dir) {
     //Check for validity of argument
     QDir d(dir);
     if (!d.exists())
         return 0u;
 
-    size_t size = 0u;
+    ::qint64 size = 0u;
 
     //First get the size of all files int this folder
     d.setFilter(QDir::Files);
-    const QFileInfoList infoList = d.entryInfoList();
-    for (QFileInfoList::const_iterator it = infoList.begin(); it != infoList.end(); ++it) {
-        BT_ASSERT(it->size() > 0);
-        size += it->size();
+    for (auto const & fileInfo : d.entryInfoList()) {
+        BT_ASSERT(fileInfo.size() > 0);
+        size += fileInfo.size();
     }
 
     //Then add the sizes of all subdirectories
     d.setFilter(QDir::Dirs);
-    const QFileInfoList dirInfoList = d.entryInfoList();
-    for (QFileInfoList::const_iterator it_dir = dirInfoList.begin(); it_dir != dirInfoList.end(); ++it_dir) {
-        if ( !it_dir->isDir() || it_dir->fileName() == "." || it_dir->fileName() == ".." ) {
-            continue;
-        }
-        size += getDirSizeRecursive( it_dir->absoluteFilePath() );
-    }
+    for (auto const & dirInfo : d.entryInfoList())
+        if (dirInfo.isDir()
+            && dirInfo.fileName() != QStringLiteral(".")
+            && dirInfo.fileName() != QStringLiteral(".."))
+            size += getDirSizeRecursive(dirInfo.absoluteFilePath());
     return size;
 }
 

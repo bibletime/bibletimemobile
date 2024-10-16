@@ -13,15 +13,15 @@
 #ifndef MODULE_INTERFACE_H
 #define MODULE_INTERFACE_H
 
+#include "backend/drivers/cswordmoduleinfo.h"
 #include "mobile/models/roleitemmodel.h"
 #include <QObject>
 #include <QList>
 #include <QSet>
 #include <QString>
+#include <QStringList>
 
 class QQuickItem;
-class QStringList;
-class CSwordModuleInfo;
 
 namespace btm {
 

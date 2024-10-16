@@ -176,7 +176,7 @@ signals:
 
 private slots:
     void referenceChanged();
-    void reloadModules(CSwordBackend::SetupChangedReason reason);
+    void reloadModules();
 
 private:
     void configModuleByType(const QString& type, const QStringList& availableModuleNames);

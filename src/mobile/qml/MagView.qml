@@ -11,8 +11,7 @@
 **********/
 
 import QtQuick 2.11
-import QtQuick.Controls 1.4 as Controls1
-import QtQuick.Controls 2.4
+import QtQuick.Controls
 import QtQuick.Controls.Material 2.3
 import QtQuick.Layouts 1.3
 import BibleTime 1.0
@@ -221,12 +220,10 @@ FocusScope {
 
     }
 
-    Controls1.SplitView {
+    SplitView {
         id: splitView
 
         property real ratio: 0.5
-
-        signal handleChanged()
 
         function setOrientation() {
             if (width > height) {
@@ -245,11 +242,11 @@ FocusScope {
         anchors.topMargin: magView.magViewMargins
         anchors.bottomMargin: magView.magViewMargins
 
-        handleDelegate: Rectangle {
+        handle: Rectangle {
             id: handle
 
-            width: btStyle.pixelsPerMillimeterX * 1.6
-            height: btStyle.pixelsPerMillimeterX * 1.6
+            implicitWidth: btStyle.pixelsPerMillimeterX * 1.6
+            implicitHeight: btStyle.pixelsPerMillimeterX * 1.6
             color: Material.background
         }
 
@@ -283,9 +280,9 @@ FocusScope {
 
             function computeDocumentSize() {
                 if (splitView.orientation == Qt.Horizontal) {
-                    documentView.width = splitView.width * splitView.ratio;
+                    SplitView.preferredWidth = splitView.width * splitView.ratio;
                 } else {
-                    documentView.height = splitView.height * splitView.ratio;
+                    SplitView.preferredHeight = splitView.height * splitView.ratio;
                 }
             }
 
@@ -336,7 +333,6 @@ FocusScope {
                     font.family: btWindowInterface.fontName
                     font.pointSize: btWindowInterface.fontSize
                     wrapMode: Text.WordWrap
-                    onWidthChanged: doLayout()
                     onLinkActivated: {
                         setPromptVisibility(false);
                         btWindowInterface2.setReferenceByUrl(link);
@@ -443,7 +439,6 @@ FocusScope {
                     font.family: btWindowInterface2.fontName
                     font.pointSize: btWindowInterface2.fontSize
                     wrapMode: Text.WordWrap
-                    onWidthChanged: doLayout()
                 }
             }
         }

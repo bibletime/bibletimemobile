@@ -56,7 +56,7 @@ static void setupTextModel(const QSet<QString>& modelSet, RoleItemModel* model) 
     roleNames[TextRole] =  "modelText";
     model->setRoleNames(roleNames);
 
-    QStringList modelList = modelSet.toList();
+    QStringList modelList(modelSet.begin(), modelSet.end());
     modelList.sort();
 
     model->clear();
@@ -72,6 +72,29 @@ static CSwordModuleInfo* getModule(BtBookshelfModel* bookshelfModel, const QMode
     QVariant var = bookshelfModel->data(index, PR);
     CSwordModuleInfo* module = static_cast<CSwordModuleInfo*>(var.value<void*>());
     return module;
+}
+
+static QString englishCategoryName(const CSwordModuleInfo::Category & category) {
+    switch (category) {
+    case CSwordModuleInfo::Bibles:
+        return "Bibles";
+    case CSwordModuleInfo::Commentaries:
+        return "Commentaries";
+    case CSwordModuleInfo::Books:
+        return "Books";
+    case CSwordModuleInfo::Cult:
+        return "Cults/Unorthodox";
+    case CSwordModuleInfo::Images:
+        return "Maps and Images";
+    case CSwordModuleInfo::DailyDevotional:
+        return "Daily Devotionals";
+    case CSwordModuleInfo::Lexicons:
+        return  "Lexicons and Dictionaries";
+    case CSwordModuleInfo::Glossary:
+        return "Glossaries";
+    default:
+        return "Unknown";
+    }
 }
 
 void ModuleInterface::setBibleCommentaryOnly(bool value) {
@@ -90,20 +113,20 @@ void ModuleInterface::getCategoriesAndLanguages() {
     m_categories.clear();
     m_languages.clear();
 
-    BtBookshelfModel* bookshelfModel = CSwordBackend::instance()->model();
+    auto const bookshelfModel = CSwordBackend::instance().model();
     if (bookshelfModel == nullptr)
         return;
     int count = bookshelfModel->rowCount();
     for (int row=0; row<count; ++row) {
         QModelIndex index = bookshelfModel->index(row);
-        CSwordModuleInfo* module = getModule(bookshelfModel, index);
+        CSwordModuleInfo* module = getModule(bookshelfModel.get(), index);
         CSwordModuleInfo::Category category = module->category();
         QString categoryName = module->categoryName(category);
         if (m_bibleCommentaryOnly) {
             if ((categoryName != "Bibles") && (categoryName != "Commentaries"))
                 continue;
         }
-        const CLanguageMgr::Language* language = module->language();
+        auto const language = module->language();
         QString languageName = language->translatedName();
         m_categories.insert(categoryName);
         m_languages.insert(languageName);
@@ -111,10 +134,13 @@ void ModuleInterface::getCategoriesAndLanguages() {
 }
 
 QStringList ModuleInterface::installedModuleLanguages() {
+
     QStringList languages;
-    CLanguageMgr::LangMap langMap = CLanguageMgr::instance()->availableLanguages();
-    for (auto lang: langMap) {
-        languages << lang->englishName();
+    auto const availableLanguages =
+        CSwordBackend::instance().availableLanguages();
+    BT_ASSERT(availableLanguages);
+    for (auto const & language : *availableLanguages) {
+        languages << language->englishName();
     }
     return languages;
 }
@@ -128,19 +154,19 @@ void ModuleInterface::updateWorksModel() {
     QHash<int, QByteArray> roleNames;
     roleNames[TextRole] =  "modelText";
     m_worksModel.setRoleNames(roleNames);
-    BtBookshelfModel* bookshelfModel = CSwordBackend::instance()->model();
+    auto const bookshelfModel = CSwordBackend::instance().model();
     if (bookshelfModel == nullptr)
         return;
     int count = bookshelfModel->rowCount();
     for (int row=0; row<count; ++row) {
         QModelIndex index = bookshelfModel->index(row);
-        CSwordModuleInfo* module = getModule(bookshelfModel, index);
+        CSwordModuleInfo* module = getModule(bookshelfModel.get(), index);
         CSwordModuleInfo::Category category = module->category();
         QString categoryName = module->categoryName(category);
-        const CLanguageMgr::Language* language = module->language();
+        auto const language = module->language();
         QString languageName = language->translatedName();
         if (languageName == m_currentLanguage &&
-                categoryName == m_currentCategory) {
+            categoryName == m_currentCategory) {
             m_modules << module;
             QString moduleName = module->name();
             QStandardItem* item = new QStandardItem();
@@ -171,7 +197,7 @@ QString ModuleInterface::englishCategory(int index) {
     CSwordModuleInfo::Category category = module->category();
     if (category == 0)
         return "";
-    return module->englishCategoryName(category);
+    return englishCategoryName(category);
 }
 
 QString ModuleInterface::language(int index) {
@@ -180,10 +206,7 @@ QString ModuleInterface::language(int index) {
     CSwordModuleInfo* module = m_modules.at(index);
     if (module == nullptr)
         return "";
-    const CLanguageMgr::Language* language = module->language();
-    if (language == nullptr)
-        return "";
-    return language->translatedName();
+    return module->language()->translatedName();
 }
 
 QString ModuleInterface::module(int index) {
@@ -196,13 +219,13 @@ QString ModuleInterface::module(int index) {
 }
 
 bool ModuleInterface::isLocked(const QString& moduleName) {
-    CSwordModuleInfo* module = CSwordBackend::instance()->findModuleByName(moduleName);
+    CSwordModuleInfo* module = CSwordBackend::instance().findModuleByName(moduleName);
     if (module) {
 
         // Verse intros must be false for checking lock
         if (module->type() == CSwordModuleInfo::Bible ||
-                module->type() == CSwordModuleInfo::Commentary) {
-                ((sword::VerseKey*)(module->module().getKey()))->setIntros(false);
+            module->type() == CSwordModuleInfo::Commentary) {
+            ((sword::VerseKey*)(module->swordModule().getKey()))->setIntros(false);
         }
 
         bool locked = module->isLocked();
@@ -212,26 +235,30 @@ bool ModuleInterface::isLocked(const QString& moduleName) {
 }
 
 void ModuleInterface::unlock(const QString& moduleName, const QString& unlockKey) {
-    CSwordModuleInfo* module = CSwordBackend::instance()->findModuleByName(moduleName);
+    CSwordModuleInfo* module = CSwordBackend::instance().findModuleByName(moduleName);
     if (module) {
         module->unlock(unlockKey);
 
         // Re-initialize module pointers:
-        CSwordBackend *backend = CSwordBackend::instance();
-        backend->reloadModules(CSwordBackend::OtherChange);
-        module = CSwordBackend::instance()->findModuleByName(moduleName);
+        CSwordBackend::instance().reloadModules();
+        module = CSwordBackend::instance().findModuleByName(moduleName);
         updateWorksModel();
     }
 }
 
-static const CLanguageMgr::Language* getLanguageFromEnglishName(const QString& name) {
-    CLanguageMgr::LangMap langMap = CLanguageMgr::instance()->availableLanguages();
-    for (auto l: langMap) {
-        if (l->englishName() == name)
-            return l;
+static std::shared_ptr<const Language> getLanguageFromEnglishName(const QString& name) {
+
+    //    CLanguageMgr::LangMap langMap = CLanguageMgr::instance()->availableLanguages();
+
+    auto const availableLanguages =
+        CSwordBackend::instance().availableLanguages();
+    BT_ASSERT(availableLanguages);
+    for (auto const & language : *availableLanguages) {
+        if (language->englishName() == name)
+            return language;
     }
     return nullptr;
- }
+}
 
 QString ModuleInterface::getFontNameForLanguage(const QString& language)
 {
@@ -264,8 +291,8 @@ qreal ModuleInterface::getFontSizeForLanguage(const QString& language)
 }
 
 void ModuleInterface::setFontForLanguage(const QString& language, const QString& fontName, qreal fontSize) {
-    if (CLanguageMgr::instance() == nullptr)
-        return;
+    // if (CLanguageMgr::instance() == nullptr)
+    //     return;
     auto lang = getLanguageFromEnglishName(language);
     if (lang) {
 
@@ -281,13 +308,15 @@ void ModuleInterface::setFontForLanguage(const QString& language, const QString&
 
 void ModuleInterface::saveCurrentFonts() {
     savedFontSettings.clear();
-    CLanguageMgr::LangMap langMap = CLanguageMgr::instance()->availableLanguages();
-    for (auto lang: langMap) {
-        BtConfig::FontSettingsPair fontPair = btConfig().getFontForLanguage(*lang);
+    auto const availableLanguages =
+        CSwordBackend::instance().availableLanguages();
+    BT_ASSERT(availableLanguages);
+    for (auto const & language : *availableLanguages) {
+        BtConfig::FontSettingsPair fontPair = btConfig().getFontForLanguage(*language);
         if (fontPair.first) {
             FontSettings fontSettings;
             QFont font = fontPair.second;
-            fontSettings.language = lang->englishName();
+            fontSettings.language = language->englishName();
             fontSettings.fontName = font.family();
             fontSettings.fontSize = font.pointSize();
             savedFontSettings.append(fontSettings);

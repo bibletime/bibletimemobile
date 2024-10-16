@@ -13,6 +13,7 @@
 #include "btsearchinterface.h"
 
 #include <QDebug>
+#include <QRegularExpression>
 #include "backend/drivers/cswordmoduleinfo.h"
 #include "backend/managers/cswordbackend.h"
 #include "mobile/ui/indexthread.h"
@@ -34,9 +35,9 @@ BtSearchInterface::~BtSearchInterface() {
 static const CSwordModuleInfo* getModuleFromResults(const CSwordModuleSearch::Results& results, int index) {
 
     int moduleIndex = 0;
-    Q_FOREACH(CSwordModuleInfo const * const module, results.keys()) {
+    for (auto const & result : results) {
         if (moduleIndex == index)
-            return module;
+            return result.module;
         ++moduleIndex;
     }
     return nullptr;
@@ -44,8 +45,11 @@ static const CSwordModuleInfo* getModuleFromResults(const CSwordModuleSearch::Re
 
 bool BtSearchInterface::modulesAreIndexed() {
     QStringList moduleList =  m_moduleList.split(", ");
-    CSMI modules = CSwordBackend::instance()->getConstPointerList(moduleList);
-    CSMI unindexedModules = CSwordModuleSearch::unindexedModules(modules);
+    CSMI modules = CSwordBackend::instance().getConstPointerList(moduleList);
+    QList<CSwordModuleInfo*> unindexedModules;
+    for (auto const * const m : modules)
+        if (!m->hasIndex())
+            unindexedModules.append(const_cast<CSwordModuleInfo*>(m));
     if (unindexedModules.size() > 0)
         return false;
     return true;
@@ -80,7 +84,7 @@ enum TextRoles {
 
 bool BtSearchInterface::indexModules() {
     QStringList moduleList =  m_moduleList.split(", ");
-    CSMI modules = CSwordBackend::instance()->getConstPointerList(moduleList);
+    CSMI modules = CSwordBackend::instance().getConstPointerList(moduleList);
     bool success = true;
     m_wasCancelled = false;
 
@@ -94,8 +98,8 @@ bool BtSearchInterface::indexModules() {
     m_thread = new IndexThread(nonIndexedModules);
     BT_CONNECT(m_thread, SIGNAL(indexingProgress(int)),
                this,      SLOT(slotModuleProgress(int)));
-    BT_CONNECT(m_thread, SIGNAL(beginIndexingModule(QString const &)),
-               this,     SLOT(slotBeginModuleIndexing(QString const &)));
+    BT_CONNECT(m_thread, SIGNAL(beginIndexingModule(QString)),
+               this,     SLOT(slotBeginModuleIndexing(QString)));
     BT_CONNECT(m_thread, SIGNAL(indexingFinished()),
                this, SLOT(slotIndexingFinished()));
 
@@ -110,20 +114,36 @@ bool BtSearchInterface::performSearch() {
 
     // Check that we have the indices we need for searching
     QStringList moduleList =  m_moduleList.split(", ");
-    CSMI modules = CSwordBackend::instance()->getConstPointerList(moduleList);
+    CSMI modules = CSwordBackend::instance().getConstPointerList(moduleList);
 
-    // Set the search options:
-    CSwordModuleSearch searcher;
-    searcher.setSearchedText(searchText);
-    searcher.setModules(modules);
-    searcher.resetSearchScope();
+    // Execute search:
+    try {
+        m_results =
+            CSwordModuleSearch::search(searchText,
+                                       modules,
+                                       sword::ListKey()  // Scope not suppoted
+                                       );
+    } catch (...) {
+        QString msg;
+        try {
+            throw;
+        } catch (std::exception const & e) {
+            msg = e.what();
+        } catch (...) {
+            msg = tr("<UNKNOWN EXCEPTION>");
+        }
+        // message::showWarning(this,
+        //                      tr("Search aborted"),
+        //                      tr("An internal error occurred while executing "
+        //                         "your search:<br/><br/>%1").arg(msg));
+        return false;
+    }
 
-    searcher.startSearch();
-
-    m_results = searcher.results();
     setupModuleModel(m_results);
     const CSwordModuleInfo* module = getModuleFromResults(m_results,0);
-    setupReferenceModel(module, m_results.value(module));
+    auto & moduleSearchResult = m_results.front();
+    auto resultsList = moduleSearchResult.results;
+    setupReferenceModel(module, resultsList);
     return true;
 }
 
@@ -141,9 +161,9 @@ void BtSearchInterface::setupSearchType() {
 }
 
 QString BtSearchInterface::prepareSearchText(const QString& orig) {
-    static const QRegExp syntaxCharacters("[+\\-()!\"~]");
-    static const QRegExp andWords("\\band\\b", Qt::CaseInsensitive);
-    static const QRegExp orWords("\\bor\\b", Qt::CaseInsensitive);
+    static const QRegularExpression syntaxCharacters("[+\\-()!\"~]");
+    static const QRegularExpression andWords("\\band\\b", QRegularExpression::CaseInsensitiveOption);
+    static const QRegularExpression orWords("\\bor\\b", QRegularExpression::CaseInsensitiveOption);
     QString text("");
     if (m_searchType == AndType) {
         text = orig.simplified();
@@ -169,24 +189,26 @@ void BtSearchInterface::setupModuleModel(const CSwordModuleSearch::Results & res
     roleNames[TextRole] =  "text";
     roleNames[ValueRole] = "value";
     m_modulesModel.setRoleNames(roleNames);
-
     m_modulesModel.clear();
-    Q_FOREACH(CSwordModuleInfo const * const m, results.keys()) {
-        const int count = sword::ListKey(results.value(m)).getCount();
-        QString moduleName = m->name();
+    for (auto const & result : results) {
+        auto module = result.module;
+        auto results = result.results;
+        const int count = results.size();
+        QString moduleName = module->name();
         QString moduleEntry = moduleName + "(" +QString::number(count) + ")";
-
         QStandardItem* item = new QStandardItem();
         item->setData(moduleEntry, TextRole);
         item->setData(moduleName, ValueRole);
         m_modulesModel.appendRow(item);
     }
-    modulesModelChanged();
+    emit modulesModelChanged();
 }
 
 /** Setups the list with the given module. */
+
+
 void BtSearchInterface::setupReferenceModel(const CSwordModuleInfo *m,
-                                            const sword::ListKey & results)
+                                            const CSwordModuleSearch::ModuleResultList & resultList)
 {
     QHash<int, QByteArray> roleNames;
     roleNames[TextRole] =  "text";
@@ -195,22 +217,25 @@ void BtSearchInterface::setupReferenceModel(const CSwordModuleInfo *m,
 
     m_referencesModel.clear();
     if (!m) {
-        haveReferencesChanged();
+        emit haveReferencesChanged();
         return;
     }
-    const int count = results.getCount();
+
+    const int count = resultList.size();
     if (!count)
         return;
 
     for (int index = 0; index < count; index++) {
-        QString reference = QString::fromUtf8(results.getElement(index)->getText());
+        auto result = resultList.at(index);
+        QString reference = QString::fromUtf8(result->getText());
         QStandardItem* item = new QStandardItem();
         item->setData(reference, TextRole);
         item->setData(reference, ValueRole);
         m_referencesModel.appendRow(item);
     }
-    referencesModelChanged();
-    haveReferencesChanged();
+
+    emit referencesModelChanged();
+    emit haveReferencesChanged();
 }
 
 QString BtSearchInterface::getSearchText() const {
@@ -250,14 +275,16 @@ QVariant BtSearchInterface::getReferencesModel() {
 }
 
 void BtSearchInterface::selectReferences(int moduleIndex) {
-    const int count = m_results.count();
+    const int count = m_results.size();
     if ( moduleIndex < 0 || moduleIndex >= count) {
         m_referencesModel.clear();
-        haveReferencesChanged();
+        emit haveReferencesChanged();
         return;
     }
     const CSwordModuleInfo* module = getModuleFromResults(m_results, moduleIndex);
-    setupReferenceModel(module, m_results.value(module));
+    auto & moduleSearchResult = m_results.at(moduleIndex);
+    auto resultsList = moduleSearchResult.results;
+    setupReferenceModel(module, resultsList);
 }
 
 QString BtSearchInterface::getReference(int index) {
