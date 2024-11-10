@@ -561,8 +561,8 @@ QString BtStyle::getSystemLocale() const{
 }
 
 QString BtStyle::getSystemLocaleCountry() const {
-    auto country = QLocale::system().country();
-    return QLocale::countryToString(country);
+    auto territory = QLocale::system().territory();
+    return QLocale::territoryToString(territory);
 }
 
 QString BtStyle::getSystemLocaleLanguage() const {

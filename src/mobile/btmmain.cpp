@@ -22,9 +22,6 @@
 #include <QOperatingSystemVersion>
 #include <QStandardPaths>
 #include <QStyleHints>
-#if defined Q_OS_ANDROID
-#include <QtAndroid>
-#endif
 #include <QTranslator>
 #include "bibletime.h"
 #include "backend/config/btconfig.h"

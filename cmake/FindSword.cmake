@@ -66,6 +66,8 @@ IF(NOT Sword_FOUND)
   IF(NOT Sword_FIND_QUIETLY)
     MESSAGE(WARNING "Falling back to manual Sword detection...")
   ENDIF()
+
+MESSAGE(STATUS " fsl4 ${CMAKE_PREFIX_PATH}")
   FIND_LIBRARY(FindSword_LIBS NAMES sword libsword)
 MESSAGE(STATUS " fsl3 ${FindSword_LIBS}")
   IF(FindSword_LIBS)
