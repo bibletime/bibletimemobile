@@ -521,7 +521,7 @@ void BtStyle::setHeight(int value) {
 
 QString BtStyle::getAppVersion() {
     QString ver = BTM_VERSION;
-    double rev = ver.toDouble()/100.0;
+    double rev = ver.toDouble()/1000.0;
     QString ret = QString::number(rev, 'f', 2);
     return ret;
 }
