@@ -71,6 +71,7 @@ Rectangle {
             installAutomatic.visible = false;
             return;
         }
+        installAutomatic.visible = false;
         installInterface.clearModules();
 
         var names = getAutoInstallDocumentNames();

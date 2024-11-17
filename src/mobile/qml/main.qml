@@ -472,6 +472,7 @@ Window {
         visible: false
         z: 1
         onFinished: {
+            visible = false;
             var lang = btStyle.systemLocale;
             var reference = installAutomatic.getAutoInstallReference(lang);
             windowManager.newWindowWithReference(reference[0], reference[1]);

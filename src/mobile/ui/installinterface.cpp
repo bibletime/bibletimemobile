@@ -605,16 +605,13 @@ void InstallInterface::clearModules() {
 }
 
 void InstallInterface::addModule(const QString& sourceName, const QString& moduleName) {
-    updateSwordBackend(sourceName);
-    const QList<CSwordModuleInfo*> modules = CSwordBackend::instance().moduleList();
-    for (int moduleIndex=0; moduleIndex<modules.count(); ++moduleIndex) {
-        CSwordModuleInfo* module = modules.at(moduleIndex);
-        module->setProperty("installSourceName", sourceName);
-        QString name = module->name();
-        if (name == moduleName) {
-            m_modulesToInstall.append(module);
-        }
-    }
+    sword::InstallSource const source = BtInstallBackend::source(sourceName);
+    std::unique_ptr<CSwordBackend const> backend = BtInstallBackend::backend(source);
+
+    CSwordModuleInfo * module = backend->findModuleByName(moduleName);
+    module->setProperty("installSourceName", sourceName);
+    m_modulesToInstall.append(module);
+    m_usedBackends.emplace_back(std::move(backend));
 }
 
 void InstallInterface::addSource(const QString& sourceName) {
@@ -777,7 +774,7 @@ void InstallInterface::runThread() {
     BT_CONNECT(m_worker, SIGNAL(finished()), m_worker, SLOT(deleteLater()));
     BT_CONNECT(thread, SIGNAL(finished()), thread, SLOT(deleteLater()));
     BT_CONNECT(thread, SIGNAL(finished()), this, SIGNAL(progressFinished()));
-    BT_CONNECT(m_worker, SIGNAL(percentComplete(int, QString const &)),
+    BT_CONNECT(m_worker, SIGNAL(percentComplete(int, QString)),
                this,     SLOT(slotPercentComplete(int, QString const &)));
     thread->start();
 }
