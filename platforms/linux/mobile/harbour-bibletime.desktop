@@ -1,9 +1,0 @@
-[Desktop Entry]
-Type=Application
-Name=Bibletime Mobile
-Icon=bibletime
-Exec=qt-runner harbour-bibletime
-
-[X-Sailjail]
-# TODO: enable the sandbox
-Sandboxing=Disabled
