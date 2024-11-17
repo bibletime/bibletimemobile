@@ -13,10 +13,8 @@
 # CLucene_LIBRARY      = the library to link against CLucene
 # CLucene_VERSION      = The CLucene version string
 # CLucene_FOUND        = set to 1 if clucene is found
-#
-message(status "  1")
+
 INCLUDE(KDE4FindLibraryWithDebug)
-message(status "  2")
 
 IF(NOT CLucene_MIN_VERSION)
   SET(CLucene_MIN_VERSION "2.0.0")
@@ -41,7 +39,6 @@ GET_FILENAME_COMPONENT(CLucene_LIBRARY_DIR_HINTS "${CLucene_LIBRARY}" PATH)
 FIND_PATH(CLucene_LIBRARY_DIR
           NAMES "CLucene/clucene-config.h"
           HINTS "${CLucene_LIBRARY_DIR_HINTS}")
-message(status "  3")
 IF(CLucene_LIBRARY_DIR)
   MESSAGE(STATUS "Found CLucene library dir: ${CLucene_LIBRARY_DIR}")
   FILE(READ ${CLucene_LIBRARY_DIR}/CLucene/clucene-config.h CLCONTENT)
@@ -52,15 +49,15 @@ IF(CLucene_LIBRARY_DIR)
       MESSAGE(ERROR " CLucene version ${CLucene_VERSION} is less than the required minimum ${CLucene_MIN_VERSION}")
       SET(CLucene_GOOD_VERSION FALSE)
     ENDIF()
-#    FIND_LIBRARY_WITH_DEBUG(CLucene_SHARED_LIB
-#                            NAMES clucene-shared clucene-sharedd)
-#    IF(CLucene_SHARED_LIB)
-#      MESSAGE(STATUS "Found CLucene shared library: ${CLucene_SHARED_LIB}")
-#      SET(CLucene_LIBRARY ${CLucene_LIBRARY} ${CLucene_SHARED_LIB})
-#    ELSE()
-#      MESSAGE(FATAL_ERROR "Unable to find CLucene shared library.")
-#      SET(CLucene_GOOD_VERSION FALSE)
-#    ENDIF()
+   FIND_LIBRARY_WITH_DEBUG(CLucene_SHARED_LIB
+                           NAMES clucene-shared clucene-sharedd)
+   IF(CLucene_SHARED_LIB)
+     MESSAGE(STATUS "Found CLucene shared library: ${CLucene_SHARED_LIB}")
+     SET(CLucene_LIBRARY ${CLucene_LIBRARY} ${CLucene_SHARED_LIB})
+   ELSE()
+     MESSAGE(FATAL_ERROR "Unable to find CLucene shared library.")
+     SET(CLucene_GOOD_VERSION FALSE)
+   ENDIF()
   ENDIF()
 ELSE()
   MESSAGE(STATUS "CLucene library dir not found.")
