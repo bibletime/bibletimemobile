@@ -181,7 +181,7 @@ Rectangle {
             delegate: TreeViewDelegate {
                 id: treeDelegate
 
-                implicitHeight: bookmarkLabel.height * 3
+                implicitHeight: bookmarkLabel.height * 4
                 indentation: btStyle.pixelsPerMillimeterX * 5
 
                 background: Rectangle {
@@ -195,7 +195,7 @@ Rectangle {
                     text: treeDelegate.model.display
                     color: current ? Material.accent : Material.foreground
                     font.pointSize: btStyle.uiFontPointSize
-                    verticalAlignment: Text.AlignBottom
+                    verticalAlignment: Text.AlignVCenter
                     MouseArea {
                         anchors.fill: parent
                         onClicked: {
@@ -234,6 +234,7 @@ Rectangle {
             onVisibleChanged: {
                 if (visible) {
                     expandRecursively(-1,-1)
+                    selectionModel.setCurrentIndex(treeView.model.index(0, 0), ItemSelectionModel.Select)
                 }
             }
         }
