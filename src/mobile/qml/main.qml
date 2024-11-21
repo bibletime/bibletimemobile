@@ -137,7 +137,8 @@ Window {
             copyVersesDialog,
             searchDialog,
             bookmarkManager,
-            addBookmark
+            addBookmark,
+            installAutomatic
         ]
 
         Keys.onReleased: {
